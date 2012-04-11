@@ -30,6 +30,8 @@
 /*! The Apple Provided UDID for this device, note Deprecated in iOS 5. */
 @property (retain, readonly) NSString *UDID;
 
+@property (retain, readonly) NSString *analyticsHeaderName;
+
 /*! Generate a UUID
  
  This UUID is not persistent, but is meant to be a one-time UUID.
@@ -38,5 +40,16 @@
  */
 - (NSString *)generateUUID;
 
+
+/*! Returns all current information on the state of the device
+ 
+ Use this method to gather the current state of the device.
+ 
+ @return The dictionary of the current state of the device.
+ 
+ */
+- (NSDictionary *)deviceInformation;
+
+- (NSString *)headerString;
 
 @end

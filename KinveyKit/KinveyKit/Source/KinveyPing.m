@@ -10,7 +10,6 @@
 #import "KinveyBlocks.h"
 #import "KCSRESTRequest.h"
 #import "KCSConnectionResponse.h"
-//#import "JSONKit.h"
 #import "SBJson.h"
 #import "KCSClient.h"
 #import "KCSReachability.h"
@@ -49,7 +48,7 @@ typedef void(^KCSCommonPingBlock)(BOOL didSucceed, KCSConnectionResponse *respon
 @implementation KCSPing
 
 #if TARGET_OS_IPHONE
-//// NETWORK checks for iPhone
+// NETWORK checks for iPhone
 + (BOOL)networkIsReachable
 {
     KCSReachability *reachability = [[KCSClient sharedClient] networkReachability];
@@ -62,7 +61,7 @@ typedef void(^KCSCommonPingBlock)(BOOL didSucceed, KCSConnectionResponse *respon
     return [reachability isReachable];    
 }
 #else
-//// NETWORK checks for Mac OS-X, stub to true
+// NETWORK checks for Mac OS-X, stub to true
 + (BOOL)networkIsReachable
 {
     return YES;
@@ -82,7 +81,25 @@ typedef void(^KCSCommonPingBlock)(BOOL didSucceed, KCSConnectionResponse *respon
     if ([KCSPing networkIsReachable] && [KCSPing kinveyServiceIsReachable]){
         
         KCSConnectionCompletionBlock cBlock = ^(KCSConnectionResponse *response){
-            onComplete(YES, response, nil);
+            if (response.responseCode == 200){
+                onComplete(YES, response, nil);                
+            } else {
+                
+                // Convert the possibly JSON body to a string
+                NSString *errData = [[[NSString alloc] initWithData:response.responseData encoding:NSUTF8StringEncoding] autorelease];
+                
+                // Create our user dictionary from the error
+                NSDictionary *userInfo = [KCSErrorUtilities createErrorUserDictionaryWithDescription:@"Unable to Ping Kinvey"
+                                                                                   withFailureReason:errData
+                                                                              withRecoverySuggestion:@"Check failure reason for details"
+                                                                                 withRecoveryOptions:nil];
+                // Turn it into an NSError
+                NSError *error = [NSError errorWithDomain:KCSNetworkErrorDomain
+                                                     code:response.responseCode
+                                                 userInfo:userInfo];
+                onComplete(NO, nil, error);
+            }
+
         };
         
         KCSConnectionFailureBlock fBlock = ^(NSError *error){
@@ -124,7 +141,7 @@ typedef void(^KCSCommonPingBlock)(BOOL didSucceed, KCSConnectionResponse *respon
         if (didSucceed){
             description = [NSString stringWithFormat:@"Kinvey Service is Alive"];
         } else {
-            description = [error localizedDescription];
+            description = [NSString stringWithFormat:@"%@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions];
         }
         
         completionAction([[[KCSPingResult alloc] initWithDescription:description withResult:didSucceed] autorelease]);
@@ -150,7 +167,7 @@ typedef void(^KCSCommonPingBlock)(BOOL didSucceed, KCSConnectionResponse *respon
                                [jsonData valueForKey:@"version"], [jsonData valueForKey:@"kinvey"]];
             }
         } else {
-            description = [error localizedDescription];
+            description = [NSString stringWithFormat:@"%@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions];
         }
 
         completionAction([[[KCSPingResult alloc] initWithDescription:description withResult:didSucceed] autorelease]);

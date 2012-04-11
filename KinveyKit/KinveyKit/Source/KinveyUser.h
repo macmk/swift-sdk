@@ -16,8 +16,6 @@
 @class KCSCollection;
 @class KCSRESTRequest;
 
-typedef void(^KCSUsernameCheckBlock)(BOOL usernameDoesNotExist, NSString *checkedUsername);
-
 // Need to predefine our classes here
 @class KCSUser;
 @class KCSUserResult;
@@ -35,6 +33,14 @@ enum {
  *
  * This Protocol should be implemented by a client for processing the results of any User Actions against the Kinvey
  * service that deals with users.
+ *
+ * The completion status is one of the following: 
+ * 
+ * - KCSUserCreated
+ * - KCSUserDeleted
+ * - KCSUserFound
+ * - KCSUSerNotFound
+ * 
  */
 @protocol KCSUserActionDelegate <NSObject>
 
@@ -45,7 +51,6 @@ enum {
  * @param user The user the action was performed on.
  * @param result The results of the completed request
  *
- * @bug This interface will change and switch to using NSArray instead of NSObject, this should be transparent to client code, which should be using NSArray now anyway.
  */
 - (void)user: (KCSUser *)user actionDidCompleteWithResult: (KCSUserActionResult)result;
 
@@ -56,7 +61,7 @@ enum {
  * 
  * Use this method to handle failures.
  *  @param user The user the operation was performed on.
- *  @param error An object that encodes our error message
+ *  @param error An object that encodes our error message.
  */
 - (void)user: (KCSUser *)user actionDidFailWithError: (NSError *)error;
 
@@ -127,11 +132,6 @@ enum {
  * @param delegate The delegate to inform once creation completes
 */
 + (void)userWithUsername: (NSString *)username password: (NSString *)password withDelegate: (id<KCSUserActionDelegate>)delegate;
-
-/*! Check to see if a username already exists and call checkBlock with the results
- * @param checkBlock The block to execute when the check is complete
-*/
-+ (void)checkForExistingUsernameWithBlock: (KCSUsernameCheckBlock)checkBlock;
 
 ///---------------------------------------------------------------------------------------
 /// @name Managing the Current User

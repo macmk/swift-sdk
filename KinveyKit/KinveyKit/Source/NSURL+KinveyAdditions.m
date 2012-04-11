@@ -26,7 +26,7 @@
 + (NSURL *)URLWithUnencodedString:(NSString *)string
 {
     NSString *encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL,
-                                            (CFStringRef) string,
+                                            (__bridge CFStringRef) string,
                                             NULL,
                                             (CFStringRef) @"!*'();:@&=+$,/?%#[]{}",
                                             kCFStringEncodingUTF8);

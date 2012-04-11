@@ -15,12 +15,21 @@
 #import "KinveyErrorCodes.h"
 #import "KCSErrorUtilities.h"
 #import "KCSReachability.h"
+#import "KinveyAnalytics.h"
 
 // *cough* hack *cough*
 #define MAX_DATE_STRING_LENGTH_K 40 
 #define MAX_NUMBER_OF_RETRIES_K 10
 // This is in Seconds!
 #define KCS_RETRY_DELAY 0.05
+
+// KINVEY KCS API VERSION
+#define KINVEY_KCS_API_VERSION_HEADER @"X-Kinvey-API-Version"
+
+// For when api 1 is complete
+// #define KINVEY_KCS_API_VERSION @"1"
+#define KINVEY_KCS_API_VERSION @"0"
+
 
 void clogResource(NSString *resource, NSInteger requestMethod);
 void clogResource(NSString *resource, NSInteger requestMethod)
@@ -156,9 +165,12 @@ getLogDate(void)
 - (id)withCompletionAction: (KCSConnectionCompletionBlock)complete failureAction:(KCSConnectionFailureBlock)failure progressAction: (KCSConnectionProgressBlock)progress
 {
     // The analyzer complains that there is a memory leak, it's cause I'm copying these values (alloc'ing them) but never freeing them... 
-    self.completionAction = [complete copy];
-    self.progressAction = [progress copy];
-    self.failureAction = [failure copy];
+//    self.completionAction = [complete copy];
+//    self.progressAction = [progress copy];
+//    self.failureAction = [failure copy];
+    self.completionAction = complete;
+    self.progressAction = progress;
+    self.failureAction = failure;
     
     return self;
     
@@ -235,6 +247,12 @@ getLogDate(void)
     
     // Add the Kinvey User-Agent
     [self.request setValue:[kinveyClient userAgent] forHTTPHeaderField:@"User-Agent"];
+    
+    // Add the Analytics header
+    [self.request setValue:[kinveyClient.analytics headerString] forHTTPHeaderField:kinveyClient.analytics.analyticsHeaderName];
+    
+    // Add the API version
+    [self.request setValue:KINVEY_KCS_API_VERSION forHTTPHeaderField:KINVEY_KCS_API_VERSION_HEADER];
 
     // Add the Date as a header
     [self.request setValue:getLogDate() forHTTPHeaderField:@"Date"];

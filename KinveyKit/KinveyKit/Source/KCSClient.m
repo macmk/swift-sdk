@@ -8,7 +8,6 @@
 
 
 #import "KCSClient.h"
-//#import "JSONKit.h"
 #import "KinveyUser.h"
 
 
@@ -107,7 +106,7 @@
         _authCompleteLock   = [[NSRecursiveLock alloc] init];
         _authInProgressLock = [[NSRecursiveLock alloc] init];
 //        _currentUser = [[KCSUser alloc] init];
-        _serviceHostname = @"baas";
+        _serviceHostname = @"baas-aws";
         _dateStorageFormatString = @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'";
 
 #if TARGET_OS_IPHONE
@@ -232,7 +231,7 @@
     self.appKey = appKey;
     self.appSecret = appSecret;
     
-    _serviceHostname = @"baas";
+    _serviceHostname = @"baas-aws";
     
     [self updateURLs];
     
@@ -291,6 +290,7 @@
 // only use this if you think killing the app is a good idea (so it doesn't die later perhaps?)
 - (void)killAppViaExceptionNamed: (NSString *)name withReason: (NSString *)reason
 {
+    KCSLogForced(@"EXCEPTION Encountered: Name => %@, Reason => %@", name, reason);
     NSException* myException = [NSException exceptionWithName:name
                                                        reason:reason
                                                      userInfo:nil];
