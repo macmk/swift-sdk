@@ -38,12 +38,14 @@
 
 + (NSString *)stringbyPercentEncodingString:(NSString *)string
 {
-    NSString *encodedString = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(NULL,
-                                                                                  (__bridge CFStringRef) string,
+    NSString *encodedString = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL,
+                                                                                  (CFStringRef) string,
                                                                                   NULL,
                                                                                   (CFStringRef) @"!*'();:@&=+$,/?%#[]{}",
                                                                                   kCFStringEncodingUTF8);
     
+    // encodedString has a ref count of 1..., need to auto release it
+    [encodedString autorelease];
     return encodedString;
 }
 
