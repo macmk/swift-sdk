@@ -37,17 +37,12 @@ enum {
 {
     self = [super init];
     if (self){
-        _displayString = [displayString retain];
+        _displayString = displayString;
         _channelID = channelID;
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [_displayString release];
-    [super dealloc];
-}
 
 - (BOOL)isEqual:(id)object
 {
@@ -62,14 +57,14 @@ enum {
     
     
     if (channels == nil){
-        channels = [[NSDictionary dictionaryWithObjectsAndKeys:
-                                     [[[KCSLogChannel alloc] initWithDisplayString:@"[Network]" channelID:kKCSNetworkChannelID] autorelease], @"kNetworkChannel",
-                                     [[[KCSLogChannel alloc] initWithDisplayString:@"[DEBUG]" channelID:kKCSDebugChannelID] autorelease], @"kDebugChannel",
-                                     [[[KCSLogChannel alloc] initWithDisplayString:@"[Trace]" channelID:kKCSTraceChannelID] autorelease], @"kTraceChannel",
-                                     [[[KCSLogChannel alloc] initWithDisplayString:@"[WARN]" channelID:kKCSWarningChannelID]  autorelease], @"kWarningChannel",
-                                     [[[KCSLogChannel alloc] initWithDisplayString:@"[ERROR]" channelID:kKCSErrorChannelID] autorelease], @"kErrorChannel",
-                                     [[[KCSLogChannel alloc] initWithDisplayString:@"[ERROR]" channelID:kKCSForcedChannelID] autorelease], @"kForcedChannel",
-                                     nil] retain];
+        channels = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [[KCSLogChannel alloc] initWithDisplayString:@"[Network]" channelID:kKCSNetworkChannelID], @"kNetworkChannel",
+                                     [[KCSLogChannel alloc] initWithDisplayString:@"[DEBUG]" channelID:kKCSDebugChannelID], @"kDebugChannel",
+                                     [[KCSLogChannel alloc] initWithDisplayString:@"[Trace]" channelID:kKCSTraceChannelID], @"kTraceChannel",
+                                     [[KCSLogChannel alloc] initWithDisplayString:@"[WARN]" channelID:kKCSWarningChannelID], @"kWarningChannel",
+                                     [[KCSLogChannel alloc] initWithDisplayString:@"[ERROR]" channelID:kKCSErrorChannelID], @"kErrorChannel",
+                                     [[KCSLogChannel alloc] initWithDisplayString:@"[ERROR]" channelID:kKCSForcedChannelID], @"kForcedChannel",
+                                     nil];
     }
     
     return channels;
@@ -83,7 +78,7 @@ enum {
 @end
 
 @interface KCSLogManager ()
-@property (retain, nonatomic) NSDictionary *loggingState;
+@property ( nonatomic) NSDictionary *loggingState;
 @end
 
 @implementation KCSLogManager
@@ -170,8 +165,6 @@ enum {
         //NSLog handles synchronization issues
         NSLog(@"%s:%d %@ %@",[[file lastPathComponent] UTF8String],
               lineNumber, channel.displayString,print);
-        [print release];
-        [file release];
     }
 }
 

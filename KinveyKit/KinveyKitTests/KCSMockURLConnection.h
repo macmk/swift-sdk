@@ -11,7 +11,7 @@
 // Fake connection object
 @interface KCSMockURLConnection : NSURLConnection
 
-@property (assign, nonatomic) id delegate;
-@property (retain, nonatomic) NSURLRequest *request;
+@property (unsafe_unretained, nonatomic) id delegate;
+@property ( nonatomic) NSURLRequest *request;
 
 @end

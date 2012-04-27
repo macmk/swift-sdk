@@ -20,7 +20,6 @@
                            [self rangeOfString:@"?"].length > 0 ? @"&" : @"?", queryString];
 
     NSURL *theURL = [NSURL URLWithString:URLString];
-    [URLString release];
     return theURL;
 }
 

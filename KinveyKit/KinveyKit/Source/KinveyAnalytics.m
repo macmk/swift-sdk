@@ -25,20 +25,13 @@
 {
     self = [super init];
     if (self){
-        _UDID = [[KCSKinveyUDID uniqueIdentifier] retain];//[[[UIDevice currentDevice] uniqueIdentifier] retain];
+        _UDID = [KCSKinveyUDID uniqueIdentifier];//[[[UIDevice currentDevice] uniqueIdentifier] retain];
         _UUID = nil;
-        _analyticsHeaderName = [[NSString stringWithString:@"X-Kinvey-Device-Information"] retain];
+        _analyticsHeaderName = [NSString stringWithString:@"X-Kinvey-Device-Information"];
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [_UDID release];
-    [_UUID release];
-    [_analyticsHeaderName release];
-    [super dealloc];
-}
 
 - (NSString *)generateUUID
 {
@@ -46,12 +39,12 @@
     NSString *uuidString = nil;
     
     if (uuid){
-        uuidString = (NSString *)CFUUIDCreateString(NULL, uuid);
+        uuidString = (__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuid);
         CFRelease(uuid);
     }
     // CreateString creates the string, so we own this string.
     // We must ensure it gets destroyed
-    return [uuidString autorelease];
+    return uuidString;
 }
 
 // Always return the same UUID for all users.

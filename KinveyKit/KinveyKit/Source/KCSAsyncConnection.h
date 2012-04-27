@@ -15,10 +15,10 @@
 
 
 /*! The (HTTP) response from the server.  We only store the final responding server in a redirect chain */
-@property (retain) NSURLResponse *lastResponse;
+@property  NSURLResponse *lastResponse;
 
 /*! Stored credentials for Kinvey access */
-@property (retain) NSURLCredential *basicAuthCred;
+@property  NSURLCredential *basicAuthCred;
 
 /*! How long to wait for a response before timing out */
 @property (readonly) double connectionTimeout;

@@ -21,16 +21,12 @@
 {
     self = [super init];
     if (self){
-        _field = [field retain];
+        _field = field;
         _direction = direction;
     }
     return self;
 }
 
-- (void)dealloc {
-    [_field release];
-    [super dealloc];
-}
 
 @end
 
@@ -84,8 +80,8 @@
 // Private interface
 @interface KCSQuery ()
 @property (nonatomic, readwrite, copy) NSMutableDictionary *query;
-@property (nonatomic, retain) KCS_SBJsonWriter *JSONwriter;
-@property (nonatomic, retain, readwrite) NSArray *sortModifiers;
+@property (nonatomic) KCS_SBJsonWriter *JSONwriter;
+@property (weak, nonatomic, readwrite) NSArray *sortModifiers;
 
 
 NSString *KCSConditionalStringFromEnum(KCSQueryConditional conditional);
@@ -106,7 +102,7 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
     static NSDictionary *KCSOperationStringLookup = nil;
 
     if (KCSOperationStringLookup == nil){
-        KCSOperationStringLookup = [[NSDictionary dictionaryWithObjectsAndKeys:
+        KCSOperationStringLookup = [NSDictionary dictionaryWithObjectsAndKeys:
                                      // Basic Queries                                                                                                                                                                                                                                                                
                                      @"$lt", [NSNumber numberWithInt:kKCSLessThan],                                                                                                                                                                                                                                  
                                      @"$lte", [NSNumber numberWithInt:kKCSLessThanOrEqual],                                                                                                                                                                                                                          
@@ -136,7 +132,7 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
                                      @"$where", [NSNumber numberWithInt:kKCSWhere],                                                                                                                                                                                                                                  
                                      
                                      // Internal Operators                                                                                                                                                                                                                                                           
-                                     @"$within", [NSNumber numberWithInt:kKCSWithin], nil] retain];
+                                     @"$within", [NSNumber numberWithInt:kKCSWithin], nil];
     }
     
     return [KCSOperationStringLookup objectForKey:[NSNumber numberWithInt:conditional]];
@@ -158,7 +154,7 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
         case kKCSWithinBox:
         case kKCSWithinCenterSphere:
         case kKCSWithinPolygon:
-
+        {
             if (queries.count > 1){
                 // ERROR
                 return nil;
@@ -181,22 +177,24 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
 #endif
 ////            
 //////////// HACK //////////////
-            
+        }
             break;
 
         // Interior array ops
         case kKCSIn:
         case kKCSNotIn:
+        {
             if (fieldname == nil || queries == nil){
                 return nil;
             }
             
             NSDictionary *innerQ = [NSDictionary dictionaryWithObject:queries forKey:opName];
             query = [NSDictionary dictionaryWithObject:innerQ forKey:fieldname];
-
+        }
             break;
         // Exterior array ops
         case kKCSOr:
+        {
             
             if (fieldname != nil || queries == nil){
                 KCSLogWarning(@"Fieldname was not nil (was %@) for a joining op, this is unexpected", fieldname);
@@ -204,17 +202,18 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
             }
             
             query = [NSDictionary dictionaryWithObject:queries forKey:opName];
-
+        }
             break;
 
         // This is the case where we're doing a direct match
         case kKCSNOOP:
-
+        {
             if (fieldname == nil || queries == nil || queries.count > 1){
                 // ERROR!
                 return nil;
             }
             query = [NSDictionary dictionaryWithObject:[queries objectAtIndex:0] forKey:fieldname];
+        }
             break;
             
         case kKCSLessThan:
@@ -223,7 +222,7 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
         case kKCSGreaterThanOrEqual:
         case kKCSNotEqual:
         case kKCSMulti:
-
+        {
             if (fieldname == nil){
                 // Error
                 return nil;
@@ -280,6 +279,7 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
                 }
                 
             }
+        }
             break;
             
             
@@ -287,10 +287,13 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
         case kKCSAll:
         case kKCSSize:
         case kKCSWhere:
+        {
             return nil;
+        }
             break;
 
         default:
+        {}
             break;
     }
     
@@ -313,25 +316,15 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
     self = [super init];
     if (self){
         _JSONwriter = [[KCS_SBJsonWriter alloc] init];
-        _query = [[NSMutableDictionary dictionary] retain];
-        _sortModifiers = [[NSArray array] retain];
+        _query = [NSMutableDictionary dictionary];
+        _sortModifiers = [NSArray array];
     }
     return self;
 }
 
 - (void)dealloc
 {
-    [_JSONwriter release];
-    [_query release];
-    [_limitModifer release];
-    [_skipModifier release];
-    [_sortModifiers release];
-    _limitModifer = nil;
-    _skipModifier = nil;
-    _sortModifiers = nil;
-    _JSONwriter = nil;
     _query = nil;
-    [super dealloc];
 }
 
 - (void)setQuery:(NSMutableDictionary *)query
@@ -339,9 +332,10 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
     if (_query == query){
         return;
     }
-    NSMutableDictionary *oldDict = _query;
+
+    // This is not needed... due to ARC...
+    //    NSMutableDictionary *oldDict = _query;
     _query = [query mutableCopy];
-    [oldDict release];
 }
 
 
@@ -350,9 +344,9 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
 
 + (KCSQuery *)queryOnField:(NSString *)field usingConditional:(KCSQueryConditional)conditional forValue: (NSObject *)value
 {
-    KCSQuery *query = [[[KCSQuery alloc] init] autorelease];
+    KCSQuery *query = [[KCSQuery alloc] init];
     
-    query.query = [[[KCSQuery queryDictionaryWithFieldname:field operation:conditional forQueries:[NSArray arrayWithObject:value] useQueriesForOps:NO] mutableCopy] autorelease];
+    query.query = [[KCSQuery queryDictionaryWithFieldname:field operation:conditional forQueries:[NSArray arrayWithObject:value] useQueriesForOps:NO] mutableCopy];
 
     return query;
 
@@ -360,9 +354,9 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
 
 + (KCSQuery *)queryOnField:(NSString *)field withExactMatchForValue: (NSObject *)value
 {
-    KCSQuery *query = [[[KCSQuery alloc] init] autorelease];
+    KCSQuery *query = [[KCSQuery alloc] init];
     
-    query.query = [[[KCSQuery queryDictionaryWithFieldname:field operation:kKCSNOOP forQueries:[NSArray arrayWithObject:value] useQueriesForOps:NO] mutableCopy] autorelease];
+    query.query = [[KCSQuery queryDictionaryWithFieldname:field operation:kKCSNOOP forQueries:[NSArray arrayWithObject:value] useQueriesForOps:NO] mutableCopy];
     
     return query;
 
@@ -385,9 +379,9 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
     }
     va_end(items);
     
-    KCSQuery *query = [[[KCSQuery alloc] init] autorelease];
+    KCSQuery *query = [[KCSQuery alloc] init];
     
-    query.query = [[[KCSQuery queryDictionaryWithFieldname:field operation:kKCSNOOP forQueries:args useQueriesForOps:YES] mutableCopy] autorelease];
+    query.query = [[KCSQuery queryDictionaryWithFieldname:field operation:kKCSNOOP forQueries:args useQueriesForOps:YES] mutableCopy];
     
     return query;
 
@@ -403,9 +397,9 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
     }
     va_end(args);
 
-    KCSQuery *query = [[[KCSQuery alloc] init] autorelease];
+    KCSQuery *query = [[KCSQuery alloc] init];
     
-    query.query = [[[KCSQuery queryDictionaryWithFieldname:nil operation:joiningOperator forQueries:queries useQueriesForOps:NO] mutableCopy] autorelease];
+    query.query = [[KCSQuery queryDictionaryWithFieldname:nil operation:joiningOperator forQueries:queries useQueriesForOps:NO] mutableCopy];
     
     return query;
 
@@ -414,7 +408,7 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
 
 + (KCSQuery *)queryNegatingQuery:(KCSQuery *)query
 {
-    KCSQuery *q = [[[KCSQuery alloc] init] autorelease];
+    KCSQuery *q = [[KCSQuery alloc] init];
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     
@@ -434,14 +428,14 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
     /////// MEGA SPECIAL CASE
     NSDictionary *exists = [NSDictionary dictionaryWithObjectsAndKeys:[NSNull null], @"$in", [NSNumber numberWithBool:YES], @"$exists", nil];
     NSDictionary *query = [NSDictionary dictionaryWithObject:exists forKey:field];
-    KCSQuery *q = [[[KCSQuery alloc] init] autorelease];
-    q.query = [[query mutableCopy] autorelease];
+    KCSQuery *q = [[KCSQuery alloc] init];
+    q.query = [query mutableCopy];
     return q;
 }
 
 + (KCSQuery *)query
 {
-    KCSQuery *query = [[[KCSQuery alloc] init] autorelease];
+    KCSQuery *query = [[KCSQuery alloc] init];
     return query;
 }
 
@@ -559,7 +553,7 @@ KCSConditionalStringFromEnum(KCSQueryConditional conditional)
             [tmp setObject:[self.query objectForKey:key] forKey:key];
         }
         KCSQuery *q = [KCSQuery query];
-        q.query = [[tmp mutableCopy] autorelease];
+        q.query = [tmp mutableCopy];
     }
     return q;
 }

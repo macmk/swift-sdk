@@ -428,11 +428,11 @@ typedef enum {
 /// @name Modifying Queries
 ///---------------------------------------------------------------------------------------
 /*! The current limit modifier, defaults to nil.  Set to nil to clear the limit modifier. */
-@property (nonatomic, retain) KCSQueryLimitModifier *limitModifer;
+@property (weak, nonatomic) KCSQueryLimitModifier *limitModifer;
 /*! The current skip modifier, defaults to nil.  Set to nil to clear the skip modifier. */
-@property (nonatomic, retain) KCSQuerySkipModifier *skipModifier;
+@property (weak, nonatomic) KCSQuerySkipModifier *skipModifier;
 /*! The current list of sort modifiers.  Read only, use addSortModifier: and clearSortModifiers to modify. */
-@property (nonatomic, retain, readonly) NSArray *sortModifiers;
+@property (weak, nonatomic, readonly) NSArray *sortModifiers;
 
 /*! Add a new sort modifier to our list of modifiers.
  

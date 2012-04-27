@@ -20,9 +20,9 @@
     self = [super init];
     if (self){
         _responseCode = code;
-        _responseData = [data retain];
-        _userData = [userDefinedData retain];
-        _responseHeaders = [header retain];
+        _responseData = data;
+        _userData = userDefinedData;
+        _responseHeaders = header;
     }
     
     return self;
@@ -34,16 +34,9 @@
     if (code < 0){
         code = -1;
     }
-    return [[[KCSConnectionResponse alloc] initWithCode:code responseData:data headerData:header userData:userDefinedData] autorelease];
+    return [[KCSConnectionResponse alloc] initWithCode:code responseData:data headerData:header userData:userDefinedData];
 }
 
-- (void)dealloc
-{
-    [_responseData release];
-    [_userData release];
-    [_responseHeaders release];
-    [super dealloc];
-}
 
 
 @end

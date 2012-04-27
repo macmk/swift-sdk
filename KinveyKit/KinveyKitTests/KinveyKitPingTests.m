@@ -19,8 +19,8 @@
 #import "KCSErrorUtilities.h"
 
 @interface KinveyKitPingTests()
-@property (nonatomic, retain) KCS_SBJsonParser *parser;
-@property (nonatomic, retain) KCS_SBJsonWriter *writer;
+@property (nonatomic) KCS_SBJsonParser *parser;
+@property (nonatomic) KCS_SBJsonWriter *writer;
 @end
 
 @implementation KinveyKitPingTests
@@ -42,8 +42,8 @@
     // Needed, otherwise we burn a connection later...
     [KCSUser initCurrentUser];
     
-    _parser = [[[KCS_SBJsonParser alloc] init]retain];
-    _writer = [[[KCS_SBJsonWriter alloc] init]retain];
+    _parser = [[KCS_SBJsonParser alloc] init];
+    _writer = [[KCS_SBJsonWriter alloc] init];
 
 }
 
@@ -97,7 +97,6 @@
     assertThat(description, containsString(@"kinvey = hello"));
     assertThat(description, containsString(@"version = \"0.6.6\""));
     
-    [conn release];
     
     // Reset client
     [[KCSClient sharedClient] initializeKinveyServiceForAppKey:@"kid1234" 
@@ -145,7 +144,6 @@
     assertThat(description, startsWith(@"Kinvey Service is alive, version: "));
     assertThat(description, endsWith(@", response: hello"));
     
-    [conn release];
 }
 
 
@@ -187,7 +185,6 @@
     assertThat([NSNumber numberWithBool:pingWasSuccessful], is(equalToBool(NO)));
     assertThat(description, containsString(@"Planned Testing Error"));
     
-    [conn release];
 }
 
 

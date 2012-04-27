@@ -218,9 +218,7 @@ static void logNetworkStatus_(const char *name, int line, KCSNetworkStatus statu
 		
 	}
 	
-	self.key = nil;
 	
-	[super dealloc];
 	
 } // dealloc
 
@@ -262,24 +260,24 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 	#pragma unused (target, flags)
 	NSCAssert(info, @"info was NULL in ReachabilityCallback");
-	NSCAssert([(NSObject*) info isKindOfClass: [KCSReachability class]], @"info was the wrong class in ReachabilityCallback");
+	NSCAssert([(__bridge NSObject*) info isKindOfClass: [KCSReachability class]], @"info was the wrong class in ReachabilityCallback");
 	
 	//We're on the main RunLoop, so an NSAutoreleasePool is not necessary, but is added defensively
 	// in case someone uses the Reachablity object in a different thread.
-	NSAutoreleasePool* pool = [NSAutoreleasePool new];
+	@autoreleasepool {
 	
 	// Post a notification to notify the client that the network reachability changed.
-	[[NSNotificationCenter defaultCenter] postNotificationName: kKCSReachabilityChangedNotification 
-														object: (KCSReachability *) info];
+		[[NSNotificationCenter defaultCenter] postNotificationName: kKCSReachabilityChangedNotification 
+															object: (__bridge KCSReachability *) info];
 	
-	[pool release];
+	}
 
 } // ReachabilityCallback()
 
 
 - (BOOL) startNotifier {
 	
-	SCNetworkReachabilityContext	context = {0, self, NULL, NULL, NULL};
+	SCNetworkReachabilityContext	context = {0, (__bridge void *)(self), NULL, NULL, NULL};
 	
 	if(SCNetworkReachabilitySetCallback(reachabilityRef, ReachabilityCallback, &context)) {
 		
@@ -324,7 +322,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	
 	if (ref) {
 		
-		KCSReachability *r = [[[self alloc] initWithReachabilityRef: ref] autorelease];
+		KCSReachability *r = [[self alloc] initWithReachabilityRef: ref];
 		
 		r.key = hostName;
 
@@ -362,7 +360,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 	if (ref) {
 		
-		KCSReachability *r = [[[self alloc] initWithReachabilityRef: ref] autorelease];
+		KCSReachability *r = [[self alloc] initWithReachabilityRef: ref];
 		
 		r.key = [self makeAddressKey: hostAddress->sin_addr.s_addr];
 		

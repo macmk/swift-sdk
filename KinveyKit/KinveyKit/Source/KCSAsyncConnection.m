@@ -20,8 +20,8 @@
 @property (copy) KCSConnectionCompletionBlock completionBlock;
 @property (copy) KCSConnectionFailureBlock    failureBlock;
 @property (copy) KCSConnectionProgressBlock   progressBlock;
-@property (nonatomic, retain) NSMutableData *downloadedData;
-@property (retain) NSURLConnection *connection;
+@property (nonatomic) NSMutableData *downloadedData;
+@property  NSURLConnection *connection;
 @property (nonatomic, readwrite) NSInteger contentLength;
 @property NSInteger lastPercentage;
 
@@ -166,14 +166,6 @@
 - (void)cleanUp
 {
     // Cause all members to release their current object and reset to the nil state.
-    [_request release];
-    [_basicAuthCred release];
-    [_connection release];
-    [_lastResponse release];
-    [_downloadedData release];
-    [_progressBlock release];
-    [_completionBlock release];
-    [_failureBlock release];
 
     _request = nil;
     _basicAuthCred = nil;
@@ -233,7 +225,7 @@
         // Probably want to handle this differently, since now the caller needs to know what's going
         // on, but I think that at a minimum, we need progress + data.
         self.lastPercentage = downloadPercent; // Update to the current value
-        self.progressBlock([[[KCSConnectionProgress alloc] init] autorelease]);
+        self.progressBlock([[KCSConnectionProgress alloc] init]);
     }
 }
 

@@ -37,11 +37,6 @@ typedef void(^KCSCommonPingBlock)(BOOL didSucceed, KCSConnectionResponse *respon
     return self;
 }
 
-- (void)dealloc
-{
-    [_description release];
-    [super dealloc];
-}
 
 @end
 
@@ -86,7 +81,7 @@ typedef void(^KCSCommonPingBlock)(BOOL didSucceed, KCSConnectionResponse *respon
             } else {
                 
                 // Convert the possibly JSON body to a string
-                NSString *errData = [[[NSString alloc] initWithData:response.responseData encoding:NSUTF8StringEncoding] autorelease];
+                NSString *errData = [[NSString alloc] initWithData:response.responseData encoding:NSUTF8StringEncoding];
                 
                 // Create our user dictionary from the error
                 NSDictionary *userInfo = [KCSErrorUtilities createErrorUserDictionaryWithDescription:@"Unable to Ping Kinvey"
@@ -144,7 +139,7 @@ typedef void(^KCSCommonPingBlock)(BOOL didSucceed, KCSConnectionResponse *respon
             description = [NSString stringWithFormat:@"%@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions];
         }
         
-        completionAction([[[KCSPingResult alloc] initWithDescription:description withResult:didSucceed] autorelease]);
+        completionAction([[KCSPingResult alloc] initWithDescription:description withResult:didSucceed]);
     };
     
     [KCSPing commonPingHelper:cpb];
@@ -158,7 +153,6 @@ typedef void(^KCSCommonPingBlock)(BOOL didSucceed, KCSConnectionResponse *respon
         if (didSucceed){
             KCS_SBJsonParser *parser = [[KCS_SBJsonParser alloc] init];
             NSDictionary *jsonData = [parser objectWithData:response.responseData];
-            [parser release];
             NSNumber *useOldStyle = [[[KCSClient sharedClient] options] valueForKey:KCS_USE_OLD_PING_STYLE_KEY];
             if ([useOldStyle boolValue]){
                 description = [jsonData description];
@@ -170,7 +164,7 @@ typedef void(^KCSCommonPingBlock)(BOOL didSucceed, KCSConnectionResponse *respon
             description = [NSString stringWithFormat:@"%@, %@, %@", error.localizedDescription, error.localizedFailureReason, error.localizedRecoveryOptions];
         }
 
-        completionAction([[[KCSPingResult alloc] initWithDescription:description withResult:didSucceed] autorelease]);
+        completionAction([[KCSPingResult alloc] initWithDescription:description withResult:didSucceed]);
     };
 
     [KCSPing commonPingHelper:cpb];

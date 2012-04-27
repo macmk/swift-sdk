@@ -16,7 +16,7 @@
 - (NSString *)stringWithISO8601Encoding
 {
     NSLocale *          enUSPOSIXLocale;
-    enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+    enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setLocale:enUSPOSIXLocale];
     [df setDateFormat:[[KCSClient sharedClient] dateStorageFormatString]];
@@ -24,21 +24,19 @@
     NSString *dTmp = [df stringFromDate:self];
     KCSLogDebug(@"Date conversion: %@ => %@", self, dTmp);
     
-    [df release];
     return dTmp;
 }
 
 + (NSDate *)dateFromISO8601EncodedString: (NSString *)string
 {
     NSLocale *          enUSPOSIXLocale;
-    enUSPOSIXLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+    enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setLocale:enUSPOSIXLocale];
     [df setDateFormat:[[KCSClient sharedClient] dateStorageFormatString]];
     [df setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     
     NSDate *myDate = [df dateFromString:string];
-    [df release];
     return myDate;
 }
 

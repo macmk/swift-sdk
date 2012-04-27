@@ -10,7 +10,7 @@
 
 // Private interface
 @interface KCSEntityDict ()
-@property (nonatomic, retain) NSMutableDictionary *entityProperties;
+@property (nonatomic) NSMutableDictionary *entityProperties;
 @end
 
 
@@ -30,12 +30,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [_entityProperties release];
-    [_objectId release];
-    [super dealloc];
-}
 
 - (id)getValueForProperty: (NSString *)property
 {
@@ -54,9 +48,9 @@
     static NSDictionary *options = nil;
     
     if (options == nil){
-        options = [[NSDictionary dictionaryWithObjectsAndKeys:
+        options = [NSDictionary dictionaryWithObjectsAndKeys:
                     [NSNumber numberWithBool:YES], KCS_USE_DICTIONARY_KEY,
-                    @"entityProperties", KCS_DICTIONARY_NAME_KEY, nil] retain];
+                    @"entityProperties", KCS_DICTIONARY_NAME_KEY, nil];
     }
     
     return options;
@@ -67,8 +61,8 @@
     static NSDictionary *mappedDict = nil;
     
     if (mappedDict == nil){
-        mappedDict = [[NSDictionary dictionaryWithObjectsAndKeys:
-                       @"_id", @"objectId", nil] retain];
+        mappedDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                       @"_id", @"objectId", nil];
     }
     
     return mappedDict;

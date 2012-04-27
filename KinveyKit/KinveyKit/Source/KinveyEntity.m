@@ -47,7 +47,7 @@ makeConnectionBlocks(KCSConnectionCompletionBlock *cBlock,
                      id <KCSEntityDelegate> delegate)
 {
      *cBlock = [^(KCSConnectionResponse *response){
-         KCS_SBJsonParser *parser = [[[KCS_SBJsonParser alloc] init] autorelease];
+         KCS_SBJsonParser *parser = [[KCS_SBJsonParser alloc] init];
         NSDictionary *jsonResponse = [parser objectWithData:response.responseData];
 #if 0
         // Needs KCS update for this feature
@@ -219,7 +219,7 @@ makeConnectionBlocks(KCSConnectionCompletionBlock *cBlock,
     KCSSerializedObject *obj = [KCSObjectMapper makeKinveyDictionaryFromObject:self];
     BOOL isPostRequest = obj.isPostRequest;
     NSString *objectId = obj.objectId;
-    NSDictionary *dictionaryToMap = [obj.dataToSerialize retain];
+    NSDictionary *dictionaryToMap = obj.dataToSerialize;
     
     NSString *resource = nil;
     if ([collection.collectionName isEqualToString:@""]){
@@ -246,12 +246,12 @@ makeConnectionBlocks(KCSConnectionCompletionBlock *cBlock,
     [request setContentType:KCS_JSON_TYPE];
     
     // Make sure to include the UTF-8 encoded JSONData...
-    KCS_SBJsonWriter *writer = [[[KCS_SBJsonWriter alloc] init] autorelease];
+    KCS_SBJsonWriter *writer = [[KCS_SBJsonWriter alloc] init];
     [request addBody:[writer dataWithObject:dictionaryToMap]];
     
     // Prepare our handlers
     KCSConnectionCompletionBlock cBlock = ^(KCSConnectionResponse *response){
-        KCS_SBJsonParser *parser = [[[KCS_SBJsonParser alloc] init] autorelease];
+        KCS_SBJsonParser *parser = [[KCS_SBJsonParser alloc] init];
         NSDictionary *jsonResponse = [parser objectWithData:response.responseData];
 #if 0
         // Needs KCS update for this feature
@@ -286,7 +286,6 @@ makeConnectionBlocks(KCSConnectionCompletionBlock *cBlock,
     // Make the request happen
     [[request withCompletionAction:cBlock failureAction:fBlock progressAction:pBlock] start];
 
-    [dictionaryToMap release];
 
 }
 
@@ -305,7 +304,7 @@ makeConnectionBlocks(KCSConnectionCompletionBlock *cBlock,
     
     // Prepare our handlers
     KCSConnectionCompletionBlock cBlock = ^(KCSConnectionResponse *response){
-        KCS_SBJsonParser *parser = [[[KCS_SBJsonParser alloc] init] autorelease];
+        KCS_SBJsonParser *parser = [[KCS_SBJsonParser alloc] init];
         NSDictionary *jsonResponse = [parser objectWithData:response.responseData];
 #if 0
         // Needs KCS update for this feature

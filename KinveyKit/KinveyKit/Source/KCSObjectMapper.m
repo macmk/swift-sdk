@@ -23,18 +23,12 @@
     self = [super init];
     if (self){
         _isPostRequest = isPostRequest;
-        _dataToSerialize = [dataToSerialize retain];
-        _objectId = [objectId retain];
+        _dataToSerialize = dataToSerialize;
+        _objectId = objectId;
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [_dataToSerialize release];
-    [_objectId release];
-    [super dealloc];
-}
 
 @end
 
@@ -113,7 +107,7 @@
         copiedObject = [objectClass kinveyDesignatedInitializer];
     } else {
         // Normal path
-        copiedObject = [[[objectClass alloc] init] autorelease];
+        copiedObject = [[objectClass alloc] init];
     }
 
     return [KCSObjectMapper populateObject:copiedObject withData:data];
@@ -157,9 +151,8 @@
         }
     }
     
-    KCSSerializedObject *sObject = [[[KCSSerializedObject alloc] initWithObjectId:objectId dataToSerialize:dictionaryToMap isPostRequest:isPostRequest] autorelease];
+    KCSSerializedObject *sObject = [[KCSSerializedObject alloc] initWithObjectId:objectId dataToSerialize:dictionaryToMap isPostRequest:isPostRequest];
     
-    [dictionaryToMap release];
     return sObject;
 
 }

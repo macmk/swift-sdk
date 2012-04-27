@@ -134,7 +134,7 @@
 /// @name Device Properties
 ///---------------------------------------------------------------------------------------
 /*! The current session's token for this device to receive notifications */
-@property (nonatomic, retain, readonly) NSData *deviceToken;
+@property (nonatomic, readonly) NSData *deviceToken;
 
 /*! Return the device's token as a string
  

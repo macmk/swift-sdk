@@ -11,9 +11,9 @@
 
 @interface TestObject : NSObject <KCSPersistable>
 
-@property (nonatomic, retain) NSString *testId;
-@property (nonatomic, retain) NSString *testParam1;
-@property (nonatomic, retain) NSNumber *testParam2;
+@property (nonatomic) NSString *testId;
+@property (nonatomic) NSString *testParam1;
+@property (nonatomic) NSNumber *testParam2;
 
 @end
 

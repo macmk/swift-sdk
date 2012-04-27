@@ -24,13 +24,13 @@ typedef BOOL(^FailureAction)(NSError *);
 
 @interface KinveyKitBlobServiceTests ()
 
-@property (retain, nonatomic) NSString *testID;
-@property (retain, nonatomic) SuccessAction onSuccess;
-@property (retain, nonatomic) FailureAction onFailure;
+@property (nonatomic) NSString *testID;
+@property (nonatomic, copy) SuccessAction onSuccess;
+@property (nonatomic, copy) FailureAction onFailure;
 @property (nonatomic) BOOL testPassed;
-@property (retain, nonatomic) NSString *message;
-@property (retain, nonatomic) KCS_SBJsonWriter *writer;
-@property (retain, nonatomic) KCS_SBJsonParser *parser;
+@property (nonatomic) NSString *message;
+@property (nonatomic) KCS_SBJsonWriter *writer;
+@property (nonatomic) KCS_SBJsonParser *parser;
 
 - (KCSMockConnection *)buildDefaultMockConnection;
 
@@ -71,8 +71,8 @@ typedef BOOL(^FailureAction)(NSError *);
 //    [[client currentUser] initializeCurrentUser];
     [KCSUser initCurrentUser];
     
-    _writer = [[[KCS_SBJsonWriter alloc] init] retain];
-    _parser = [[[KCS_SBJsonParser alloc] init] retain];
+    _writer = [[KCS_SBJsonWriter alloc] init];
+    _parser = [[KCS_SBJsonParser alloc] init];
 }
 
 - (void)tearDown
@@ -138,7 +138,6 @@ typedef BOOL(^FailureAction)(NSError *);
     [KCSResourceService getStreamingURLForResource:@"blah" withResourceDelegate:self];
     STAssertTrue(self.testPassed, self.message);
     
-    [conn release];
     [[KCSConnectionPool sharedPool] drainPools];
 }
 
@@ -178,7 +177,6 @@ typedef BOOL(^FailureAction)(NSError *);
     assertThat([conn.providedRequest.URL absoluteString], endsWith(expectedString));
     
     
-    [conn release];
     [[KCSConnectionPool sharedPool] drainPools];
 
 }
@@ -200,7 +198,6 @@ typedef BOOL(^FailureAction)(NSError *);
     assertThat([conn.providedRequest.URL absoluteString], endsWith(expectedString));
     
     
-    [conn release];
     [[KCSConnectionPool sharedPool] drainPools];
 
 }
@@ -283,8 +280,6 @@ typedef BOOL(^FailureAction)(NSError *);
     assertThat([kinvey.providedRequest.URL absoluteString], endsWith(expectedString));
     
     
-    [resource release];
-    [kinvey release];
     [[KCSConnectionPool sharedPool] drainPools];
     
     KCSLogDebug(@"Made it out of the woods...");
@@ -332,8 +327,6 @@ typedef BOOL(^FailureAction)(NSError *);
     assertThat([kinvey.providedRequest.URL absoluteString], endsWith(expectedString));
     
     
-    [resource release];
-    [kinvey release];
     [[KCSConnectionPool sharedPool] drainPools];
     
 
@@ -378,8 +371,6 @@ typedef BOOL(^FailureAction)(NSError *);
     assertThat([kinvey.providedRequest.URL absoluteString], endsWith(expectedString));
     
     
-    [resource release];
-    [kinvey release];
     [[KCSConnectionPool sharedPool] drainPools];
     
 }

@@ -16,7 +16,7 @@
 - (void)testFactoryMethodGeneratesValidResponse{
     NSDictionary *header = [NSDictionary dictionaryWithObject:@"application/json" forKey:@"Content-Type"];
     NSDictionary *userData = [NSDictionary dictionaryWithObject:@"This is some Test Data" forKey:@"testData"];
-    KCS_SBJsonWriter *writer = [[[KCS_SBJsonWriter alloc] init] autorelease];
+    KCS_SBJsonWriter *writer = [[KCS_SBJsonWriter alloc] init];
     NSData *data = [writer dataWithObject:userData];
     
     KCSConnectionResponse *response = [KCSConnectionResponse connectionResponseWithCode:200

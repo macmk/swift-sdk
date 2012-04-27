@@ -15,15 +15,15 @@
 @property (nonatomic) BOOL connectionShouldFail;
 @property (nonatomic) BOOL connectionShouldReturnNow;
 
-@property (retain, nonatomic) KCSConnectionResponse *responseForSuccess;
-@property (retain, nonatomic) NSArray *progressActions;
-@property (retain, nonatomic) NSError *errorForFailure;
+@property ( nonatomic) KCSConnectionResponse *responseForSuccess;
+@property ( nonatomic) NSArray *progressActions;
+@property ( nonatomic) NSError *errorForFailure;
 
 // Delay in MSecs betwen each action...
 @property (nonatomic) double delayInMSecs;
 
-@property (retain, nonatomic) NSURLRequest *providedRequest;
-@property (retain, nonatomic) NSURLCredential *providedCredentials;
+@property ( nonatomic) NSURLRequest *providedRequest;
+@property ( nonatomic) NSURLCredential *providedCredentials;
 
 
 

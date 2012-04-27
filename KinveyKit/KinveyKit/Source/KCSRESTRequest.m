@@ -56,9 +56,9 @@ getLogDate(void)
 
 
 @interface KCSRESTRequest()
-@property (nonatomic, retain) NSMutableURLRequest *request;
+@property (weak, weak, nonatomic) NSMutableURLRequest *request;
 @property (nonatomic) BOOL isMockRequest;
-@property (nonatomic, retain) Class mockConnection;
+@property (unsafe_unretained, unsafe_unretained, nonatomic) Class mockConnection;
 @property (nonatomic) NSInteger retriesAttempted;
 - (id)initWithResource:(NSString *)resource usingMethod: (NSInteger)requestMethod;
 @end
@@ -91,7 +91,7 @@ getLogDate(void)
         _isMockRequest = NO;
         _followRedirects = YES;
         _retriesAttempted = 0;
-        _headers = [[NSMutableDictionary dictionary] retain];
+        _headers = [NSMutableDictionary dictionary];
 
         // Prepare to generate the request...
         KCSClient *kinveyClient = [KCSClient sharedClient];
@@ -100,26 +100,11 @@ getLogDate(void)
         NSURL *url = [NSURL URLWithString:resource];
         
         KCSLogNetwork(@"Requesting resource: %@", resource);
-        _request = [[NSMutableURLRequest requestWithURL:url cachePolicy:kinveyClient.cachePolicy timeoutInterval:kinveyClient.connectionTimeout] retain];
+        _request = [NSMutableURLRequest requestWithURL:url cachePolicy:kinveyClient.cachePolicy timeoutInterval:kinveyClient.connectionTimeout];
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [_resourceLocation release]; 
-    [_headers release];
-
-    _resourceLocation = nil;
-    _headers = nil;
-    
-    [_request release];
-    self.completionAction = NULL;
-    self.progressAction = NULL;
-    self.failureAction = NULL;
-    
-    [super dealloc];
-}
 
 - (void)logResource: (NSString *)resource usingMethod: (NSInteger)requestMethod
 {
@@ -128,7 +113,7 @@ getLogDate(void)
 
 + (KCSRESTRequest *)requestForResource: (NSString *)resource usingMethod: (NSInteger)requestMethod
 {
-    return [[[KCSRESTRequest alloc] initWithResource:resource usingMethod:requestMethod] autorelease];
+    return [[KCSRESTRequest alloc] initWithResource:resource usingMethod:requestMethod];
 }
 
 - (id)syncRequest
@@ -232,11 +217,11 @@ getLogDate(void)
 
     
     if (self.isSyncRequest){
-        connection = [[KCSConnectionPool syncConnection] retain];
+        connection = [KCSConnectionPool syncConnection];
     } else if (self.isMockRequest) {
-        connection = [[KCSConnectionPool connectionWithConnectionType:self.mockConnection] retain];
+        connection = [KCSConnectionPool connectionWithConnectionType:self.mockConnection];
     } else {
-        connection = [[KCSConnectionPool asyncConnection] retain];
+        connection = [KCSConnectionPool asyncConnection];
     }
     
     [self.request  setHTTPMethod: [self getHTTPMethodForConstant: self.method]];
@@ -281,7 +266,6 @@ getLogDate(void)
                 [self performSelector:@selector(start) withObject:nil afterDelay:KCS_RETRY_DELAY];
                 // This iteration is done.
             }
-            [connection release];
             return;
         }
         [self.request setValue:authString forHTTPHeaderField:@"Authorization"];
@@ -295,7 +279,6 @@ getLogDate(void)
     
     [connection performRequest:self.request progressBlock:self.progressAction completionBlock:self.completionAction failureBlock:self.failureAction usingCredentials:nil];    
      
-    [connection release];
 }
 
 @end

@@ -28,7 +28,7 @@ KCSConnectionProgressBlock   makeCollectionProgressBlock(KCSCollection *collecti
 
 KCSConnectionCompletionBlock makeCollectionCompletionBlock(KCSCollection *collection, id<KCSCollectionDelegate>delegate)
 {
-    return [[^(KCSConnectionResponse *response){
+    return [^(KCSConnectionResponse *response){
         
         KCSLogTrace(@"In collection callback with response: %@", response);
         NSMutableArray *processedData = [[NSMutableArray alloc] init];
@@ -41,7 +41,6 @@ KCSConnectionCompletionBlock makeCollectionCompletionBlock(KCSCollection *collec
 #else  
         KCS_SBJsonParser *parser = [[KCS_SBJsonParser alloc] init];
         NSObject *jsonData = [parser objectWithData:response.responseData];
-        [parser release];
 #endif        
         NSArray *jsonArray;
         if (response.responseCode != KCS_HTTP_STATUS_OK){
@@ -55,7 +54,6 @@ KCSConnectionCompletionBlock makeCollectionCompletionBlock(KCSCollection *collec
             
             [delegate collection:collection didFailWithError:error];
 
-            [processedData release];
             return;
         }
         
@@ -73,23 +71,22 @@ KCSConnectionCompletionBlock makeCollectionCompletionBlock(KCSCollection *collec
             [processedData addObject:[KCSObjectMapper makeObjectOfType:collection.objectTemplate withData:dict]];
         }
         [delegate collection:collection didCompleteWithResult:processedData];
-        [processedData release];
-    } copy] autorelease];
+    } copy];
 }
 
 KCSConnectionFailureBlock    makeCollectionFailureBlock(KCSCollection *collection, id<KCSCollectionDelegate>delegate)
 {
-    return [[^(NSError *error){
+    return [^(NSError *error){
         [delegate collection:collection didFailWithError:error];
-    } copy] autorelease];
+    } copy];
 }
 KCSConnectionProgressBlock   makeCollectionProgressBlock(KCSCollection *collection, id<KCSCollectionDelegate>delegate)
 {
     
-    return [[^(KCSConnectionProgress *conn)
+    return [^(KCSConnectionProgress *conn)
     {
         // Do nothing...
-    } copy] autorelease];
+    } copy];
     
 }
 
@@ -120,10 +117,10 @@ KCSConnectionProgressBlock   makeCollectionProgressBlock(KCSCollection *collecti
     self = [super init];
     
     if (self){
-        _collectionName = [name retain];
+        _collectionName = name;
         _objectTemplate = theClass;
         _lastFetchResults = nil;
-        _baseURL = [[[KCSClient sharedClient] appdataBaseURL] retain]; // Initialize this to the default appdata URL
+        _baseURL = [[KCSClient sharedClient] appdataBaseURL]; // Initialize this to the default appdata URL
         _filters = [[NSMutableArray alloc] init];
         _query = nil;
     }
@@ -137,15 +134,6 @@ KCSConnectionProgressBlock   makeCollectionProgressBlock(KCSCollection *collecti
     return [self initWithName:nil forTemplateClass:[NSObject class]];
 }
 
-- (void)dealloc
-{
-    [_filters release];
-    [_lastFetchResults release];
-    [_collectionName release];
-    [_baseURL release];
-    [_query release];
-    [super dealloc];
-}
 
 // Override isEqual method to allow comparing of Collections
 // A collection is equal if the name, object template and filter are the same
@@ -176,7 +164,7 @@ KCSConnectionProgressBlock   makeCollectionProgressBlock(KCSCollection *collecti
 
 + (KCSCollection *)collectionFromString: (NSString *)string ofClass: (Class)templateClass
 {
-    KCSCollection *collection = [[[KCSCollection alloc] initWithName:string forTemplateClass:templateClass] autorelease];
+    KCSCollection *collection = [[KCSCollection alloc] initWithName:string forTemplateClass:templateClass];
     return collection;
 }
 
@@ -374,7 +362,6 @@ KCSConnectionProgressBlock   makeCollectionProgressBlock(KCSCollection *collecti
     KCSConnectionCompletionBlock cBlock = ^(KCSConnectionResponse *response){
         KCS_SBJsonParser *parser = [[KCS_SBJsonParser alloc] init];
         NSDictionary *jsonResponse = [parser objectWithData:response.responseData];
-        [parser release];
 #if 0
         // Needs KCS update for this feature
         NSDictionary *responseToReturn = [jsonResponse valueForKey:@"result"];

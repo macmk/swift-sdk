@@ -15,7 +15,7 @@
 
 @interface KCSPush()
 - (void)initializeUrbanAirshipWithOptions: (NSDictionary *)options;
-@property (nonatomic, retain, readwrite) NSData  *deviceToken;
+@property (nonatomic, readwrite) NSData  *deviceToken;
 
 @end
 
@@ -31,10 +31,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [_deviceToken release];
-    [super dealloc];
-}
 
 #pragma mark UA Init
 + (KCSPush *)sharedPush
@@ -77,8 +73,8 @@
     // Set up the UA stuff
     //Init Airship launch options
     
-    NSMutableDictionary *airshipConfigOptions = [[[NSMutableDictionary alloc] init] autorelease];
-    NSMutableDictionary *takeOffOptions = [[[NSMutableDictionary alloc] init] autorelease];
+    NSMutableDictionary *airshipConfigOptions = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *takeOffOptions = [[NSMutableDictionary alloc] init];
     
     
     if ([[options valueForKey:KCS_PUSH_MODE_KEY] isEqualToString:KCS_PUSH_DEBUG]){

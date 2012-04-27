@@ -33,8 +33,8 @@ typedef BOOL(^KCSEntityFailureAction)(id, NSError *);
 @property (nonatomic, copy) KCSUserFailureAction onFailure;
 @property (nonatomic, copy) KCSEntitySuccessAction onEntitySuccess;
 @property (nonatomic, copy) KCSEntityFailureAction onEntityFailure;
-@property (nonatomic, retain) KCS_SBJsonParser *parser;
-@property (nonatomic, retain) KCS_SBJsonWriter *writer;
+@property (nonatomic) KCS_SBJsonParser *parser;
+@property (nonatomic) KCS_SBJsonWriter *writer;
 
 @end
 
@@ -57,8 +57,8 @@ typedef BOOL(^KCSEntityFailureAction)(id, NSError *);
     [KCSClient configureLoggingWithNetworkEnabled:YES debugEnabled:YES traceEnabled:YES warningEnabled:YES errorEnabled:YES];
     [[[KCSClient sharedClient] currentUser] logout];
     
-    _parser = [[[KCS_SBJsonParser alloc] init] retain];
-    _writer = [[[KCS_SBJsonWriter alloc] init] retain];
+    _parser = [[KCS_SBJsonParser alloc] init];
+    _writer = [[KCS_SBJsonWriter alloc] init];
 }
 
 

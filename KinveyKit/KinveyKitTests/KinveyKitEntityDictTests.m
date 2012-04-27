@@ -16,7 +16,7 @@
     KCSEntityDict *d = [[KCSEntityDict alloc] init];
     [d setValue:@"test" forProperty:@"test"];
     // CHEAT
-    NSString *str = [[d entityProperties] objectForKey:@"test"];
+    NSString *str = [[d performSelector:@selector(entityProperties)] objectForKey:@"test"];
     assertThat(str, is(equalTo(@"test")));
     
     
@@ -25,35 +25,35 @@
     
     [d setValue:[NSNull null] forProperty:@"nilTest"];
     // CHEAT
-    NSNull *n = [[d entityProperties] objectForKey:@"nilTest"];
+    NSNull *n = [[d performSelector:@selector(entityProperties)] objectForKey:@"nilTest"];
     assertThat(n, is(equalTo([NSNull null])));
     
     // Number
     NSNumber *tn = [NSNumber numberWithDouble:3.14159];
     [d setValue:tn forProperty:@"test"];
     // CHEAT
-    NSNumber *nmb = [[d entityProperties] objectForKey:@"test"];
+    NSNumber *nmb = [[d performSelector:@selector(entityProperties)] objectForKey:@"test"];
     assertThat(nmb, is(equalTo(tn)));
     
     // Bool
     tn = [NSNumber numberWithBool:YES];
     [d setValue:tn forProperty:@"test"];
     // CHEAT
-    nmb = [[d entityProperties] objectForKey:@"test"];
+    nmb = [[d performSelector:@selector(entityProperties)] objectForKey:@"test"];
     assertThat(nmb, is(equalTo(tn)));
 
     // Array
     NSArray *t = [NSArray arrayWithObjects:@"one", @"two", @"three", nil];
     [d setValue:t forProperty:@"test"];
     // CHEAT
-    NSArray *array = [[d entityProperties] objectForKey:@"test"];
+    NSArray *array = [[d performSelector:@selector(entityProperties)] objectForKey:@"test"];
     assertThat(array, is(equalTo(t)));
 
     // Dict
     NSDictionary *td = [NSDictionary dictionaryWithObjectsAndKeys:@"1", @"one", @"2", @"two", nil];
     [d setValue:td forProperty:@"test"];
     // CHEAT
-    NSDictionary *dict = [[d entityProperties] objectForKey:@"test"];
+    NSDictionary *dict = [[d performSelector:@selector(entityProperties)] objectForKey:@"test"];
     assertThat(dict, is(equalTo(td)));
     
 }

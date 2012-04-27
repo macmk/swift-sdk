@@ -24,8 +24,8 @@
 
 
 @interface KCSUser()
-@property (nonatomic, retain) NSString *userId;
-@property (nonatomic, retain) NSMutableDictionary *userAttributes;
+@property (nonatomic) NSString *userId;
+@property (nonatomic) NSMutableDictionary *userAttributes;
 
 + (void)registerUserWithUsername: (NSString *)uname withPassword: (NSString *)password withDelegate: (id<KCSUserActionDelegate>)delegate forceNew: (BOOL)forceNew;
 @end
@@ -43,24 +43,15 @@
 {
     self = [super init];
     if (self){
-        _username = [[NSString string] retain];
-        _password = [[NSString string] retain];
-        _userId = [[NSString string] retain];
-        _userAttributes = [[NSMutableDictionary dictionary] retain];
+        _username = [NSString string];
+        _password = [NSString string];
+        _userId = [NSString string];
+        _userAttributes = [NSMutableDictionary dictionary];
         _deviceTokens = nil;
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [_username release];
-    [_password release];
-    [_userId release];
-    [_userAttributes release];
-    [_deviceTokens release];
-    [super dealloc];
-}
 
 + (void)registerUserWithUsername:(NSString *)uname withPassword:(NSString *)password withDelegate:(id<KCSUserActionDelegate>)delegate forceNew:(BOOL)forceNew
 {
@@ -121,7 +112,7 @@
         [KCSKeyChain removeStringForKey: @"password"];
     }
     
-    __block KCSUser *createdUser = [[KCSUser alloc] init];
+    KCSUser *createdUser = [[KCSUser alloc] init];
     
     createdUser.username = [KCSKeyChain getStringForKey:@"username"];
     
@@ -158,7 +149,7 @@
         [userRequest setContentType:KCS_JSON_TYPE];
         KCS_SBJsonWriter *writer = [[KCS_SBJsonWriter alloc] init];
         [userRequest addBody:[writer dataWithObject:userData]];
-        [writer release];
+        ;
         
         // Set up our callbacks
         KCSConnectionCompletionBlock cBlock = ^(KCSConnectionResponse *response){
@@ -178,7 +169,7 @@
                 
                 // Execution is expected to terminate, but if it does not, make sure that parser is freed
                 NSDictionary *errorDict = [NSDictionary dictionaryWithObject:[[parser objectWithData:response.responseData] JSONRepresentation] forKey:@"error"];
-                [parser release];
+                ;
                 
                 NSDictionary *userInfo = [KCSErrorUtilities createErrorUserDictionaryWithDescription:@"Unable to create user."
                                                                                    withFailureReason:[errorDict description]
@@ -190,7 +181,7 @@
                                                                               code:KCSUnexpectedError
                                                                           userInfo:userInfo]];
                 // This must be released in all paths
-                [createdUser release];
+                ;
                 return;
             }
             
@@ -218,9 +209,9 @@
             [delegate user:createdUser actionDidCompleteWithResult:KCSUserCreated];
 
             // This must be released in all paths
-            [createdUser release];
+            ;
 
-            [parser release];
+            ;
         };
         
         KCSConnectionFailureBlock fBlock = ^(NSError *error){
@@ -244,7 +235,7 @@
                                                                       userInfo:userInfo]];
 
             // This must be released in all paths
-            [createdUser release];
+            ;
             return;
         };
         
@@ -265,7 +256,7 @@
         [delegate user:createdUser actionDidCompleteWithResult:KCSUserFound];
 
         // This must be released in all paths
-        [createdUser release];
+        ;
 
     }
 
@@ -335,8 +326,6 @@
                 NSError *error = [NSError errorWithDomain:KCSUserErrorDomain code:KCSLoginFailureError userInfo:userInfo];
                 // Delegate must retain createdUser
                 [delegate user:createdUser actionDidFailWithError:error];
-                [createdUser release];
-                [parser release];
                 return;
             }
             
@@ -379,8 +368,6 @@
             [delegate user:createdUser actionDidCompleteWithResult:KCSUserFound];
             
             // Clean up
-            [createdUser release];
-            [parser release];
         };
         
         KCSConnectionFailureBlock fBlock = ^(NSError *error){
@@ -403,7 +390,7 @@
         client.userAuthenticationInProgress = YES;
 
         // Create a temp user with uname/password and use it it init currentUser
-        KCSUser *tmpCurrentUser = [[[KCSUser alloc] init] autorelease];
+        KCSUser *tmpCurrentUser = [[KCSUser alloc] init];
         tmpCurrentUser.username = username;
         tmpCurrentUser.password = password;
         client.currentUser = tmpCurrentUser;
@@ -550,9 +537,9 @@
     static NSDictionary *options = nil;
     
     if (options == nil){
-        options = [[NSDictionary dictionaryWithObjectsAndKeys:
+        options = [NSDictionary dictionaryWithObjectsAndKeys:
                     [NSNumber numberWithBool:YES], KCS_USE_DICTIONARY_KEY,
-                    @"userAttributes", KCS_DICTIONARY_NAME_KEY, nil] retain];
+                    @"userAttributes", KCS_DICTIONARY_NAME_KEY, nil];
     }
     
     return options;
@@ -563,11 +550,11 @@
     static NSDictionary *mappedDict = nil;
     
     if (mappedDict == nil){
-        mappedDict = [[NSDictionary dictionaryWithObjectsAndKeys:
+        mappedDict = [NSDictionary dictionaryWithObjectsAndKeys:
                       @"_id", @"userId",
                       @"_deviceTokens", @"deviceTokens",
                       @"username", @"username",
-                      @"password", @"password", nil] retain];
+                      @"password", @"password", nil];
     }
     
     return mappedDict;

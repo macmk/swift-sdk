@@ -92,16 +92,16 @@
 ///---------------------------------------------------------------------------------------
 
 /*! String representation of the name of the Kinvey Collection. */
-@property (retain) NSString *collectionName;
+@property  NSString *collectionName;
 
 /*! An instance of an object stored by this collection */
-@property (retain) Class objectTemplate;
+@property  Class objectTemplate;
 
 /*! A cached copy of the last results from Kinvey (handy if you forget to copy them in your delegate) */
-@property (retain) NSArray *lastFetchResults;
+@property  NSArray *lastFetchResults;
 
 /*! The Endpoint where we look for a request */
-@property (nonatomic, retain) NSString *baseURL;
+@property (nonatomic) NSString *baseURL;
 
 
 
@@ -147,11 +147,11 @@
 
 /*! The current query for this collection.  Overwrite to assign new query.
     NOTE: if query is `nil` and fetchWithDelegate: is called, an error status will be returned. */
-@property (nonatomic, retain) KCSQuery *query;
+@property (nonatomic) KCSQuery *query;
 
 
 /*! A collection of filters that will be applied when using fetch (Depricated as of version 1.2)*/
-@property (retain) NSMutableArray *filters;
+@property  NSMutableArray *filters;
 
 /*! Add a BOOL filter to the current filter set (Depricated as of version 1.2)
  

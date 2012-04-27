@@ -306,11 +306,10 @@ NSString *KCSbase64EncodedStringFromData(NSData *data)
     KCSNewBase64Encode([data bytes], [data length], true, &outputLength);
 	
 	NSString *result =
-    [[[NSString alloc]
+    [[NSString alloc]
       initWithBytes:outputBuffer
       length:outputLength
-      encoding:NSUTF8StringEncoding]
-     autorelease];
+      encoding:NSUTF8StringEncoding];
 	free(outputBuffer);
 	return result;
 }

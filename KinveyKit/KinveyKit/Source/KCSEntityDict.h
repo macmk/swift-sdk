@@ -22,7 +22,7 @@
 @interface KCSEntityDict : NSObject <KCSPersistable>
 
 /*! The ObjectID for this dictionary, if the objectID is not set when saving to a collection one will be generated. */
-@property (nonatomic, retain) NSString *objectId;
+@property (nonatomic) NSString *objectId;
 
 
 /*! Return the value for an attribute for this user

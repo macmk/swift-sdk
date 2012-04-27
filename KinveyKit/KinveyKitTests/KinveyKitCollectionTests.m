@@ -24,8 +24,8 @@ typedef BOOL(^FailureAction)(NSError *);
 typedef BOOL(^InfoSuccessAction)(int);
 
 @interface SimpleClass : NSObject <KCSPersistable>
-@property (nonatomic, retain) NSArray *items;
-@property (nonatomic, retain) NSString *kinveyID;
+@property (nonatomic) NSArray *items;
+@property (nonatomic) NSString *kinveyID;
 @end
 
 @implementation SimpleClass
@@ -42,18 +42,18 @@ typedef BOOL(^InfoSuccessAction)(int);
 
 @interface KinveyKitCollectionTests ()
 @property (nonatomic) BOOL testPassed;
-@property (retain, nonatomic) NSString *testID;
-@property (retain, nonatomic) SuccessAction onSuccess;
-@property (retain, nonatomic) FailureAction onFailure;
-@property (retain, nonatomic) InfoSuccessAction onInfoSuccess;
-@property (retain, nonatomic) NSString *message;
+@property (nonatomic) NSString *testID;
+@property (nonatomic, copy) SuccessAction onSuccess;
+@property (nonatomic, copy) FailureAction onFailure;
+@property (nonatomic, copy) InfoSuccessAction onInfoSuccess;
+@property (nonatomic) NSString *message;
 
-@property (retain, nonatomic) NSArray *completeDataSet;
-@property (retain, nonatomic) NSDictionary *allTypes;
-@property (retain, nonatomic) NSDictionary *nesting;
+@property (nonatomic) NSArray *completeDataSet;
+@property (nonatomic) NSDictionary *allTypes;
+@property (nonatomic) NSDictionary *nesting;
 
-@property (retain, nonatomic) KCS_SBJsonParser *parser;
-@property (retain, nonatomic) KCS_SBJsonWriter *writer;
+@property (nonatomic) KCS_SBJsonParser *parser;
+@property (nonatomic) KCS_SBJsonWriter *writer;
 
 @end
 
@@ -116,8 +116,8 @@ typedef BOOL(^InfoSuccessAction)(int);
     
     _completeDataSet = [NSArray arrayWithObjects:_allTypes, _nesting, nil];
                  
-    _writer = [[[KCS_SBJsonWriter alloc] init] retain];
-    _parser = [[[KCS_SBJsonParser alloc] init] retain];
+    _writer = [[KCS_SBJsonWriter alloc] init];
+    _parser = [[KCS_SBJsonParser alloc] init];
 }
 
 - (void)tearDown
@@ -175,7 +175,6 @@ typedef BOOL(^InfoSuccessAction)(int);
     [[[KCSClient sharedClient] collectionFromString:@"testCollection" withClass:[SimpleClass class]] fetchAllWithDelegate:self];
 
     STAssertTrue(self.testPassed, self.message);
-    [conn release];
 }
 
 - (void)testFetchEmptyCollectionReturns0SizedArray
@@ -208,7 +207,6 @@ typedef BOOL(^InfoSuccessAction)(int);
     
     
     STAssertTrue(self.testPassed, self.message);
-    [conn release];
 
 }
 
@@ -316,7 +314,6 @@ typedef BOOL(^InfoSuccessAction)(int);
     self.testPassed = NO;
     // END FRACTION
 
-    [conn release];
 }
 
 

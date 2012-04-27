@@ -18,7 +18,6 @@
     NSString *URLString = [[NSString alloc] initWithFormat:@"%@%@%@", [self absoluteString],
                            [self query] ? @"&" : @"?", queryString];
     NSURL *theURL = [NSURL URLWithString:URLString];
-    [URLString release];
     return theURL;
 }
 
@@ -32,7 +31,6 @@
                                             kCFStringEncodingUTF8);
 
     NSURL *returnedURL = [NSURL URLWithString:encodedString];
-    [encodedString release];
     
     return returnedURL;
 }

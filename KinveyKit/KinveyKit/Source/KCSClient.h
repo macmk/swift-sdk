@@ -58,7 +58,7 @@
 @property (nonatomic, copy, readonly) NSString *appSecret;
 
 /*! Configuration options, set via @see initializeKinveyServiceForAppKey:withAppSecret:usingOptions */
-@property (nonatomic, retain, readonly) NSDictionary *options;
+@property (weak, nonatomic, readonly) NSDictionary *options;
 
 ///---------------------------------------------------------------------------------------
 /// @name Library Information
@@ -93,10 +93,10 @@
 
 #if TARGET_OS_IPHONE
 /*! Overall Network Status Reachability Object */
-@property (nonatomic, retain, readonly) KCSReachability *networkReachability;
+@property (weak, nonatomic, readonly) KCSReachability *networkReachability;
 
 /*! Kinvey Host Specific Reachability Object */
-@property (nonatomic, retain, readonly) KCSReachability *kinveyReachability;
+@property (weak, nonatomic, readonly) KCSReachability *kinveyReachability;
 #endif
 
 
@@ -105,7 +105,7 @@
 /// @name User Authentication
 ///---------------------------------------------------------------------------------------
 /*! Current Kinvey User */
-@property (nonatomic, retain) KCSUser *currentUser;
+@property (weak, nonatomic) KCSUser *currentUser;
 /*! Has the current user been authenticated?  (NOTE: Thread Safe) */
 @property (nonatomic) BOOL userIsAuthenticated;
 /*! Is user authentication in progress?  (NOTE: Thread Safe, can be used to spin for completion) */
@@ -127,7 +127,7 @@
 /// @name Data Type Support
 ///---------------------------------------------------------------------------------------
 /*! NSDateFormatter String for Date storage */
-@property (nonatomic, readonly) NSString *dateStorageFormatString;
+@property (weak, nonatomic, readonly) NSString *dateStorageFormatString;
 
 
 

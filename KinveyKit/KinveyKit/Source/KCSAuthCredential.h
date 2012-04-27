@@ -10,7 +10,7 @@
 
 @interface KCSAuthCredential : NSObject
 
-@property (nonatomic, retain) NSString *URL;
+@property (nonatomic) NSString *URL;
 @property (nonatomic) NSInteger method;
 
 - (id)initWithURL: (NSString *)URL withMethod: (NSInteger)method;
