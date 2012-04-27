@@ -32,12 +32,11 @@
 #import <Foundation/Foundation.h>
 
 
-@interface KCS_SBJsonUTF8Stream : NSObject {
+@interface SBJsonUTF8Stream : NSObject {
 @private
     const char *_bytes;
     NSMutableData *_data;
     NSUInteger _length;
-    NSUInteger _index;
 }
 
 @property (assign) NSUInteger index;
@@ -52,7 +51,7 @@
 
 - (BOOL)getUnichar:(unichar*)ch;
 - (BOOL)getNextUnichar:(unichar*)ch;
-- (BOOL)getRetainedStringFragment:(NSString**)string;
+- (BOOL)getStringFragment:(NSString**)string;
 
 - (NSString*)stringWithRange:(NSRange)range;
 

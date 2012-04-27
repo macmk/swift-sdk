@@ -33,7 +33,7 @@
 #import <Foundation/Foundation.h>
 
 /// Enable JSON writing for non-native objects
-@interface NSObject (KCS_SBProxyForJson)
+@interface NSObject (SBProxyForJson)
 
 /**
  @brief Allows generation of JSON for otherwise unsupported classes.
@@ -58,15 +58,15 @@
 
 @end
 
-@class KCS_SBJsonStreamWriter;
+@class SBJsonStreamWriter;
 
-@protocol KCS_SBJsonStreamWriterDelegate
+@protocol SBJsonStreamWriterDelegate
 
-- (void)writer:(KCS_SBJsonStreamWriter*)writer appendBytes:(const void *)bytes length:(NSUInteger)length;
+- (void)writer:(SBJsonStreamWriter*)writer appendBytes:(const void *)bytes length:(NSUInteger)length;
 
 @end
 
-@class KCS_SBJsonStreamWriterState;
+@class SBJsonStreamWriterState;
 
 /**
  @brief The Stream Writer class.
@@ -82,24 +82,18 @@
 
  */
 
-@interface KCS_SBJsonStreamWriter : NSObject {
-@private
-	NSString *error;
-    NSMutableArray *stateStack;
-    __weak KCS_SBJsonStreamWriterState *state;
-    id<KCS_SBJsonStreamWriterDelegate> delegate;
-	NSUInteger maxDepth;
-    BOOL sortKeys, humanReadable;
+@interface SBJsonStreamWriter : NSObject {
+    NSMutableDictionary *cache;
 }
 
-@property (nonatomic, assign) __weak KCS_SBJsonStreamWriterState *state; // Internal
-@property (nonatomic, readonly, retain) NSMutableArray *stateStack; // Internal 
+@property (nonatomic, unsafe_unretained) SBJsonStreamWriterState *state; // Internal
+@property (nonatomic, readonly, strong) NSMutableArray *stateStack; // Internal 
 
 /**
  @brief delegate to receive JSON output
  Delegate that will receive messages with output.
  */
-@property (assign) id<KCS_SBJsonStreamWriterDelegate> delegate;
+@property (unsafe_unretained) id<SBJsonStreamWriterDelegate> delegate;
 
 /**
  @brief The maximum recursing depth.
@@ -127,6 +121,13 @@
  (This is useful if you need to compare two structures, for example.) The default is NO.
  */
 @property BOOL sortKeys;
+
+/**
+ @brief An optional comparator to be used if sortKeys is YES.
+ 
+ If this is nil, sorting will be done via @selector(compare:).
+ */
+@property (copy) NSComparator sortKeysComparator;
 
 /// Contains the error description after an error has occured.
 @property (copy) NSString *error;
@@ -180,11 +181,6 @@
 */
 - (BOOL)writeNumber:(NSNumber*)n;
 
-/** Write a Date to the stream
- @return YES if successful, or NO on failure
-*/
-- (BOOL)writeDate:(NSDate*)n;
-
 /** Write a String to the stream
  @return YES if successful, or NO on failure
 */
@@ -192,7 +188,7 @@
 
 @end
 
-@interface KCS_SBJsonStreamWriter (Private)
+@interface SBJsonStreamWriter (Private)
 - (BOOL)writeValue:(id)v;
 - (void)appendBytes:(const void *)bytes length:(NSUInteger)length;
 @end

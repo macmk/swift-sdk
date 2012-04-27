@@ -27,12 +27,12 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "KCS_SBJsonParser.h"
-#import "KCS_SBJsonStreamParser.h"
-#import "KCS_SBJsonStreamParserAdapter.h"
-#import "KCS_SBJsonStreamParserAccumulator.h"
+#import "SBJsonParser.h"
+#import "SBJsonStreamParser.h"
+#import "SBJsonStreamParserAdapter.h"
+#import "SBJsonStreamParserAccumulator.h"
 
-@implementation KCS_SBJsonParser
+@implementation SBJsonParser
 
 @synthesize maxDepth;
 @synthesize error;
@@ -44,10 +44,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [error release];
-    [super dealloc];
-}
 
 #pragma mark Methods
 
@@ -58,25 +54,25 @@
         return nil;
     }
 
-	KCS_SBJsonStreamParserAccumulator *accumulator = [[[KCS_SBJsonStreamParserAccumulator alloc] init] autorelease];
+	SBJsonStreamParserAccumulator *accumulator = [[SBJsonStreamParserAccumulator alloc] init];
     
-    KCS_SBJsonStreamParserAdapter *adapter = [[[KCS_SBJsonStreamParserAdapter alloc] init] autorelease];
+    SBJsonStreamParserAdapter *adapter = [[SBJsonStreamParserAdapter alloc] init];
     adapter.delegate = accumulator;
 	
-	KCS_SBJsonStreamParser *parser = [[[KCS_SBJsonStreamParser alloc] init] autorelease];
+	SBJsonStreamParser *parser = [[SBJsonStreamParser alloc] init];
 	parser.maxDepth = self.maxDepth;
 	parser.delegate = adapter;
 	
 	switch ([parser parse:data]) {
-		case KCS_SBJsonStreamParserComplete:
+		case SBJsonStreamParserComplete:
             return accumulator.value;
 			break;
 			
-		case KCS_SBJsonStreamParserWaitingForData:
+		case SBJsonStreamParserWaitingForData:
 		    self.error = @"Unexpected end of input";
 			break;
 
-		case KCS_SBJsonStreamParserError:
+		case SBJsonStreamParserError:
 		    self.error = parser.error;
 			break;
 	}

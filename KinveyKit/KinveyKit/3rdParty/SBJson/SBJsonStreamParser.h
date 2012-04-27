@@ -32,15 +32,15 @@
 
 #import <Foundation/Foundation.h>
 
-@class KCS_SBJsonTokeniser;
-@class KCS_SBJsonStreamParser;
-@class KCS_SBJsonStreamParserState;
+@class SBJsonTokeniser;
+@class SBJsonStreamParser;
+@class SBJsonStreamParserState;
 
 typedef enum {
-	KCS_SBJsonStreamParserComplete,
-	KCS_SBJsonStreamParserWaitingForData,
-	KCS_SBJsonStreamParserError,
-} KCS_SBJsonStreamParserStatus;
+	SBJsonStreamParserComplete,
+	SBJsonStreamParserWaitingForData,
+	SBJsonStreamParserError,
+} SBJsonStreamParserStatus;
 
 
 /**
@@ -49,35 +49,34 @@ typedef enum {
  You will most likely find it much more convenient to implement the
  SBJsonStreamParserAdapterDelegate protocol instead.
  */
-@protocol KCS_SBJsonStreamParserDelegate
+@protocol SBJsonStreamParserDelegate
 
 /// Called when object start is found
-- (void)parserFoundObjectStart:(KCS_SBJsonStreamParser*)parser;
+- (void)parserFoundObjectStart:(SBJsonStreamParser*)parser;
 
 /// Called when object key is found
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundObjectKey:(NSString*)key;
+- (void)parser:(SBJsonStreamParser*)parser foundObjectKey:(NSString*)key;
 
 /// Called when object end is found
-- (void)parserFoundObjectEnd:(KCS_SBJsonStreamParser*)parser;
+- (void)parserFoundObjectEnd:(SBJsonStreamParser*)parser;
 
 /// Called when array start is found
-- (void)parserFoundArrayStart:(KCS_SBJsonStreamParser*)parser;
+- (void)parserFoundArrayStart:(SBJsonStreamParser*)parser;
 
 /// Called when array end is found
-- (void)parserFoundArrayEnd:(KCS_SBJsonStreamParser*)parser;
+- (void)parserFoundArrayEnd:(SBJsonStreamParser*)parser;
 
 /// Called when a boolean value is found
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundBoolean:(BOOL)x;
+- (void)parser:(SBJsonStreamParser*)parser foundBoolean:(BOOL)x;
 
 /// Called when a null value is found
-- (void)parserFoundNull:(KCS_SBJsonStreamParser*)parser;
+- (void)parserFoundNull:(SBJsonStreamParser*)parser;
 
 /// Called when a number is found
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundNumber:(NSNumber*)num;
+- (void)parser:(SBJsonStreamParser*)parser foundNumber:(NSNumber*)num;
 
 /// Called when a string is found
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundString:(NSString*)string;
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundDate:(NSDate*)date;
+- (void)parser:(SBJsonStreamParser*)parser foundString:(NSString*)string;
 
 @end
 
@@ -98,19 +97,13 @@ typedef enum {
  @see @ref objc2json
  
  */
-@interface KCS_SBJsonStreamParser : NSObject {
+@interface SBJsonStreamParser : NSObject {
 @private
-	BOOL supportMultipleDocuments;
-	id<KCS_SBJsonStreamParserDelegate> delegate;
-	KCS_SBJsonTokeniser *tokeniser;
-    NSMutableArray *stateStack;
-	__weak KCS_SBJsonStreamParserState *state;
-	NSUInteger maxDepth;
-	NSString *error;
+	SBJsonTokeniser *tokeniser;
 }
 
-@property (nonatomic, assign) __weak KCS_SBJsonStreamParserState *state; // Private
-@property (nonatomic, readonly, retain) NSMutableArray *stateStack; // Private
+@property (nonatomic, unsafe_unretained) SBJsonStreamParserState *state; // Private
+@property (nonatomic, readonly, strong) NSMutableArray *stateStack; // Private
 
 /**
  @brief Expect multiple documents separated by whitespace
@@ -136,7 +129,7 @@ typedef enum {
  Usually this should be an instance of SBJsonStreamParserAdapter, but you can
  substitute your own implementation of the SBJsonStreamParserDelegate protocol if you need to. 
  */
-@property (assign) id<KCS_SBJsonStreamParserDelegate> delegate;
+@property (unsafe_unretained) id<SBJsonStreamParserDelegate> delegate;
 
 /**
  @brief The max parse depth
@@ -163,6 +156,6 @@ typedef enum {
  @li SBJsonStreamParserError if an error occured. (See the error property for details in this case.)
  
  */
-- (KCS_SBJsonStreamParserStatus)parse:(NSData*)data;
+- (SBJsonStreamParserStatus)parse:(NSData*)data;
 
 @end

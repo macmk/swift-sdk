@@ -30,15 +30,17 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "KCS_SBJsonStreamWriter.h"
-#import "KCS_SBJsonStreamWriterState.h"
-#import "NSDate+ISO8601.h"
+#import "SBJsonStreamWriter.h"
+#import "SBJsonStreamWriterState.h"
 
-static NSDecimalNumber *kNotANumber;
-static id kStaticStringCache;
+static NSNumber *kNotANumber;
+static NSNumber *kTrue;
+static NSNumber *kFalse;
+static NSNumber *kPositiveInfinity;
+static NSNumber *kNegativeInfinity;
 
 
-@implementation KCS_SBJsonStreamWriter
+@implementation SBJsonStreamWriter
 
 @synthesize error;
 @synthesize maxDepth;
@@ -46,19 +48,14 @@ static id kStaticStringCache;
 @synthesize stateStack;
 @synthesize humanReadable;
 @synthesize sortKeys;
+@synthesize sortKeysComparator;
 
 + (void)initialize {
 	kNotANumber = [NSDecimalNumber notANumber];
-    
-    Class cacheClass = NSClassFromString(@"NSCache");
-    if (cacheClass) {
-        NSLog(@"%s NSCache supported", __FUNCTION__);
-        kStaticStringCache = [[cacheClass alloc] init];
-    }else {
-        NSLog(@"%s NSCache not supported", __FUNCTION__);
-    }
-
-    
+    kPositiveInfinity = [NSNumber numberWithDouble:+INFINITY];
+    kNegativeInfinity = [NSNumber numberWithDouble:-INFINITY];
+    kTrue = [NSNumber numberWithBool:YES];
+    kFalse = [NSNumber numberWithBool:NO];
 }
 
 #pragma mark Housekeeping
@@ -70,16 +67,10 @@ static id kStaticStringCache;
 	if (self) {
 		maxDepth = 32u;
         stateStack = [[NSMutableArray alloc] initWithCapacity:maxDepth];
-        state = [KCS_SBJsonStreamWriterStateStart sharedInstance];
+        state = [SBJsonStreamWriterStateStart sharedInstance];
+        cache = [[NSMutableDictionary alloc] initWithCapacity:32];
     }
 	return self;
-}
-
-- (void)dealloc {
-	self.error = nil;
-    self.state = nil;
-    [stateStack release];
-	[super dealloc];
 }
 
 #pragma mark Methods
@@ -93,8 +84,15 @@ static id kStaticStringCache;
 		return NO;
 
 	NSArray *keys = [dict allKeys];
-	if (sortKeys)
-		keys = [keys sortedArrayUsingSelector:@selector(compare:)];
+	
+	if (sortKeys) {
+		if (sortKeysComparator) {
+			keys = [keys sortedArrayWithOptions:NSSortStable usingComparator:sortKeysComparator];
+		}
+		else{
+			keys = [keys sortedArrayUsingSelector:@selector(compare:)];
+		}
+	}
 
 	for (id k in keys) {
 		if (![k isKindOfClass:[NSString class]]) {
@@ -128,7 +126,7 @@ static id kStaticStringCache;
 	if (humanReadable && stateStack.count) [state appendWhitespace:self];
 
     [stateStack addObject:state];
-    self.state = [KCS_SBJsonStreamWriterStateObjectStart sharedInstance];
+    self.state = [SBJsonStreamWriterStateObjectStart sharedInstance];
 
 	if (maxDepth && stateStack.count > maxDepth) {
 		self.error = @"Nested too deep";
@@ -142,7 +140,7 @@ static id kStaticStringCache;
 - (BOOL)writeObjectClose {
 	if ([state isInvalidState:self]) return NO;
 
-    KCS_SBJsonStreamWriterState *prev = state;
+    SBJsonStreamWriterState *prev = state;
 
     self.state = [stateStack lastObject];
     [stateStack removeLastObject];
@@ -161,7 +159,7 @@ static id kStaticStringCache;
 	if (humanReadable && stateStack.count) [state appendWhitespace:self];
 
     [stateStack addObject:state];
-	self.state = [KCS_SBJsonStreamWriterStateArrayStart sharedInstance];
+	self.state = [SBJsonStreamWriterStateArrayStart sharedInstance];
 
 	if (maxDepth && stateStack.count > maxDepth) {
 		self.error = @"Nested too deep";
@@ -176,7 +174,7 @@ static id kStaticStringCache;
 	if ([state isInvalidState:self]) return NO;
 	if ([state expectingKey:self]) return NO;
 
-    KCS_SBJsonStreamWriterState *prev = state;
+    SBJsonStreamWriterState *prev = state;
 
     self.state = [stateStack lastObject];
     [stateStack removeLastObject];
@@ -227,9 +225,6 @@ static id kStaticStringCache;
 
 	} else if ([o isKindOfClass:[NSNumber class]]) {
 		return [self writeNumber:o];
-
-	} else if ([o isKindOfClass:[NSDate class]]) {
-		return [self writeDate:o];
 
 	} else if ([o isKindOfClass:[NSNull class]]) {
 		return [self writeNull];
@@ -289,7 +284,7 @@ static const char *strForChar(int c) {
 	[state appendSeparator:self];
 	if (humanReadable) [state appendWhitespace:self];
 
-	NSMutableData *buf = [kStaticStringCache objectForKey:string];
+	NSMutableData *buf = [cache objectForKey:string];
 	if (!buf) {
 
         NSUInteger len = [string lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
@@ -316,7 +311,7 @@ static const char *strForChar(int c) {
             [buf appendBytes:utf8 + written length:i - written];
 
         [buf appendBytes:"\"" length:1];
-        [kStaticStringCache setObject:buf forKey:string];
+        [cache setObject:buf forKey:string];
     }
 
 	[delegate writer:self appendBytes:[buf bytes] length:[buf length]];
@@ -324,60 +319,8 @@ static const char *strForChar(int c) {
 	return YES;
 }
 
-- (BOOL)writeDate:(NSDate *)x {
-//    if ([state isInvalidState:self]) return NO;
-//	[state appendSeparator:self];
-//	if (humanReadable) [state appendWhitespace:self];
-//    
-//    
-//    // Get dateStr
-//    NSString *dateStr = [NSString stringWithFormat: @"ISODate(%c%@%c)", '"', [x stringWithISO8601Encoding], '"'];
-//    
-//    // Do normal string processing
-//	NSMutableData *buf = [kStaticStringCache objectForKey:dateStr];
-//	if (!buf) {
-//        
-//        NSUInteger len = [dateStr lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
-//        const char *utf8 = [dateStr UTF8String];
-//        NSUInteger written = 0, i = 0;
-//        
-//        buf = [NSMutableData dataWithCapacity:(NSUInteger)(len * 1.1f)];
-//        // DO NOT WRAP in '"'s!
-//        //        [buf appendBytes:"\"" length:1];
-//        
-//        for (i = 0; i < len; i++) {
-//            int c = utf8[i];
-//            BOOL isControlChar = c >= 0 && c < 32;
-//            if (isControlChar || c == '"' || c == '\\') {
-//                if (i - written)
-//                    [buf appendBytes:utf8 + written length:i - written];
-//                written = i + 1;
-//                
-//                const char *t = strForChar(c);
-//                [buf appendBytes:t length:strlen(t)];
-//            }
-//        }
-//        
-//        if (i - written)
-//            [buf appendBytes:utf8 + written length:i - written];
-//        
-//        // DO NOT WRAP in '"'s!
-//        //        [buf appendBytes:"\"" length:1];
-//        [kStaticStringCache setObject:buf forKey:dateStr];
-//    }
-//    
-//	[delegate writer:self appendBytes:[buf bytes] length:[buf length]];
-//	[state transitionState:self];
-//	return YES;
-    NSString *dateStr = [NSString stringWithFormat:@"ISODate(%c%@%c)", '"', [x stringWithISO8601Encoding], '"'];
-    return [self writeString:dateStr];
-
-}
-
-
-
 - (BOOL)writeNumber:(NSNumber*)number {
-	if ((CFBooleanRef)number == kCFBooleanTrue || (CFBooleanRef)number == kCFBooleanFalse)
+	if (number == kTrue || number == kFalse)
 		return [self writeBool:[number boolValue]];
 
 	if ([state isInvalidState:self]) return NO;
@@ -385,19 +328,15 @@ static const char *strForChar(int c) {
 	[state appendSeparator:self];
 	if (humanReadable) [state appendWhitespace:self];
 
-	if ((CFNumberRef)number == kCFNumberPositiveInfinity) {
+	if ([kPositiveInfinity isEqualToNumber:number]) {
 		self.error = @"+Infinity is not a valid number in JSON";
 		return NO;
 
-	} else if ((CFNumberRef)number == kCFNumberNegativeInfinity) {
+	} else if ([kNegativeInfinity isEqualToNumber:number]) {
 		self.error = @"-Infinity is not a valid number in JSON";
 		return NO;
 
-	} else if ((CFNumberRef)number == kCFNumberNaN) {
-		self.error = @"NaN is not a valid number in JSON";
-		return NO;
-
-	} else if (number == kNotANumber) {
+	} else if ([kNotANumber isEqualToNumber:number]) {
 		self.error = @"NaN is not a valid number in JSON";
 		return NO;
 	}

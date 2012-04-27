@@ -31,20 +31,20 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "KCS_SBJsonStreamParser.h"
+#import "SBJsonStreamParser.h"
 
 typedef enum {
-	KCS_SBJsonStreamParserAdapterNone,
-	KCS_SBJsonStreamParserAdapterArray,
-	KCS_SBJsonStreamParserAdapterObject,
-} KCS_SBJsonStreamParserAdapterType;
+	SBJsonStreamParserAdapterNone,
+	SBJsonStreamParserAdapterArray,
+	SBJsonStreamParserAdapterObject,
+} SBJsonStreamParserAdapterType;
 
 /**
  @brief Delegate for getting objects & arrays from the stream parser adapter
  
  @see The TweetStream example project.
  */
-@protocol KCS_SBJsonStreamParserAdapterDelegate
+@protocol SBJsonStreamParserAdapterDelegate
 
 /**
  @brief Called if a JSON array is found
@@ -52,14 +52,14 @@ typedef enum {
  This method is called if a JSON array is found.
  
  */
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundArray:(NSArray*)array;
+- (void)parser:(SBJsonStreamParser*)parser foundArray:(NSArray*)array;
 
 /**
  @brief Called when a JSON object is found
 
  This method is called if a JSON object is found.
  */
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundObject:(NSDictionary*)dict;
+- (void)parser:(SBJsonStreamParser*)parser foundObject:(NSDictionary*)dict;
 
 @end
 
@@ -70,8 +70,9 @@ typedef enum {
  most likely find it much more convenient to use an instance of this class and
  implement the SBJsonStreamParserAdapterDelegate protocol instead.
  
- Normally you would only get one call from either the -parser:foundArray: or
- -parser:foundObject: method. However, if your inputs contains multiple JSON
+ The default behaviour is that the delegate only receives one call from
+ either the -parser:foundArray: or -parser:foundObject: method when the
+ document is fully parsed. However, if your inputs contains multiple JSON
  documents and you set the parser's -supportMultipleDocuments property to YES
  you will get one call for each full method.
  
@@ -115,16 +116,15 @@ typedef enum {
  @endcode
  
 */
-@interface KCS_SBJsonStreamParserAdapter : NSObject <KCS_SBJsonStreamParserDelegate> {
+@interface SBJsonStreamParserAdapter : NSObject <SBJsonStreamParserDelegate> {
 @private
-	id<KCS_SBJsonStreamParserAdapterDelegate> delegate;
-	NSUInteger levelsToSkip, depth;
-	__weak NSMutableArray *array;
-	__weak NSMutableDictionary *dict;
+	NSUInteger depth;
+    NSMutableArray *array;
+	NSMutableDictionary *dict;
 	NSMutableArray *keyStack;
 	NSMutableArray *stack;
 	
-	KCS_SBJsonStreamParserAdapterType currentType;
+	SBJsonStreamParserAdapterType currentType;
 }
 
 /**
@@ -143,6 +143,6 @@ typedef enum {
  @brief Your delegate object
  Set this to the object you want to receive the SBJsonStreamParserAdapterDelegate messages.
  */
-@property (assign) id<KCS_SBJsonStreamParserAdapterDelegate> delegate;
+@property (unsafe_unretained) id<SBJsonStreamParserAdapterDelegate> delegate;
 
 @end

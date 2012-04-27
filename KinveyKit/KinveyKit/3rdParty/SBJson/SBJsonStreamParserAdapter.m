@@ -30,18 +30,18 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "KCS_SBJsonStreamParserAdapter.h"
+#import "SBJsonStreamParserAdapter.h"
 
-@interface KCS_SBJsonStreamParserAdapter ()
+@interface SBJsonStreamParserAdapter ()
 
 - (void)pop;
-- (void)parser:(KCS_SBJsonStreamParser*)parser found:(id)obj;
+- (void)parser:(SBJsonStreamParser*)parser found:(id)obj;
 
 @end
 
 
 
-@implementation KCS_SBJsonStreamParserAdapter
+@implementation SBJsonStreamParserAdapter
 
 @synthesize delegate;
 @synthesize levelsToSkip;
@@ -54,16 +54,11 @@
 		keyStack = [[NSMutableArray alloc] initWithCapacity:32];
 		stack = [[NSMutableArray alloc] initWithCapacity:32];
 		
-		currentType = KCS_SBJsonStreamParserAdapterNone;
+		currentType = SBJsonStreamParserAdapterNone;
 	}
 	return self;
 }	
 
-- (void)dealloc {
-	[keyStack release];
-	[stack release];
-	[super dealloc];
-}
 
 #pragma mark Private methods
 
@@ -71,34 +66,34 @@
 	[stack removeLastObject];
 	array = nil;
 	dict = nil;
-	currentType = KCS_SBJsonStreamParserAdapterNone;
+	currentType = SBJsonStreamParserAdapterNone;
 	
 	id value = [stack lastObject];
 	
 	if ([value isKindOfClass:[NSArray class]]) {
 		array = value;
-		currentType = KCS_SBJsonStreamParserAdapterArray;
+		currentType = SBJsonStreamParserAdapterArray;
 	} else if ([value isKindOfClass:[NSDictionary class]]) {
 		dict = value;
-		currentType = KCS_SBJsonStreamParserAdapterObject;
+		currentType = SBJsonStreamParserAdapterObject;
 	}
 }
 
-- (void)parser:(KCS_SBJsonStreamParser*)parser found:(id)obj {
+- (void)parser:(SBJsonStreamParser*)parser found:(id)obj {
 	NSParameterAssert(obj);
 	
 	switch (currentType) {
-		case KCS_SBJsonStreamParserAdapterArray:
+		case SBJsonStreamParserAdapterArray:
 			[array addObject:obj];
 			break;
 
-		case KCS_SBJsonStreamParserAdapterObject:
+		case SBJsonStreamParserAdapterObject:
 			NSParameterAssert(keyStack.count);
 			[dict setObject:obj forKey:[keyStack lastObject]];
 			[keyStack removeLastObject];
 			break;
 			
-		case KCS_SBJsonStreamParserAdapterNone:
+		case SBJsonStreamParserAdapterNone:
 			if ([obj isKindOfClass:[NSArray class]]) {
 				[delegate parser:parser foundArray:obj];
 			} else {
@@ -114,62 +109,56 @@
 
 #pragma mark Delegate methods
 
-- (void)parserFoundObjectStart:(KCS_SBJsonStreamParser*)parser {
-	if (++depth > levelsToSkip) {
-		dict = [[NSMutableDictionary new] autorelease];
+- (void)parserFoundObjectStart:(SBJsonStreamParser*)parser {
+	if (++depth > self.levelsToSkip) {
+		dict = [NSMutableDictionary new];
 		[stack addObject:dict];
-		currentType = KCS_SBJsonStreamParserAdapterObject;
+		currentType = SBJsonStreamParserAdapterObject;
 	}
 }
 
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundObjectKey:(NSString*)key_ {
+- (void)parser:(SBJsonStreamParser*)parser foundObjectKey:(NSString*)key_ {
 	[keyStack addObject:key_];
 }
 
-- (void)parserFoundObjectEnd:(KCS_SBJsonStreamParser*)parser {
-	if (depth-- > levelsToSkip) {
-		id value = [dict retain];
+- (void)parserFoundObjectEnd:(SBJsonStreamParser*)parser {
+	if (depth-- > self.levelsToSkip) {
+		id value = dict;
 		[self pop];
 		[self parser:parser found:value];
-		[value release];
 	}
 }
 
-- (void)parserFoundArrayStart:(KCS_SBJsonStreamParser*)parser {
-	if (++depth > levelsToSkip) {
-		array = [[NSMutableArray new] autorelease];
+- (void)parserFoundArrayStart:(SBJsonStreamParser*)parser {
+	if (++depth > self.levelsToSkip) {
+		array = [NSMutableArray new];
 		[stack addObject:array];
-		currentType = KCS_SBJsonStreamParserAdapterArray;
+		currentType = SBJsonStreamParserAdapterArray;
 	}
 }
 
-- (void)parserFoundArrayEnd:(KCS_SBJsonStreamParser*)parser {
-	if (depth-- > levelsToSkip) {
-		id value = [array retain];
+- (void)parserFoundArrayEnd:(SBJsonStreamParser*)parser {
+	if (depth-- > self.levelsToSkip) {
+		id value = array;
 		[self pop];
 		[self parser:parser found:value];
-		[value release];
 	}
 }
 
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundBoolean:(BOOL)x {
+- (void)parser:(SBJsonStreamParser*)parser foundBoolean:(BOOL)x {
 	[self parser:parser found:[NSNumber numberWithBool:x]];
 }
 
-- (void)parserFoundNull:(KCS_SBJsonStreamParser*)parser {
+- (void)parserFoundNull:(SBJsonStreamParser*)parser {
 	[self parser:parser found:[NSNull null]];
 }
 
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundNumber:(NSNumber*)num {
+- (void)parser:(SBJsonStreamParser*)parser foundNumber:(NSNumber*)num {
 	[self parser:parser found:num];
 }
 
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundString:(NSString*)string {
+- (void)parser:(SBJsonStreamParser*)parser foundString:(NSString*)string {
 	[self parser:parser found:string];
-}
-
-- (void)parser:(KCS_SBJsonStreamParser*)parser foundDate:(NSDate*)date {
-	[self parser:parser found:date];
 }
 
 @end

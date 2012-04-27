@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2009 Stig Brautaset. All rights reserved.
+ Copyright (C) 2011 Stig Brautaset. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -27,32 +27,11 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "NSObject+SBJson.h"
-#import "KCS_SBJsonWriter.h"
-#import "KCS_SBJsonParser.h"
+#import <Foundation/Foundation.h>
+#import "SBJsonStreamParserAdapter.h"
 
-@implementation NSObject (NSObject_KCSSBJsonWriting)
+@interface SBJsonStreamParserAccumulator : NSObject <SBJsonStreamParserAdapterDelegate>
 
-- (NSString *)JSONRepresentation {
-    KCS_SBJsonWriter *writer = [[[KCS_SBJsonWriter alloc] init] autorelease];    
-    NSString *json = [writer stringWithObject:self];
-    if (!json)
-        NSLog(@"-JSONRepresentation failed. Error is: %@", writer.error);
-    return json;
-}
-
-@end
-
-
-
-@implementation NSString (NSString_KCSSBJsonParsing)
-
-- (id)JSONValue {
-    KCS_SBJsonParser *parser = [[[KCS_SBJsonParser alloc] init] autorelease];
-    id repr = [parser objectWithString:self];
-    if (!repr)
-        NSLog(@"-JSONValue failed. Error is: %@", parser.error);
-    return repr;
-}
+@property (copy) id value;
 
 @end
