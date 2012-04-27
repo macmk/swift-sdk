@@ -43,27 +43,27 @@
 - (void)appendWhitespace:(KCS_SBJsonStreamWriter*)writer;
 @end
 
-@interface SBJsonStreamWriterStateObjectStart : KCS_SBJsonStreamWriterState
+@interface KCS_SBJsonStreamWriterStateObjectStart : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamWriterStateObjectKey : SBJsonStreamWriterStateObjectStart
+@interface KCS_SBJsonStreamWriterStateObjectKey : KCS_SBJsonStreamWriterStateObjectStart
 @end
 
-@interface SBJsonStreamWriterStateObjectValue : KCS_SBJsonStreamWriterState
+@interface KCS_SBJsonStreamWriterStateObjectValue : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamWriterStateArrayStart : KCS_SBJsonStreamWriterState
+@interface KCS_SBJsonStreamWriterStateArrayStart : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamWriterStateArrayValue : KCS_SBJsonStreamWriterState
+@interface KCS_SBJsonStreamWriterStateArrayValue : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamWriterStateStart : KCS_SBJsonStreamWriterState
+@interface KCS_SBJsonStreamWriterStateStart : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamWriterStateComplete : KCS_SBJsonStreamWriterState
+@interface KCS_SBJsonStreamWriterStateComplete : KCS_SBJsonStreamWriterState
 @end
 
-@interface SBJsonStreamWriterStateError : KCS_SBJsonStreamWriterState
+@interface KCS_SBJsonStreamWriterStateError : KCS_SBJsonStreamWriterState
 @end
 

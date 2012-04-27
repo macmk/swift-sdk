@@ -37,10 +37,10 @@
 @class KCS_SBJsonStreamParserState;
 
 typedef enum {
-	SBJsonStreamParserComplete,
-	SBJsonStreamParserWaitingForData,
-	SBJsonStreamParserError,
-} SBJsonStreamParserStatus;
+	KCS_SBJsonStreamParserComplete,
+	KCS_SBJsonStreamParserWaitingForData,
+	KCS_SBJsonStreamParserError,
+} KCS_SBJsonStreamParserStatus;
 
 
 /**
@@ -156,6 +156,6 @@ typedef enum {
  @li SBJsonStreamParserError if an error occured. (See the error property for details in this case.)
  
  */
-- (SBJsonStreamParserStatus)parse:(NSData*)data;
+- (KCS_SBJsonStreamParserStatus)parse:(NSData*)data;
 
 @end

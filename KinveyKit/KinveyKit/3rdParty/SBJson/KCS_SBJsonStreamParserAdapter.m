@@ -54,7 +54,7 @@
 		keyStack = [[NSMutableArray alloc] initWithCapacity:32];
 		stack = [[NSMutableArray alloc] initWithCapacity:32];
 		
-		currentType = SBJsonStreamParserAdapterNone;
+		currentType = KCS_SBJsonStreamParserAdapterNone;
 	}
 	return self;
 }	
@@ -66,16 +66,16 @@
 	[stack removeLastObject];
 	array = nil;
 	dict = nil;
-	currentType = SBJsonStreamParserAdapterNone;
+	currentType = KCS_SBJsonStreamParserAdapterNone;
 	
 	id value = [stack lastObject];
 	
 	if ([value isKindOfClass:[NSArray class]]) {
 		array = value;
-		currentType = SBJsonStreamParserAdapterArray;
+		currentType = KCS_SBJsonStreamParserAdapterArray;
 	} else if ([value isKindOfClass:[NSDictionary class]]) {
 		dict = value;
-		currentType = SBJsonStreamParserAdapterObject;
+		currentType = KCS_SBJsonStreamParserAdapterObject;
 	}
 }
 
@@ -83,17 +83,17 @@
 	NSParameterAssert(obj);
 	
 	switch (currentType) {
-		case SBJsonStreamParserAdapterArray:
+		case KCS_SBJsonStreamParserAdapterArray:
 			[array addObject:obj];
 			break;
 
-		case SBJsonStreamParserAdapterObject:
+		case KCS_SBJsonStreamParserAdapterObject:
 			NSParameterAssert(keyStack.count);
 			[dict setObject:obj forKey:[keyStack lastObject]];
 			[keyStack removeLastObject];
 			break;
 			
-		case SBJsonStreamParserAdapterNone:
+		case KCS_SBJsonStreamParserAdapterNone:
 			if ([obj isKindOfClass:[NSArray class]]) {
 				[delegate parser:parser foundArray:obj];
 			} else {
@@ -113,7 +113,7 @@
 	if (++depth > self.levelsToSkip) {
 		dict = [NSMutableDictionary new];
 		[stack addObject:dict];
-		currentType = SBJsonStreamParserAdapterObject;
+		currentType = KCS_SBJsonStreamParserAdapterObject;
 	}
 }
 
@@ -133,7 +133,7 @@
 	if (++depth > self.levelsToSkip) {
 		array = [NSMutableArray new];
 		[stack addObject:array];
-		currentType = SBJsonStreamParserAdapterArray;
+		currentType = KCS_SBJsonStreamParserAdapterArray;
 	}
 }
 

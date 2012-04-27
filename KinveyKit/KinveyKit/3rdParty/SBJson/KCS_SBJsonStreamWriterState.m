@@ -54,12 +54,12 @@
 }
 @end
 
-@implementation SBJsonStreamWriterStateObjectStart
+@implementation KCS_SBJsonStreamWriterStateObjectStart
 
 SINGLETON
 
 - (void)transitionState:(KCS_SBJsonStreamWriter *)writer {
-	writer.state = [SBJsonStreamWriterStateObjectValue sharedInstance];
+	writer.state = [KCS_SBJsonStreamWriterStateObjectValue sharedInstance];
 }
 - (BOOL)expectingKey:(KCS_SBJsonStreamWriter *)writer {
 	writer.error = @"JSON object key must be string";
@@ -67,7 +67,7 @@ SINGLETON
 }
 @end
 
-@implementation SBJsonStreamWriterStateObjectKey
+@implementation KCS_SBJsonStreamWriterStateObjectKey
 
 SINGLETON
 
@@ -76,7 +76,7 @@ SINGLETON
 }
 @end
 
-@implementation SBJsonStreamWriterStateObjectValue
+@implementation KCS_SBJsonStreamWriterStateObjectValue
 
 SINGLETON
 
@@ -84,23 +84,23 @@ SINGLETON
 	[writer appendBytes:":" length:1];
 }
 - (void)transitionState:(KCS_SBJsonStreamWriter *)writer {
-    writer.state = [SBJsonStreamWriterStateObjectKey sharedInstance];
+    writer.state = [KCS_SBJsonStreamWriterStateObjectKey sharedInstance];
 }
 - (void)appendWhitespace:(KCS_SBJsonStreamWriter *)writer {
 	[writer appendBytes:" " length:1];
 }
 @end
 
-@implementation SBJsonStreamWriterStateArrayStart
+@implementation KCS_SBJsonStreamWriterStateArrayStart
 
 SINGLETON
 
 - (void)transitionState:(KCS_SBJsonStreamWriter *)writer {
-    writer.state = [SBJsonStreamWriterStateArrayValue sharedInstance];
+    writer.state = [KCS_SBJsonStreamWriterStateArrayValue sharedInstance];
 }
 @end
 
-@implementation SBJsonStreamWriterStateArrayValue
+@implementation KCS_SBJsonStreamWriterStateArrayValue
 
 SINGLETON
 
@@ -109,19 +109,19 @@ SINGLETON
 }
 @end
 
-@implementation SBJsonStreamWriterStateStart
+@implementation KCS_SBJsonStreamWriterStateStart
 
 SINGLETON
 
 
 - (void)transitionState:(KCS_SBJsonStreamWriter *)writer {
-    writer.state = [SBJsonStreamWriterStateComplete sharedInstance];
+    writer.state = [KCS_SBJsonStreamWriterStateComplete sharedInstance];
 }
 - (void)appendSeparator:(KCS_SBJsonStreamWriter *)writer {
 }
 @end
 
-@implementation SBJsonStreamWriterStateComplete
+@implementation KCS_SBJsonStreamWriterStateComplete
 
 SINGLETON
 
@@ -131,7 +131,7 @@ SINGLETON
 }
 @end
 
-@implementation SBJsonStreamWriterStateError
+@implementation KCS_SBJsonStreamWriterStateError
 
 SINGLETON
 

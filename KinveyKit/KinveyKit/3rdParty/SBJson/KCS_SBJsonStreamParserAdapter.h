@@ -34,10 +34,10 @@
 #import "KCS_SBJsonStreamParser.h"
 
 typedef enum {
-	SBJsonStreamParserAdapterNone,
-	SBJsonStreamParserAdapterArray,
-	SBJsonStreamParserAdapterObject,
-} SBJsonStreamParserAdapterType;
+	KCS_SBJsonStreamParserAdapterNone,
+	KCS_SBJsonStreamParserAdapterArray,
+	KCS_SBJsonStreamParserAdapterObject,
+} KCS_SBJsonStreamParserAdapterType;
 
 /**
  @brief Delegate for getting objects & arrays from the stream parser adapter
@@ -124,7 +124,7 @@ typedef enum {
 	NSMutableArray *keyStack;
 	NSMutableArray *stack;
 	
-	SBJsonStreamParserAdapterType currentType;
+	KCS_SBJsonStreamParserAdapterType currentType;
 }
 
 /**
