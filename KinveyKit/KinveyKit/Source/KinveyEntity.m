@@ -102,12 +102,12 @@ makeConnectionBlocks(KCSConnectionCompletionBlock *cBlock,
     // This is the user collection...
     if ([collection.collectionName isEqualToString:@""]){
         resource = [collection.baseURL stringByAppendingFormat:@"%@",
-                    [NSString stringbyPercentEncodingString:query]];
+                    [NSString stringByPercentEncodingString:query]];
 
     } else {
         resource = [collection.baseURL stringByAppendingFormat:@"%@/%@",
                     [collection collectionName],
-                    [NSString stringbyPercentEncodingString:query]];
+                    [NSString stringByPercentEncodingString:query]];
 
     }
 
@@ -125,7 +125,7 @@ makeConnectionBlocks(KCSConnectionCompletionBlock *cBlock,
     
     NSString *query = [[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:value], property, nil] JSONRepresentation];
     
-    [self fetchOneFromCollection:collection matchingQuery:[NSString stringbyPercentEncodingString:query] withDelegate:delegate];
+    [self fetchOneFromCollection:collection matchingQuery:[NSString stringByPercentEncodingString:query] withDelegate:delegate];
     
 }
 
@@ -133,7 +133,7 @@ makeConnectionBlocks(KCSConnectionCompletionBlock *cBlock,
 {
     NSString *query = [[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:value], property, nil] JSONRepresentation];
     
-    [self fetchOneFromCollection:collection matchingQuery:[NSString stringbyPercentEncodingString:query] withDelegate:delegate];
+    [self fetchOneFromCollection:collection matchingQuery:[NSString stringByPercentEncodingString:query] withDelegate:delegate];
     
 }
 
@@ -141,7 +141,7 @@ makeConnectionBlocks(KCSConnectionCompletionBlock *cBlock,
 {
     NSString *query = [[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:value], property, nil] JSONRepresentation];
     
-    [self fetchOneFromCollection:collection matchingQuery:[NSString stringbyPercentEncodingString:query] withDelegate:delegate];
+    [self fetchOneFromCollection:collection matchingQuery:[NSString stringByPercentEncodingString:query] withDelegate:delegate];
     
 }
 
@@ -149,7 +149,7 @@ makeConnectionBlocks(KCSConnectionCompletionBlock *cBlock,
 {
     NSString *query = [[NSDictionary dictionaryWithObjectsAndKeys:value, property, nil] JSONRepresentation];
     
-    [self fetchOneFromCollection:collection matchingQuery:[NSString stringbyPercentEncodingString:query] withDelegate:delegate];
+    [self fetchOneFromCollection:collection matchingQuery:[NSString stringByPercentEncodingString:query] withDelegate:delegate];
     
 }
 
