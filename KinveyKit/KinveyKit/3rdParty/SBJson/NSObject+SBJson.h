@@ -32,7 +32,7 @@
 #pragma mark JSON Writing
 
 /// Adds JSON generation to NSObject
-@interface NSObject (NSObject_SBJsonWriting)
+@interface NSObject (NSObject_KCS_SBJsonWriting)
 
 /**
  @brief Encodes the receiver into a JSON string
@@ -51,7 +51,7 @@
 #pragma mark JSON Parsing
 
 /// Adds JSON parsing methods to NSString
-@interface NSString (NSString_SBJsonParsing)
+@interface NSString (NSString_KCS_SBJsonParsing)
 
 /**
  @brief Decodes the receiver's JSON text
@@ -65,7 +65,7 @@
 @end
 
 /// Adds JSON parsing methods to NSData
-@interface NSData (NSData_SBJsonParsing)
+@interface NSData (NSData_KCS_SBJsonParsing)
 
 /**
  @brief Decodes the receiver's JSON data

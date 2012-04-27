@@ -27,11 +27,10 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <Foundation/Foundation.h>
-#import "SBJsonStreamParserAdapter.h"
+#import "KCS_SBJsonStreamWriter.h"
 
-@interface SBJsonStreamParserAccumulator : NSObject <SBJsonStreamParserAdapterDelegate>
+@interface KCS_SBJsonStreamWriterAccumulator : NSObject <KCS_SBJsonStreamWriterDelegate>
 
-@property (copy) id value;
+@property (readonly, copy) NSMutableData* data;
 
 @end

@@ -28,13 +28,13 @@
  */
 
 #import "NSObject+SBJson.h"
-#import "SBJsonWriter.h"
-#import "SBJsonParser.h"
+#import "KCS_SBJsonWriter.h"
+#import "KCS_SBJsonParser.h"
 
-@implementation NSObject (NSObject_SBJsonWriting)
+@implementation NSObject (NSObject_KCS_SBJsonWriting)
 
 - (NSString *)JSONRepresentation {
-    SBJsonWriter *writer = [[SBJsonWriter alloc] init];    
+    KCS_SBJsonWriter *writer = [[KCS_SBJsonWriter alloc] init];    
     NSString *json = [writer stringWithObject:self];
     if (!json)
         NSLog(@"-JSONRepresentation failed. Error is: %@", writer.error);
@@ -45,10 +45,10 @@
 
 
 
-@implementation NSString (NSString_SBJsonParsing)
+@implementation NSString (NSString_KCS_SBJsonParsing)
 
 - (id)JSONValue {
-    SBJsonParser *parser = [[SBJsonParser alloc] init];
+    KCS_SBJsonParser *parser = [[KCS_SBJsonParser alloc] init];
     id repr = [parser objectWithString:self];
     if (!repr)
         NSLog(@"-JSONValue failed. Error is: %@", parser.error);
@@ -59,10 +59,10 @@
 
 
 
-@implementation NSData (NSData_SBJsonParsing)
+@implementation NSData (NSData_KCS_SBJsonParsing)
 
 - (id)JSONValue {
-    SBJsonParser *parser = [[SBJsonParser alloc] init];
+    KCS_SBJsonParser *parser = [[KCS_SBJsonParser alloc] init];
     id repr = [parser objectWithData:self];
     if (!repr)
         NSLog(@"-JSONValue failed. Error is: %@", parser.error);

@@ -27,26 +27,21 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonStreamWriterAccumulator.h"
+#import "KCS_SBJsonStreamParserAccumulator.h"
+
+@implementation KCS_SBJsonStreamParserAccumulator
+
+@synthesize value;
 
 
-@implementation SBJsonStreamWriterAccumulator
+#pragma mark SBJsonStreamParserAdapterDelegate
 
-@synthesize data;
-
-- (id)init {
-    self = [super init];
-    if (self) {
-        data = [[NSMutableData alloc] initWithCapacity:8096u];
-    }
-    return self;
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundArray:(NSArray *)array {
+	value = array;
 }
 
-
-#pragma mark SBJsonStreamWriterDelegate
-
-- (void)writer:(SBJsonStreamWriter *)writer appendBytes:(const void *)bytes length:(NSUInteger)length {
-    [data appendBytes:bytes length:length];
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundObject:(NSDictionary *)dict {
+	value = dict;
 }
 
 @end

@@ -37,7 +37,7 @@
  @see @ref json2objc
  */
 
-@interface SBJsonWriter : NSObject
+@interface KCS_SBJsonWriter : NSObject
 
 /**
  @brief The maximum recursing depth.

@@ -30,12 +30,12 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonStreamParser.h"
-#import "SBJsonTokeniser.h"
-#import "SBJsonStreamParserState.h"
+#import "KCS_SBJsonStreamParser.h"
+#import "KCS_SBJsonTokeniser.h"
+#import "KCS_SBJsonStreamParserState.h"
 #import <limits.h>
 
-@implementation SBJsonStreamParser
+@implementation KCS_SBJsonStreamParser
 
 @synthesize supportMultipleDocuments;
 @synthesize error;
@@ -51,8 +51,8 @@
 	if (self) {
 		maxDepth = 32u;
         stateStack = [[NSMutableArray alloc] initWithCapacity:maxDepth];
-        state = [SBJsonStreamParserStateStart sharedInstance];
-		tokeniser = [[SBJsonTokeniser alloc] init];
+        state = [KCS_SBJsonStreamParserStateStart sharedInstance];
+		tokeniser = [[KCS_SBJsonTokeniser alloc] init];
 	}
 	return self;
 }
@@ -113,7 +113,7 @@
 
 - (void)maxDepthError {
     self.error = [NSString stringWithFormat:@"Input depth exceeds max depth of %lu", maxDepth];
-    self.state = [SBJsonStreamParserStateError sharedInstance];
+    self.state = [KCS_SBJsonStreamParserStateError sharedInstance];
 }
 
 - (void)handleObjectStart {
@@ -124,7 +124,7 @@
 
     [delegate parserFoundObjectStart:self];
     [stateStack addObject:state];
-    self.state = [SBJsonStreamParserStateObjectStart sharedInstance];
+    self.state = [KCS_SBJsonStreamParserStateObjectStart sharedInstance];
 }
 
 - (void)handleObjectEnd: (sbjson_token_t) tok  {
@@ -142,7 +142,7 @@
 	
 	[delegate parserFoundArrayStart:self];
     [stateStack addObject:state];
-    self.state = [SBJsonStreamParserStateArrayStart sharedInstance];
+    self.state = [KCS_SBJsonStreamParserStateArrayStart sharedInstance];
 }
 
 - (void)handleArrayEnd: (sbjson_token_t) tok  {
@@ -157,7 +157,7 @@
     NSString *stateName = [state name];
 
     self.error = [NSString stringWithFormat:@"Token '%@' not expected %@", tokenName, stateName];
-    self.state = [SBJsonStreamParserStateError sharedInstance];
+    self.state = [KCS_SBJsonStreamParserStateError sharedInstance];
 }
 
 - (SBJsonStreamParserStatus)parse:(NSData *)data_ {
@@ -177,7 +177,7 @@
                     break;
                     
                 case sbjson_token_error:
-                    self.state = [SBJsonStreamParserStateError sharedInstance];
+                    self.state = [KCS_SBJsonStreamParserStateError sharedInstance];
                     self.error = tokeniser.error;
                     return SBJsonStreamParserError;
                     break;

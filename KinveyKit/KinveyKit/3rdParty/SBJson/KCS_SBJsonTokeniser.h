@@ -53,11 +53,11 @@ typedef enum {
     
 } sbjson_token_t;
 
-@class SBJsonUTF8Stream;
+@class KCS_SBJsonUTF8Stream;
 
-@interface SBJsonTokeniser : NSObject 
+@interface KCS_SBJsonTokeniser : NSObject 
 
-@property (strong) SBJsonUTF8Stream *stream;
+@property (strong) KCS_SBJsonUTF8Stream *stream;
 @property (copy) NSString *error;
 
 - (void)appendData:(NSData*)data_;

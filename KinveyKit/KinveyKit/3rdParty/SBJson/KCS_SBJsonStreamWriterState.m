@@ -30,8 +30,8 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonStreamWriterState.h"
-#import "SBJsonStreamWriter.h"
+#import "KCS_SBJsonStreamWriterState.h"
+#import "KCS_SBJsonStreamWriter.h"
 
 #define SINGLETON \
 + (id)sharedInstance { \
@@ -41,13 +41,13 @@
 }
 
 
-@implementation SBJsonStreamWriterState
+@implementation KCS_SBJsonStreamWriterState
 + (id)sharedInstance { return nil; }
-- (BOOL)isInvalidState:(SBJsonStreamWriter*)writer { return NO; }
-- (void)appendSeparator:(SBJsonStreamWriter*)writer {}
-- (BOOL)expectingKey:(SBJsonStreamWriter*)writer { return NO; }
-- (void)transitionState:(SBJsonStreamWriter *)writer {}
-- (void)appendWhitespace:(SBJsonStreamWriter*)writer {
+- (BOOL)isInvalidState:(KCS_SBJsonStreamWriter*)writer { return NO; }
+- (void)appendSeparator:(KCS_SBJsonStreamWriter*)writer {}
+- (BOOL)expectingKey:(KCS_SBJsonStreamWriter*)writer { return NO; }
+- (void)transitionState:(KCS_SBJsonStreamWriter *)writer {}
+- (void)appendWhitespace:(KCS_SBJsonStreamWriter*)writer {
 	[writer appendBytes:"\n" length:1];
 	for (NSUInteger i = 0; i < writer.stateStack.count; i++)
 	    [writer appendBytes:"  " length:2];
@@ -58,10 +58,10 @@
 
 SINGLETON
 
-- (void)transitionState:(SBJsonStreamWriter *)writer {
+- (void)transitionState:(KCS_SBJsonStreamWriter *)writer {
 	writer.state = [SBJsonStreamWriterStateObjectValue sharedInstance];
 }
-- (BOOL)expectingKey:(SBJsonStreamWriter *)writer {
+- (BOOL)expectingKey:(KCS_SBJsonStreamWriter *)writer {
 	writer.error = @"JSON object key must be string";
 	return YES;
 }
@@ -71,7 +71,7 @@ SINGLETON
 
 SINGLETON
 
-- (void)appendSeparator:(SBJsonStreamWriter *)writer {
+- (void)appendSeparator:(KCS_SBJsonStreamWriter *)writer {
 	[writer appendBytes:"," length:1];
 }
 @end
@@ -80,13 +80,13 @@ SINGLETON
 
 SINGLETON
 
-- (void)appendSeparator:(SBJsonStreamWriter *)writer {
+- (void)appendSeparator:(KCS_SBJsonStreamWriter *)writer {
 	[writer appendBytes:":" length:1];
 }
-- (void)transitionState:(SBJsonStreamWriter *)writer {
+- (void)transitionState:(KCS_SBJsonStreamWriter *)writer {
     writer.state = [SBJsonStreamWriterStateObjectKey sharedInstance];
 }
-- (void)appendWhitespace:(SBJsonStreamWriter *)writer {
+- (void)appendWhitespace:(KCS_SBJsonStreamWriter *)writer {
 	[writer appendBytes:" " length:1];
 }
 @end
@@ -95,7 +95,7 @@ SINGLETON
 
 SINGLETON
 
-- (void)transitionState:(SBJsonStreamWriter *)writer {
+- (void)transitionState:(KCS_SBJsonStreamWriter *)writer {
     writer.state = [SBJsonStreamWriterStateArrayValue sharedInstance];
 }
 @end
@@ -104,7 +104,7 @@ SINGLETON
 
 SINGLETON
 
-- (void)appendSeparator:(SBJsonStreamWriter *)writer {
+- (void)appendSeparator:(KCS_SBJsonStreamWriter *)writer {
 	[writer appendBytes:"," length:1];
 }
 @end
@@ -114,10 +114,10 @@ SINGLETON
 SINGLETON
 
 
-- (void)transitionState:(SBJsonStreamWriter *)writer {
+- (void)transitionState:(KCS_SBJsonStreamWriter *)writer {
     writer.state = [SBJsonStreamWriterStateComplete sharedInstance];
 }
-- (void)appendSeparator:(SBJsonStreamWriter *)writer {
+- (void)appendSeparator:(KCS_SBJsonStreamWriter *)writer {
 }
 @end
 
@@ -125,7 +125,7 @@ SINGLETON
 
 SINGLETON
 
-- (BOOL)isInvalidState:(SBJsonStreamWriter*)writer {
+- (BOOL)isInvalidState:(KCS_SBJsonStreamWriter*)writer {
 	writer.error = @"Stream is closed";
 	return YES;
 }

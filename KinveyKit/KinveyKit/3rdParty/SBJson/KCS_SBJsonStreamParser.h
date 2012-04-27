@@ -32,9 +32,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class SBJsonTokeniser;
-@class SBJsonStreamParser;
-@class SBJsonStreamParserState;
+@class KCS_SBJsonTokeniser;
+@class KCS_SBJsonStreamParser;
+@class KCS_SBJsonStreamParserState;
 
 typedef enum {
 	SBJsonStreamParserComplete,
@@ -49,34 +49,34 @@ typedef enum {
  You will most likely find it much more convenient to implement the
  SBJsonStreamParserAdapterDelegate protocol instead.
  */
-@protocol SBJsonStreamParserDelegate
+@protocol KCS_SBJsonStreamParserDelegate
 
 /// Called when object start is found
-- (void)parserFoundObjectStart:(SBJsonStreamParser*)parser;
+- (void)parserFoundObjectStart:(KCS_SBJsonStreamParser*)parser;
 
 /// Called when object key is found
-- (void)parser:(SBJsonStreamParser*)parser foundObjectKey:(NSString*)key;
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundObjectKey:(NSString*)key;
 
 /// Called when object end is found
-- (void)parserFoundObjectEnd:(SBJsonStreamParser*)parser;
+- (void)parserFoundObjectEnd:(KCS_SBJsonStreamParser*)parser;
 
 /// Called when array start is found
-- (void)parserFoundArrayStart:(SBJsonStreamParser*)parser;
+- (void)parserFoundArrayStart:(KCS_SBJsonStreamParser*)parser;
 
 /// Called when array end is found
-- (void)parserFoundArrayEnd:(SBJsonStreamParser*)parser;
+- (void)parserFoundArrayEnd:(KCS_SBJsonStreamParser*)parser;
 
 /// Called when a boolean value is found
-- (void)parser:(SBJsonStreamParser*)parser foundBoolean:(BOOL)x;
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundBoolean:(BOOL)x;
 
 /// Called when a null value is found
-- (void)parserFoundNull:(SBJsonStreamParser*)parser;
+- (void)parserFoundNull:(KCS_SBJsonStreamParser*)parser;
 
 /// Called when a number is found
-- (void)parser:(SBJsonStreamParser*)parser foundNumber:(NSNumber*)num;
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundNumber:(NSNumber*)num;
 
 /// Called when a string is found
-- (void)parser:(SBJsonStreamParser*)parser foundString:(NSString*)string;
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundString:(NSString*)string;
 
 @end
 
@@ -97,12 +97,12 @@ typedef enum {
  @see @ref objc2json
  
  */
-@interface SBJsonStreamParser : NSObject {
+@interface KCS_SBJsonStreamParser : NSObject {
 @private
-	SBJsonTokeniser *tokeniser;
+	KCS_SBJsonTokeniser *tokeniser;
 }
 
-@property (nonatomic, unsafe_unretained) SBJsonStreamParserState *state; // Private
+@property (nonatomic, unsafe_unretained) KCS_SBJsonStreamParserState *state; // Private
 @property (nonatomic, readonly, strong) NSMutableArray *stateStack; // Private
 
 /**
@@ -129,7 +129,7 @@ typedef enum {
  Usually this should be an instance of SBJsonStreamParserAdapter, but you can
  substitute your own implementation of the SBJsonStreamParserDelegate protocol if you need to. 
  */
-@property (unsafe_unretained) id<SBJsonStreamParserDelegate> delegate;
+@property (unsafe_unretained) id<KCS_SBJsonStreamParserDelegate> delegate;
 
 /**
  @brief The max parse depth

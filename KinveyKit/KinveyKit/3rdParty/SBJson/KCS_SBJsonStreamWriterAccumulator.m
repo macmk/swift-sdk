@@ -27,10 +27,26 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonStreamWriter.h"
+#import "KCS_SBJsonStreamWriterAccumulator.h"
 
-@interface SBJsonStreamWriterAccumulator : NSObject <SBJsonStreamWriterDelegate>
 
-@property (readonly, copy) NSMutableData* data;
+@implementation KCS_SBJsonStreamWriterAccumulator
+
+@synthesize data;
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        data = [[NSMutableData alloc] initWithCapacity:8096u];
+    }
+    return self;
+}
+
+
+#pragma mark SBJsonStreamWriterDelegate
+
+- (void)writer:(KCS_SBJsonStreamWriter *)writer appendBytes:(const void *)bytes length:(NSUInteger)length {
+    [data appendBytes:bytes length:length];
+}
 
 @end

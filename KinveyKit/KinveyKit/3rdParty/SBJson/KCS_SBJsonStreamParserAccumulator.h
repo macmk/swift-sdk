@@ -27,21 +27,11 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonStreamParserAccumulator.h"
+#import <Foundation/Foundation.h>
+#import "KCS_SBJsonStreamParserAdapter.h"
 
-@implementation SBJsonStreamParserAccumulator
+@interface KCS_SBJsonStreamParserAccumulator : NSObject <KCS_SBJsonStreamParserAdapterDelegate>
 
-@synthesize value;
-
-
-#pragma mark SBJsonStreamParserAdapterDelegate
-
-- (void)parser:(SBJsonStreamParser*)parser foundArray:(NSArray *)array {
-	value = array;
-}
-
-- (void)parser:(SBJsonStreamParser*)parser foundObject:(NSDictionary *)dict {
-	value = dict;
-}
+@property (copy) id value;
 
 @end

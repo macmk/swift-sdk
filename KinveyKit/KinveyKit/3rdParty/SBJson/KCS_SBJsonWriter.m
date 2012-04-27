@@ -27,16 +27,16 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonWriter.h"
-#import "SBJsonStreamWriter.h"
-#import "SBJsonStreamWriterAccumulator.h"
+#import "KCS_SBJsonWriter.h"
+#import "KCS_SBJsonStreamWriter.h"
+#import "KCS_SBJsonStreamWriterAccumulator.h"
 
 
-@interface SBJsonWriter ()
+@interface KCS_SBJsonWriter ()
 @property (copy) NSString *error;
 @end
 
-@implementation SBJsonWriter
+@implementation KCS_SBJsonWriter
 
 @synthesize sortKeys;
 @synthesize humanReadable;
@@ -78,9 +78,9 @@
 - (NSData*)dataWithObject:(id)object {	
     self.error = nil;
 
-    SBJsonStreamWriterAccumulator *accumulator = [[SBJsonStreamWriterAccumulator alloc] init];
+    KCS_SBJsonStreamWriterAccumulator *accumulator = [[KCS_SBJsonStreamWriterAccumulator alloc] init];
     
-	SBJsonStreamWriter *streamWriter = [[SBJsonStreamWriter alloc] init];
+	KCS_SBJsonStreamWriter *streamWriter = [[KCS_SBJsonStreamWriter alloc] init];
 	streamWriter.sortKeys = self.sortKeys;
 	streamWriter.maxDepth = self.maxDepth;
 	streamWriter.sortKeysComparator = self.sortKeysComparator;

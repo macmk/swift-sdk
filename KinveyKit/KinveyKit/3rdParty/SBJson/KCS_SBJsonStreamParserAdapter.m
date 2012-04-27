@@ -30,18 +30,18 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonStreamParserAdapter.h"
+#import "KCS_SBJsonStreamParserAdapter.h"
 
-@interface SBJsonStreamParserAdapter ()
+@interface KCS_SBJsonStreamParserAdapter ()
 
 - (void)pop;
-- (void)parser:(SBJsonStreamParser*)parser found:(id)obj;
+- (void)parser:(KCS_SBJsonStreamParser*)parser found:(id)obj;
 
 @end
 
 
 
-@implementation SBJsonStreamParserAdapter
+@implementation KCS_SBJsonStreamParserAdapter
 
 @synthesize delegate;
 @synthesize levelsToSkip;
@@ -79,7 +79,7 @@
 	}
 }
 
-- (void)parser:(SBJsonStreamParser*)parser found:(id)obj {
+- (void)parser:(KCS_SBJsonStreamParser*)parser found:(id)obj {
 	NSParameterAssert(obj);
 	
 	switch (currentType) {
@@ -109,7 +109,7 @@
 
 #pragma mark Delegate methods
 
-- (void)parserFoundObjectStart:(SBJsonStreamParser*)parser {
+- (void)parserFoundObjectStart:(KCS_SBJsonStreamParser*)parser {
 	if (++depth > self.levelsToSkip) {
 		dict = [NSMutableDictionary new];
 		[stack addObject:dict];
@@ -117,11 +117,11 @@
 	}
 }
 
-- (void)parser:(SBJsonStreamParser*)parser foundObjectKey:(NSString*)key_ {
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundObjectKey:(NSString*)key_ {
 	[keyStack addObject:key_];
 }
 
-- (void)parserFoundObjectEnd:(SBJsonStreamParser*)parser {
+- (void)parserFoundObjectEnd:(KCS_SBJsonStreamParser*)parser {
 	if (depth-- > self.levelsToSkip) {
 		id value = dict;
 		[self pop];
@@ -129,7 +129,7 @@
 	}
 }
 
-- (void)parserFoundArrayStart:(SBJsonStreamParser*)parser {
+- (void)parserFoundArrayStart:(KCS_SBJsonStreamParser*)parser {
 	if (++depth > self.levelsToSkip) {
 		array = [NSMutableArray new];
 		[stack addObject:array];
@@ -137,7 +137,7 @@
 	}
 }
 
-- (void)parserFoundArrayEnd:(SBJsonStreamParser*)parser {
+- (void)parserFoundArrayEnd:(KCS_SBJsonStreamParser*)parser {
 	if (depth-- > self.levelsToSkip) {
 		id value = array;
 		[self pop];
@@ -145,19 +145,19 @@
 	}
 }
 
-- (void)parser:(SBJsonStreamParser*)parser foundBoolean:(BOOL)x {
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundBoolean:(BOOL)x {
 	[self parser:parser found:[NSNumber numberWithBool:x]];
 }
 
-- (void)parserFoundNull:(SBJsonStreamParser*)parser {
+- (void)parserFoundNull:(KCS_SBJsonStreamParser*)parser {
 	[self parser:parser found:[NSNull null]];
 }
 
-- (void)parser:(SBJsonStreamParser*)parser foundNumber:(NSNumber*)num {
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundNumber:(NSNumber*)num {
 	[self parser:parser found:num];
 }
 
-- (void)parser:(SBJsonStreamParser*)parser foundString:(NSString*)string {
+- (void)parser:(KCS_SBJsonStreamParser*)parser foundString:(NSString*)string {
 	[self parser:parser found:string];
 }
 

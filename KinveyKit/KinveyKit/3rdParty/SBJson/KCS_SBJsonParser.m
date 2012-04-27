@@ -27,12 +27,12 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonParser.h"
-#import "SBJsonStreamParser.h"
-#import "SBJsonStreamParserAdapter.h"
-#import "SBJsonStreamParserAccumulator.h"
+#import "KCS_SBJsonParser.h"
+#import "KCS_SBJsonStreamParser.h"
+#import "KCS_SBJsonStreamParserAdapter.h"
+#import "KCS_SBJsonStreamParserAccumulator.h"
 
-@implementation SBJsonParser
+@implementation KCS_SBJsonParser
 
 @synthesize maxDepth;
 @synthesize error;
@@ -54,12 +54,12 @@
         return nil;
     }
 
-	SBJsonStreamParserAccumulator *accumulator = [[SBJsonStreamParserAccumulator alloc] init];
+	KCS_SBJsonStreamParserAccumulator *accumulator = [[KCS_SBJsonStreamParserAccumulator alloc] init];
     
-    SBJsonStreamParserAdapter *adapter = [[SBJsonStreamParserAdapter alloc] init];
+    KCS_SBJsonStreamParserAdapter *adapter = [[KCS_SBJsonStreamParserAdapter alloc] init];
     adapter.delegate = accumulator;
 	
-	SBJsonStreamParser *parser = [[SBJsonStreamParser alloc] init];
+	KCS_SBJsonStreamParser *parser = [[KCS_SBJsonStreamParser alloc] init];
 	parser.maxDepth = self.maxDepth;
 	parser.delegate = adapter;
 	

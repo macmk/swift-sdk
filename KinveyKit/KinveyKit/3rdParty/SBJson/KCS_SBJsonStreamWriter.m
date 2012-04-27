@@ -30,8 +30,8 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SBJsonStreamWriter.h"
-#import "SBJsonStreamWriterState.h"
+#import "KCS_SBJsonStreamWriter.h"
+#import "KCS_SBJsonStreamWriterState.h"
 
 static NSNumber *kNotANumber;
 static NSNumber *kTrue;
@@ -40,7 +40,7 @@ static NSNumber *kPositiveInfinity;
 static NSNumber *kNegativeInfinity;
 
 
-@implementation SBJsonStreamWriter
+@implementation KCS_SBJsonStreamWriter
 
 @synthesize error;
 @synthesize maxDepth;
@@ -140,7 +140,7 @@ static NSNumber *kNegativeInfinity;
 - (BOOL)writeObjectClose {
 	if ([state isInvalidState:self]) return NO;
 
-    SBJsonStreamWriterState *prev = state;
+    KCS_SBJsonStreamWriterState *prev = state;
 
     self.state = [stateStack lastObject];
     [stateStack removeLastObject];
@@ -174,7 +174,7 @@ static NSNumber *kNegativeInfinity;
 	if ([state isInvalidState:self]) return NO;
 	if ([state expectingKey:self]) return NO;
 
-    SBJsonStreamWriterState *prev = state;
+    KCS_SBJsonStreamWriterState *prev = state;
 
     self.state = [stateStack lastObject];
     [stateStack removeLastObject];
