@@ -95,7 +95,7 @@ typedef BOOL(^FailureAction)(NSError *);
 }
 
 // All code under test must be linked into the Unit Test bundle
-- (void)testTestFramework
+- (void)testAAAAAAAAAAAAAATestFramework
 {
     self.onFailure = ^(NSError *err){
         self.message = [NSString stringWithString:@"Yes, the test passed"];
