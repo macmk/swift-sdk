@@ -724,6 +724,7 @@
 		57F556841AFC26B8008CB244 /* KCSLogTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 57F556831AFC26B8008CB244 /* KCSLogTests.m */; };
 		57F556881AFD6044008CB244 /* MLIBZ_290_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F556871AFD6044008CB244 /* MLIBZ_290_Tests.swift */; };
 		57F5568A1AFD62C3008CB244 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F556891AFD62C3008CB244 /* City.swift */; };
+		57F62A951B32320600779A5B /* MLIBZ_351_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57F62A941B32320600779A5B /* MLIBZ_351_Tests.swift */; };
 		57F6B88E1B1FB2C200361C18 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 273A3E92160A1A9F00F3742C /* Accounts.framework */; };
 		57F6B88F1B1FB2D100361C18 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27264AE91880AD1E002C37C9 /* Social.framework */; };
 		57F6B8901B1FB2E300361C18 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3C5E68614745F09002D8F2B /* SystemConfiguration.framework */; };
@@ -1378,6 +1379,7 @@
 		57F556831AFC26B8008CB244 /* KCSLogTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCSLogTests.m; sourceTree = "<group>"; };
 		57F556871AFD6044008CB244 /* MLIBZ_290_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLIBZ_290_Tests.swift; sourceTree = "<group>"; };
 		57F556891AFD62C3008CB244 /* City.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		57F62A941B32320600779A5B /* MLIBZ_351_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLIBZ_351_Tests.swift; sourceTree = "<group>"; };
 		57F6B88B1B1FB0EC00361C18 /* KinveyPlaygroundTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KinveyPlaygroundTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		D306B58D154F847C00A52CB8 /* KCSStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSStore.h; sourceTree = "<group>"; };
 		D306B5A1155095A800A52CB8 /* KinveyAppdataStoreTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinveyAppdataStoreTests.h; sourceTree = "<group>"; };
@@ -2220,6 +2222,7 @@
 				5739EC4C1B1F849E00B6BA91 /* MLIBZ_364_Tests.swift */,
 				57E40BC91B20E95C00C37317 /* MLIBZ_371_Tests.m */,
 				573C7F251B2B467400B4A774 /* KCSCallbacksInMainThreadTests.swift */,
+				57F62A941B32320600779A5B /* MLIBZ_351_Tests.swift */,
 			);
 			path = KinveyTests;
 			sourceTree = "<group>";
@@ -3875,6 +3878,7 @@
 				578834461AB8D25500078CC5 /* LogTester.m in Sources */,
 				578834441AB8D25500078CC5 /* TestUtils2.m in Sources */,
 				578834371AB8D25500078CC5 /* KCSClientConfigurationTests.m in Sources */,
+				57F62A951B32320600779A5B /* MLIBZ_351_Tests.swift in Sources */,
 				578076741AF7F2CF00C220C4 /* MemoryLeakTests.swift in Sources */,
 				5788343B1AB8D25500078CC5 /* KCSFileStoreTests.m in Sources */,
 				573654711AE1851B00E3982B /* MLIBZ_239_Tests.swift in Sources */,
