@@ -1,5 +1,5 @@
 //
-//  KCSEntityPersistence.m
+//  KCSRealmEntityPersistence.h
 //  KinveyKit
 //
 //  Created by Victor Barros on 2015-11-23.
@@ -8,6 +8,6 @@
 
 #import "KCSEntityPersistence.h"
 
-@implementation KCSEntityPersistence
+@interface KCSRealmEntityPersistence : KCSEntityPersistence
 
 @end

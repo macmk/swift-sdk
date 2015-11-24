@@ -33,6 +33,8 @@ KK2(cleanup)
 #import "KCSHiddenMethods.h"
 #import "KCSQuery2+KCSInternal.h"
 
+#import "KCSRealmEntityPersistence.h"
+
 //TODO: util this?
 NSString* kinveyObjectIdHostProperty(id<KCSPersistable>obj)
 {
@@ -103,7 +105,7 @@ void setKinveyObjectId(NSObject<KCSPersistable>* obj, NSString* objId)
 {
     self = [super init];
     if (self) {
-        _persistenceLayer = [[KCSEntityPersistence alloc] initWithPersistenceId:@"offline"];
+        _persistenceLayer = [[KCSRealmEntityPersistence alloc] initWithPersistenceId:@"offline"];
         _offline = [[KCSOfflineUpdate alloc] initWithCache:self peristenceLayer:_persistenceLayer]; //normally sending self is a bad idea, this constructor doesn't use these values -- but there is high coupling
         _caches = [NSMutableDictionary dictionaryWithCapacity:3];
         _caches[KCSRESTRouteAppdata] = [NSMutableDictionary dictionaryWithCapacity:5];

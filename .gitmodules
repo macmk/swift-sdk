@@ -1,3 +1,6 @@
 [submodule "Tools/xctool"]
 	path = Tools/xctool
 	url = https://github.com/facebook/xctool.git
+[submodule "Realm"]
+	path = Realm
+	url = git@github.com:realm/realm-cocoa.git
