@@ -1158,6 +1158,9 @@ NSError* createCacheError(NSString* message)
                 NSArray* arr = nil;
                 if (jsonResponse != nil && serializedObj != nil) {
                     id newObj = [KCSObjectMapper populateExistingObject:serializedObj withNewData:jsonResponse];
+                    [[KCSAppdataStore caches] addObject:newObj
+                                                  route:self.backingCollection.route
+                                             collection:self.backingCollection.collectionName];
                     arr = @[newObj];
                 }
                 completionBlock(arr, nil);

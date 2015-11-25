@@ -28,20 +28,14 @@
     
     self.collection = [KCSCollection collectionFromString:@"person"
                                                   ofClass:[KCSPerson class]];
-    self.store = [KCSBackgroundAppdataStore storeWithCollection:self.collection
-                                                        options:nil];
+    self.store = [KCSLinkedAppdataStore storeWithCollection:self.collection
+                                                    options:nil];
 }
 
 - (void)tearDown {
     [self removeAndLogoutActiveUser:30];
     
     [super tearDown];
-}
-
-- (void)testIsKindOfClass {
-    KCSPerson* person = [KCSPerson alloc];
-    XCTAssertTrue([person isKindOfClass:[KCSPerson class]]);
-    XCTAssertEqualObjects(NSStringFromClass([person class]), @"KCSPerson__Kinvey");
 }
 
 - (void)testSave {

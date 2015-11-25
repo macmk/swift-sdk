@@ -26,7 +26,7 @@
 #import "KinveyDataStoreInternal.h"
 #import "KinveyUserService.h"
 
-#import "KCSEntityPersistence.h"
+#import "KCSSQLiteEntityPersistence.h"
 #import "KCSObjectCache.h"
 #import "ASTTestClass.h"
 
@@ -59,9 +59,12 @@
 
 - (void)testRW
 {
-    KCSEntityPersistence* cache = [[KCSEntityPersistence alloc] initWithPersistenceId:@"x"];
+    id<KCSEntityPersistence> cache = [[KCSSQLiteEntityPersistence alloc] initWithPersistenceId:@"x"];
     NSDictionary* o = @{@"_id":@"1",@"foo":@"bar"};
-    BOOL u = [cache updateWithEntity:o route:@"r" collection:@"c"];
+    BOOL u = [cache updateObject:nil
+                          entity:o
+                           route:@"r"
+                      collection:@"c"];
     KTAssertU
     NSDictionary* d = [cache entityForId:@"1" route:@"r" collection:@"c"];
     XCTAssertNotNil(d, @"should get back value");
@@ -71,9 +74,12 @@
 
 - (void) testRemove
 {
-    KCSEntityPersistence* cache = [[KCSEntityPersistence alloc] initWithPersistenceId:@"x"];
+    id<KCSEntityPersistence> cache = [[KCSSQLiteEntityPersistence alloc] initWithPersistenceId:@"x"];
     NSDictionary* o = @{@"_id":@"1",@"foo":@"bar"};
-    [cache updateWithEntity:o route:@"r" collection:@"c"];
+    [cache updateObject:nil
+                 entity:o
+                  route:@"r"
+             collection:@"c"];
     NSDictionary* d = [cache entityForId:@"1" route:@"r" collection:@"c"];
     XCTAssertNotNil(d, @"should get back value");
     
@@ -86,7 +92,7 @@
 
 - (void) testQueryRW
 {
-    KCSEntityPersistence* cache = [[KCSEntityPersistence alloc] initWithPersistenceId:@"x"];
+    id<KCSEntityPersistence> cache = [[KCSSQLiteEntityPersistence alloc] initWithPersistenceId:@"x"];
     NSArray* ids = @[@"1",@"2",@"3"];
     NSString* query = [NSString UUID];
     NSString* route = @"r";
@@ -101,7 +107,7 @@
 
 - (void) testQueryReplacesOld
 {
-    KCSEntityPersistence* cache = [[KCSEntityPersistence alloc] initWithPersistenceId:@"x"];
+    id<KCSEntityPersistence> cache = [[KCSSQLiteEntityPersistence alloc] initWithPersistenceId:@"x"];
     NSArray* ids = @[@"1",@"2",@"3"];
     NSString* query = [NSString UUID];
     NSString* route = @"r";
@@ -120,7 +126,7 @@
 
 - (void) testRemoveQueryFromPersistence
 {
-    KCSEntityPersistence* cache = [[KCSEntityPersistence alloc] initWithPersistenceId:@"x"];
+    id<KCSEntityPersistence> cache = [[KCSSQLiteEntityPersistence alloc] initWithPersistenceId:@"x"];
     NSArray* ids = @[@"1",@"2",@"3"];
     NSString* query = [NSString UUID];
     NSString* route = @"r";
@@ -156,7 +162,7 @@
 {
     NSArray* entities = [self jsonArray];
     
-    KCSEntityPersistence* cache = [[KCSEntityPersistence alloc] initWithPersistenceId:@"x"];
+    id<KCSEntityPersistence> cache = [[KCSSQLiteEntityPersistence alloc] initWithPersistenceId:@"x"];
     NSString* route = @"r";
     NSString* cln = @"c";
     
@@ -172,7 +178,7 @@
 {
     NSArray* entities = [self jsonArray];
     
-    KCSEntityPersistence* cache = [[KCSEntityPersistence alloc] initWithPersistenceId:@"x"];
+    id<KCSEntityPersistence> cache = [[KCSSQLiteEntityPersistence alloc] initWithPersistenceId:@"x"];
     NSString* route = @"r";
     NSString* cln = [[NSString UUID] stringByReplacingOccurrencesOfString:@"-" withString:@""];
     
@@ -188,7 +194,7 @@
 
 - (void) testMetadata
 {
-    KCSEntityPersistence* cache = [[KCSEntityPersistence alloc] initWithPersistenceId:@"x"];
+    id<KCSEntityPersistence> cache = [[KCSSQLiteEntityPersistence alloc] initWithPersistenceId:@"x"];
     NSDictionary* meta = @{@"foo":@"bar",@"fizz":@"buzz"};
     BOOL u = [cache setClientMetadata:meta];
     KTAssertU
@@ -200,7 +206,7 @@
 #pragma mark - Peristance Unsaveds
 - (void) testUnsavedPersistence
 {
-    KCSEntityPersistence* cache = [[KCSEntityPersistence alloc] initWithPersistenceId:@"x"];
+    id<KCSEntityPersistence> cache = [[KCSSQLiteEntityPersistence alloc] initWithPersistenceId:@"x"];
     
     NSString* newid = [cache addUnsavedEntity:@{@"a":@1,@"_id":@"1"} route:@"R" collection:@"C1" method:@"M1" headers:@{@"h1":@"v1"}];
     XCTAssertNotNil(newid, @"should have an id");
@@ -230,7 +236,7 @@
 {
     NSArray* entities = [self jsonArray];
     
-    KCSEntityPersistence* cache = [[KCSEntityPersistence alloc] initWithPersistenceId:@"offline"];
+    id<KCSEntityPersistence> cache = [[KCSSQLiteEntityPersistence alloc] initWithPersistenceId:@"offline"];
     NSString* route = @"r";
     NSString* cln = @"c";
     

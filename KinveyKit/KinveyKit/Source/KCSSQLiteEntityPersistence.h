@@ -18,10 +18,15 @@
 
 #import "KCSEntityPersistence.h"
 
-@interface KCSSQLiteEntityPersistence : KCSEntityPersistence
+@interface KCSSQLiteEntityPersistence : NSObject <KCSEntityPersistence>
 
 @property (nonatomic, strong) NSDictionary* saveContext;
-@property (nonatomic, retain) NSString* persistenceId;
+
+-(instancetype)initWithPersistenceId:(NSString *)key
+#if NS_ENFORCE_NSOBJECT_DESIGNATED_INITIALIZER
+NS_DESIGNATED_INITIALIZER
+#endif
+;
 
 @end
 

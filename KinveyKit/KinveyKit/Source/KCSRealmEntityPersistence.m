@@ -15,7 +15,20 @@
 
 #import <Realm/Realm.h>
 
+#import "KCSClientMetadataRealm.h"
+#import "KCSUserRealm.h"
+
+@interface KCSRealmEntityPersistence ()
+
+@property RLMRealm *realm;
+@property NSThread* thread;
+@property CFRunLoopRef runLoop;
+
+@end
+
 @implementation KCSRealmEntityPersistence
+
+@synthesize persistenceId = _persistenceId;
 
 +(void)initialize
 {
@@ -32,6 +45,49 @@
         }
         free(classes);
     });
+}
+
+-(instancetype)initWithPersistenceId:(NSString *)key
+{
+    self = [super init];
+    if (self) {
+        self.persistenceId = key;
+        
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+        
+        self.thread = [[NSThread alloc] initWithTarget:self
+                                              selector:@selector(run:)
+                                                object:semaphore];
+        self.thread.name = @"com.kinvey.KinveyRealm";
+        [self.thread start];
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    }
+    return self;
+}
+
+-(void)run:(dispatch_semaphore_t)semaphore
+{
+    @autoreleasepool {
+        self.runLoop = CFRunLoopGetCurrent();
+        RLMRealmConfiguration* configuration = [RLMRealmConfiguration defaultConfiguration];
+        
+        NSMutableArray<NSString*>* pathComponents = [configuration.path pathComponents].mutableCopy;
+        pathComponents[pathComponents.count - 1] = [NSString stringWithFormat:@"com.kinvey.%@_cache.realm", self.persistenceId];
+        configuration.path = [NSString pathWithComponents:pathComponents];
+        
+        NSError* error = nil;
+        self.realm = [RLMRealm realmWithConfiguration:configuration
+                                                error:&error];
+        dispatch_semaphore_signal(semaphore);
+        if (error) {
+            @throw error;
+        }
+        
+        while (YES) @autoreleasepool {
+            CFRunLoopRun();
+        }
+    }
 }
 
 +(void)createRealmClass:(Class)class
@@ -120,6 +176,89 @@
         free(attributes);
     }
     free(properties);
+}
+
+-(void)performBlock:(void (^)(void))block
+{
+    CFRunLoopPerformBlock(self.runLoop, kCFRunLoopDefaultMode, block);
+}
+
+-(void)performBlockAndWait:(void (^)(void))block
+{
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    CFRunLoopPerformBlock(self.runLoop, kCFRunLoopDefaultMode, ^{
+        block();
+        dispatch_semaphore_signal(semaphore);
+    });
+    CFRunLoopWakeUp(self.runLoop);
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+}
+
+-(NSDictionary *)clientMetadata
+{
+    __block NSDictionary* clientMetadata = nil;
+    [self performBlockAndWait:^{
+        KCSClientMetadataRealm* metadata = [KCSClientMetadataRealm allObjectsInRealm:self.realm].lastObject;
+        if (metadata) {
+            clientMetadata = @{@"appkey" : metadata.appkey};
+        }
+    }];
+    return clientMetadata;
+    
+}
+
+-(BOOL)setClientMetadata:(NSDictionary *)metadata
+{
+    [self performBlockAndWait:^{
+        [self.realm transactionWithBlock:^{
+            [self.realm deleteObjects:[KCSClientMetadataRealm allObjectsInRealm:self.realm]];
+            [KCSClientMetadataRealm createOrUpdateInRealm:self.realm
+                                                withValue:metadata];
+        }];
+    }];
+    return YES;
+}
+
+-(BOOL)updateObject:(id<KCSPersistable>)object
+             entity:(NSDictionary *)entity
+              route:(NSString *)route
+         collection:(NSString *)collection
+{
+    BOOL (*updateEntity)(id, SEL, id<KCSPersistable>, NSDictionary*, NSString*, NSString*) = (BOOL (*)(id, SEL, id<KCSPersistable>, NSDictionary*, NSString*, NSString*)) objc_msgSend;
+    return updateEntity(self, NSSelectorFromString([NSString stringWithFormat:@"updateObject:entity:%@Route:collection:", route]), object, entity, route, collection);
+}
+
+-(BOOL)updateObject:(id<KCSPersistable>)object
+             entity:(NSDictionary*)entity
+          userRoute:(NSString*)route
+         collection:(NSString*)collection
+{
+    __block BOOL result = NO;
+    [self performBlockAndWait:^{
+        [self.realm transactionWithBlock:^{
+            KCSUserRealm* user = [KCSUserRealm createOrUpdateInRealm:self.realm
+                                                           withValue:entity];
+            result = user != nil;
+        }];
+    }];
+    return result;
+}
+
+-(BOOL)updateObject:(id<KCSPersistable>)object
+             entity:(NSDictionary*)entity
+       appdataRoute:(NSString*)route
+         collection:(NSString*)collection
+{
+    return NO;
+}
+
+-(void)clearCaches
+{
+    [self performBlockAndWait:^{
+        [self.realm transactionWithBlock:^{
+            [self.realm deleteAllObjects];
+        }];
+    }];
 }
 
 @end

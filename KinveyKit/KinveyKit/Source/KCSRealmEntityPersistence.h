@@ -8,6 +8,6 @@
 
 #import "KCSEntityPersistence.h"
 
-@interface KCSRealmEntityPersistence : KCSEntityPersistence
+@interface KCSRealmEntityPersistence : NSObject <KCSEntityPersistence>
 
 @end

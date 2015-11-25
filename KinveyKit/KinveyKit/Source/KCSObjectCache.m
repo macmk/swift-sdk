@@ -33,6 +33,7 @@ KK2(cleanup)
 #import "KCSHiddenMethods.h"
 #import "KCSQuery2+KCSInternal.h"
 
+#import "KCSSQLiteEntityPersistence.h"
 #import "KCSRealmEntityPersistence.h"
 
 //TODO: util this?
@@ -93,7 +94,7 @@ void setKinveyObjectId(NSObject<KCSPersistable>* obj, NSString* objId)
 
 
 @interface KCSObjectCache () <NSCacheDelegate>
-@property (nonatomic, strong) KCSEntityPersistence* persistenceLayer;
+@property (nonatomic, strong) id<KCSEntityPersistence> persistenceLayer;
 @property (nonatomic, strong) KCSOfflineUpdate* offline;
 @property (nonatomic, strong) NSMutableDictionary* caches;
 @property (nonatomic, strong) NSCache* queryCache;
@@ -303,15 +304,38 @@ void setKinveyObjectId(NSObject<KCSPersistable>* obj, NSString* objId)
 
 #pragma mark - Set Query
 
-- (void) addObjects:(NSArray*)objects route:(NSString*)route  collection:(NSString*)collection
+- (void) addObjects:(NSArray*)objects
+              route:(NSString*)route
+         collection:(NSString*)collection
 {
-    NSCache* clnCache = [self cacheForRoute:route collection:collection];
+    NSCache* cache = [self cacheForRoute:route collection:collection];
 
     [objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NSDictionary* entity = [self.dataModel jsonEntityForObject:obj route:route collection:collection];
-        DBAssert(entity != nil, @"should have an entity");
-        [self updateObject:obj entity:entity route:route collection:collection collectionCache:clnCache persist:YES];
+        [self addObject:obj
+                  route:route
+             collection:collection
+                  cache:cache];
     }];
+}
+
+-(void)addObject:(id<KCSPersistable>)obj
+           route:(NSString *)route
+      collection:(NSString *)collection
+           cache:(NSCache*)cache
+{
+    NSDictionary* entity = [self.dataModel jsonEntityForObject:obj route:route collection:collection];
+    DBAssert(entity != nil, @"should have an entity");
+    [self updateObject:obj entity:entity route:route collection:collection collectionCache:cache persist:YES];
+}
+
+-(void)addObject:(id<KCSPersistable>)obj route:(NSString *)route collection:(NSString *)collection
+{
+    NSCache* cache = [self cacheForRoute:route collection:collection];
+    
+    [self addObject:obj
+              route:route
+         collection:collection
+              cache:cache];
 }
 
 - (NSArray*) setObjects:(NSArray*)objArray forQuery:(KCSQuery2*)query route:(NSString*)route collection:(NSString*)collection persist:(BOOL) shouldPersist
@@ -396,7 +420,10 @@ void setKinveyObjectId(NSObject<KCSPersistable>* obj, NSString* objId)
     __block BOOL updated = NO;
 
     if (shouldPersist) {
-        updated = [_persistenceLayer updateWithEntity:entity route:route collection:collection];
+        updated = [_persistenceLayer updateObject:object
+                                           entity:entity
+                                            route:route
+                                       collection:collection];
         
         if (updated && _preCalculatesResults) {
             [self preCalculateQueries:entity route:route collection:collection];

@@ -63,17 +63,18 @@
 
 @implementation KCSSQLiteEntityPersistence
 
+@synthesize persistenceId = _persistenceId;
 
 - (NSString*) dbPath
 {
-    return [KCSFileUtils localPathForDB:[NSString stringWithFormat:@"com.kinvey.%@_cache.sqlite3", _persistenceId]];
+    return [KCSFileUtils localPathForDB:[NSString stringWithFormat:@"com.kinvey.%@_cache.sqlite3", self.persistenceId]];
 }
 
 - (instancetype) initWithPersistenceId:(NSString*)key
 {
     self = [super init];
     if (self) {
-        _persistenceId = key;
+        self.persistenceId = key;
         
         [self initDB];
     }
@@ -496,7 +497,10 @@
     return exsits;
 }
 
-- (BOOL) updateWithEntity:(NSDictionary*)entity route:(NSString*)route collection:(NSString*)collection
+- (BOOL) updateObject:(id<KCSPersistable>)object
+               entity:(NSDictionary*)entity
+                route:(NSString*)route
+           collection:(NSString*)collection
 {
     NSString* _id = entity[KCSEntityKeyId];
     if (_id == nil) {
@@ -515,7 +519,7 @@
     NSString* objStr = [[NSString alloc] initWithData:data
                                              encoding:NSUTF8StringEncoding];
     
-    KCSLogDebug(KCS_LOG_CONTEXT_DATA, @"Insert/update %@/%@", _persistenceId, _id);
+    KCSLogDebug(KCS_LOG_CONTEXT_DATA, @"Insert/update %@/%@", self.persistenceId, _id);
     NSDictionary* valDictionary = @{@"id":_id,
                                     @"obj":objStr,
                                     @"time":[NSDate date],
@@ -726,7 +730,10 @@
     if (entities == nil) return NO;
     //TODO set the all?
     for (NSDictionary* entity in entities) {
-        BOOL updated = [self updateWithEntity:entity route:route collection:collection];
+        BOOL updated = [self updateObject:nil
+                                   entity:entity
+                                    route:route
+                               collection:collection];
         if (updated == NO) {
             return NO;
         }

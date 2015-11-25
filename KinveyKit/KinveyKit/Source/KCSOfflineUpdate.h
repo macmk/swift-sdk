@@ -19,7 +19,7 @@
 #import <Foundation/Foundation.h>
 
 
-@class KCSEntityPersistence;
+@protocol KCSEntityPersistence;
 @class KCSObjectCache;
 @protocol KCSOfflineUpdateDelegate;
 
@@ -28,7 +28,7 @@
 @property (nonatomic, weak) id<KCSOfflineUpdateDelegate> delegate;
 @property (nonatomic) BOOL useMock;
 
-- (id) initWithCache:(KCSObjectCache*)cache peristenceLayer:(KCSEntityPersistence*)persitence;
+- (id) initWithCache:(KCSObjectCache*)cache peristenceLayer:(id<KCSEntityPersistence>)persitence;
 
 - (void) start;
 - (void) stop;

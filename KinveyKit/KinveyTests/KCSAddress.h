@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <KinveyKit/KinveyKit.h>
 
-@interface KCSAddress : NSObject
+@interface KCSAddress : NSObject <KCSPersistable>
 
 @property (nonatomic, strong) NSString* city;
 @property (nonatomic, strong) NSString* province;

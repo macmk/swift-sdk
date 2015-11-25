@@ -31,14 +31,14 @@
 #define DELEGATEMETHOD(m) if (_delegate != nil && [_delegate respondsToSelector:@selector(m)])
 
 @interface KCSOfflineUpdate ()
-@property (nonatomic, weak) KCSEntityPersistence* persitence;
+@property (nonatomic, weak) id<KCSEntityPersistence> persitence;
 @property (nonatomic, weak) KCSObjectCache* cache;
 @property (atomic) BOOL drainInProgress;
 @end
 
 @implementation KCSOfflineUpdate
 
-- (id) initWithCache:(KCSObjectCache*)cache peristenceLayer:(KCSEntityPersistence*)persitence
+- (id) initWithCache:(KCSObjectCache*)cache peristenceLayer:(id<KCSEntityPersistence>)persitence
 {
     self = [super init];
     if (self) {

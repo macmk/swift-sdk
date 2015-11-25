@@ -15,6 +15,8 @@
 // Unauthorized reproduction, transmission or distribution of this file and its
 // contents is a violation of applicable laws.
 //
+#ifndef KinveyKit_KCSDataStore_h
+#define KinveyKit_KCSDataStore_h
 
 #import "KCSRequest.h"
 
@@ -54,3 +56,5 @@ typedef void(^KCSDataStoreCountCompletion)(NSUInteger count, NSError* error);
            deleteCompletion:(KCSDataStoreObjectCompletion)completion;
 
 @end
+
+#endif

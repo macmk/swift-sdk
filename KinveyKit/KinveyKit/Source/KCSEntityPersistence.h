@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@interface KCSEntityPersistence : NSObject
+#import "KinveyPersistable.h"
+
+@protocol KCSEntityPersistence <NSObject>
+
+@property (nonatomic, retain) NSString* persistenceId;
 
 -(instancetype)initWithPersistenceId:(NSString*)key;
 
@@ -36,9 +40,10 @@
               route:(NSString*)route
          collection:(NSString*)collection;
 
--(BOOL)updateWithEntity:(NSDictionary*)entity
-                  route:(NSString*)route
-             collection:(NSString*)collection;
+-(BOOL)updateObject:(id<KCSPersistable>)object
+             entity:(NSDictionary*)entity
+              route:(NSString*)route
+         collection:(NSString*)collection;
 
 -(NSString*)addUnsavedEntity:(NSDictionary*)entity
                        route:(NSString*)route
@@ -73,7 +78,7 @@
    collection:(NSString*)collection;
 
 -(NSArray*)export:(NSString*)route
-       collection:(NSString*)collection;
+collection:(NSString*)collection;
 
 #pragma mark - Management
 - (void) clearCaches;

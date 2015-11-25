@@ -24,7 +24,7 @@
 #import "KinveyCoreInternal.h"
 #import "KinveyDataStoreInternal.h"
 
-#import "KCSEntityPersistence.h"
+#import "KCSSQLiteEntityPersistence.h"
 #import "KCSOfflineUpdate.h"
 
 @interface KCSUser (TestUtils)
@@ -112,7 +112,7 @@
 
 @interface OfflineTests : KCSTestCase
 @property (nonatomic, strong) KCSOfflineUpdate* update;
-@property (nonatomic, strong) KCSEntityPersistence* persistence;
+@property (nonatomic, strong) id<KCSEntityPersistence> persistence;
 @property (nonatomic, strong) OfflineDelegate* delegate;
 @end
 
@@ -126,7 +126,7 @@
     
     [KCSUser mockUser];
     
-    self.persistence = [[KCSEntityPersistence alloc] initWithPersistenceId:@"offlinetests"];
+    self.persistence = [[KCSSQLiteEntityPersistence alloc] initWithPersistenceId:@"offlinetests"];
     [self.persistence clearCaches];
     self.delegate = [[OfflineDelegate alloc] init];
     @weakify(self);

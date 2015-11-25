@@ -15,6 +15,8 @@
 // Unauthorized reproduction, transmission or distribution of this file and its
 // contents is a violation of applicable laws.
 //
+#ifndef KinveyKit_KCSFacebookHelper_h
+#define KinveyKit_KCSFacebookHelper_h
 
 #import <Foundation/Foundation.h>
 
@@ -103,3 +105,5 @@ typedef void (^FacebookOGCompletionBlock)(NSString* actionId, NSError* errorOrNi
 + (void) publishToOpenGraph:(NSString*)entityId action:(NSString*)action objectType:(NSString*)objectType optionalParams:(NSDictionary*)extraParams completion:(FacebookOGCompletionBlock)completionBlock;
 
 @end
+
+#endif
