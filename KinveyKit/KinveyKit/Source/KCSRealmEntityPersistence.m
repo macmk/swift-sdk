@@ -18,11 +18,12 @@
 #import "KCSClientMetadataRealm.h"
 #import "KCSUserRealm.h"
 
+#import <UIKit/UIKit.h>
+
 @interface KCSRealmEntityPersistence ()
 
-@property RLMRealm *realm;
-@property NSThread* thread;
-@property CFRunLoopRef runLoop;
+@property (nonatomic, readonly) RLMRealmConfiguration* realmConfiguration;
+@property (nonatomic, readonly) RLMRealm* realm;
 
 @end
 
@@ -30,16 +31,36 @@
 
 @synthesize persistenceId = _persistenceId;
 
+static NSMutableDictionary<NSString*, NSString*>* realGeneratedMap = nil;
+
 +(void)initialize
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        realGeneratedMap = [NSMutableDictionary dictionary];
+        realGeneratedMap[@"NSArray"] = @"RLMArray";
+        realGeneratedMap[@"NSMutableArray"] = @"RLMArray";
+        realGeneratedMap[@"NSSet"] = @"RLMArray";
+        realGeneratedMap[@"NSMutableSet"] = @"RLMArray";
+        realGeneratedMap[@"NSOrderedSet"] = @"RLMArray";
+        realGeneratedMap[@"NSMutableOrderedSet"] = @"RLMArray";
+        realGeneratedMap[@"KCSUser"] = @"KCSUserRealm";
+        realGeneratedMap[@"KCSFile"] = @"KCSFileRealm";
+        realGeneratedMap[@"KCSMetadata"] = @"KCSMetadataRealm";
+        realGeneratedMap[@"CLLocation"] = @"KCS_CLLocation_Realm";
+        realGeneratedMap[@"UIImage"] = @"NSData";
+        
         unsigned int classesCount;
         Class* classes = objc_copyClassList(&classesCount);
         Class class = nil;
+        NSSet<NSString*>* ignoreClasses = [NSSet setWithArray:@[@"NSObject", @"KCSFile", @"KCSUser", @"KCSMetadata"]];
+        NSString* className = nil;
         for (unsigned int i = 0; i < classesCount; i++) {
             class = classes[i];
+            className = [NSString stringWithUTF8String:class_getName(class)];
             if (!class_conformsToProtocol(class, @protocol(KCSPersistable))) continue;
+            if ([ignoreClasses containsObject:className]) continue;
+            if (realGeneratedMap[className]) continue;
             
             [self createRealmClass:class];
         }
@@ -51,50 +72,49 @@
 {
     self = [super init];
     if (self) {
-        self.persistenceId = key;
-        
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-        
-        self.thread = [[NSThread alloc] initWithTarget:self
-                                              selector:@selector(run:)
-                                                object:semaphore];
-        self.thread.name = @"com.kinvey.KinveyRealm";
-        [self.thread start];
-        
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        _persistenceId = key;
     }
     return self;
 }
 
--(void)run:(dispatch_semaphore_t)semaphore
+-(RLMRealmConfiguration *)realmConfiguration
 {
-    @autoreleasepool {
-        self.runLoop = CFRunLoopGetCurrent();
-        RLMRealmConfiguration* configuration = [RLMRealmConfiguration defaultConfiguration];
+    static RLMRealmConfiguration* configuration = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        configuration = [RLMRealmConfiguration defaultConfiguration];
         
         NSMutableArray<NSString*>* pathComponents = [configuration.path pathComponents].mutableCopy;
         pathComponents[pathComponents.count - 1] = [NSString stringWithFormat:@"com.kinvey.%@_cache.realm", self.persistenceId];
         configuration.path = [NSString pathWithComponents:pathComponents];
-        
-        NSError* error = nil;
-        self.realm = [RLMRealm realmWithConfiguration:configuration
-                                                error:&error];
-        dispatch_semaphore_signal(semaphore);
-        if (error) {
-            @throw error;
-        }
-        
-        while (YES) @autoreleasepool {
-            CFRunLoopRun();
-        }
+    });
+    return configuration;
+}
+
+-(RLMRealm *)realm
+{
+    NSError* error = nil;
+    RLMRealm* realm = [RLMRealm realmWithConfiguration:self.realmConfiguration
+                                                 error:&error];
+    if (error) {
+        @throw error;
     }
+    return realm;
 }
 
 +(void)createRealmClass:(Class)class
 {
     NSString* className = [NSString stringWithUTF8String:class_getName(class)];
     
-    Class realmClass = objc_allocateClassPair([RLMObject class], [NSString stringWithFormat:@"%@__RLMObject", className].UTF8String, 0);
+    NSString* realmClassName = [NSString stringWithFormat:@"%@KinveyRealm", className];
+    Class realmClass = objc_allocateClassPair([RLMObject class], realmClassName.UTF8String, 0);
+    
+    if (realGeneratedMap[className]) return;
+    
+    realGeneratedMap[NSStringFromClass(class)] = NSStringFromClass(realmClass);
+    
+    [self copyPropertiesFromClass:class
+                          toClass:realmClass];
     
     objc_registerClassPair(realmClass);
 }
@@ -103,118 +123,140 @@
 {
     unsigned int propertyCount;
     objc_property_t *properties = class_copyPropertyList(fromClass, &propertyCount);
-    NSMutableSet<NSString*>* propertyMethods = [NSMutableSet setWithCapacity:propertyCount * 2];
     NSMutableDictionary<NSString*, NSObject*>* defaultPropertyValues = [NSMutableDictionary dictionaryWithCapacity:propertyCount];
-    objc_property_t property = nil;
-    const char* name = nil;
-    unsigned int attributeCount = 0;
+    NSSet<NSString*>* ignoreClasses = [NSSet setWithArray:@[@"NSURL", @"NSDictionary", @"NSMutableDictionary", @"NSString", @"NSMutableAttributedString", @"NSDate", @"NSNumber"]];
+    NSRegularExpression* regexClassName = [NSRegularExpression regularExpressionWithPattern:@"@\"(\\w+)(?:<(\\w+)>)?\""
+                                                                                    options:0
+                                                                                      error:nil];
+    NSArray<NSTextCheckingResult*>* matches = nil;
+    NSString *attributeValue = nil, *propertyName = nil, *className = nil, *realmClassName;
+    objc_property_t property;
+    unsigned int attributeCount;
     objc_property_attribute_t *attributes = nil;
     objc_property_attribute_t attribute;
-    BOOL added = NO;
-    NSString *nameStr = nil, *attributeName = nil, *attributeValue = nil;
+    BOOL isReadOnly;
+    NSException* exception = nil;
     for (int i = 0; i < propertyCount; i++) {
         property = properties[i];
-        name = property_getName(property);
+        propertyName = [NSString stringWithUTF8String:property_getName(property)];
         attributeCount = 0;
         attributes = property_copyAttributeList(property, &attributeCount);
-        added = class_addProperty(toClass, name, attributes, attributeCount);
-        assert(added);
-        nameStr = [NSString stringWithUTF8String:name];
+        isReadOnly = NO;
+        className = nil;
         for (unsigned int i = 0; i < attributeCount; i++) {
             attribute = attributes[i];
-            attributeName = [NSString stringWithUTF8String:attribute.name];
-            attributeValue = [NSString stringWithUTF8String:attribute.value];
-            if ([attributeName isEqualToString:@"T"]) {
-                switch ([attributeValue characterAtIndex:0]) {
-                    case 'c':
-                        defaultPropertyValues[nameStr] = @((char) 0);
-                        break;
-                    case 'i':
-                        defaultPropertyValues[nameStr] = @((int) 0);
-                        break;
-                    case 's':
-                        defaultPropertyValues[nameStr] = @((short) 0);
-                        break;
-                    case 'l':
-                        defaultPropertyValues[nameStr] = @((long) 0);
-                        break;
-                    case 'q':
-                        defaultPropertyValues[nameStr] = @((long long) 0);
-                        break;
-                    case 'C':
-                        defaultPropertyValues[nameStr] = @((unsigned char) 0);
-                        break;
-                    case 'I':
-                        defaultPropertyValues[nameStr] = @((unsigned int) 0);
-                        break;
-                    case 'S':
-                        defaultPropertyValues[nameStr] = @((unsigned short) 0);
-                        break;
-                    case 'L':
-                        defaultPropertyValues[nameStr] = @((unsigned long) 0);
-                        break;
-                    case 'Q':
-                        defaultPropertyValues[nameStr] = @((unsigned long long) 0);
-                        break;
-                    case 'f':
-                        defaultPropertyValues[nameStr] = @((float) 0);
-                        break;
-                    case 'd':
-                        defaultPropertyValues[nameStr] = @((double) 0);
-                        break;
-                    case 'B':
-                        defaultPropertyValues[nameStr] = @((bool) NO);
-                        break;
-                    default:
-                        break;
-                }
+            switch (attribute.name[0]) {
+                case 'T':
+                    switch (attribute.value[0]) {
+                        case 'c':
+                            defaultPropertyValues[propertyName] = @((char) 0);
+                            break;
+                        case 'i':
+                            defaultPropertyValues[propertyName] = @((int) 0);
+                            break;
+                        case 's':
+                            defaultPropertyValues[propertyName] = @((short) 0);
+                            break;
+                        case 'l':
+                            defaultPropertyValues[propertyName] = @((long) 0);
+                            break;
+                        case 'q':
+                            defaultPropertyValues[propertyName] = @((long long) 0);
+                            break;
+                        case 'C':
+                            defaultPropertyValues[propertyName] = @((unsigned char) 0);
+                            break;
+                        case 'I':
+                            defaultPropertyValues[propertyName] = @((unsigned int) 0);
+                            break;
+                        case 'S':
+                            defaultPropertyValues[propertyName] = @((unsigned short) 0);
+                            break;
+                        case 'L':
+                            defaultPropertyValues[propertyName] = @((unsigned long) 0);
+                            break;
+                        case 'Q': { //unsigned long long
+                            NSString* reason = [NSString stringWithFormat:@"Type not supported: [%@ %@]", NSStringFromClass(fromClass), propertyName];
+                            exception = [NSException exceptionWithName:@"KinveyException"
+                                                                reason:reason
+                                                              userInfo:@{NSLocalizedDescriptionKey : reason,
+                                                                         NSLocalizedFailureReasonErrorKey : reason}];
+                            break;
+                        }
+                        case 'f':
+                            defaultPropertyValues[propertyName] = @((float) 0);
+                            break;
+                        case 'd':
+                            defaultPropertyValues[propertyName] = @((double) 0);
+                            break;
+                        case 'B':
+                            defaultPropertyValues[propertyName] = @((bool) NO);
+                            break;
+                        case '@':
+                            attributeValue = [NSString stringWithUTF8String:attribute.value];
+                            matches = [regexClassName matchesInString:attributeValue
+                                                              options:0
+                                                                range:NSMakeRange(0, attributeValue.length)];
+                            if (matches.count > 0 &&
+                                matches.firstObject.numberOfRanges > 1 &&
+                                [matches.firstObject rangeAtIndex:1].location != NSNotFound)
+                            {
+                                className = [attributeValue substringWithRange:[matches.firstObject rangeAtIndex:1]];
+                                if (![ignoreClasses containsObject:className]) {
+                                    if (realGeneratedMap[className] == nil) {
+                                        [self createRealmClass:NSClassFromString(className)];
+                                    }
+                                    realmClassName = realGeneratedMap[className];
+                                    if (realmClassName) {
+                                        attribute.value = [NSString stringWithFormat:@"@\"%@\"", realmClassName].UTF8String;
+                                        attributes[i] = attribute;
+                                    }
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 'R':
+                    isReadOnly = YES;
+                    break;
+                default:
+                    break;
             }
         }
-        
-        [propertyMethods addObject:[NSString stringWithFormat:@"set%c%@:", [[nameStr uppercaseString] characterAtIndex:0], [nameStr substringFromIndex:1]]];
-        [propertyMethods addObject:nameStr];
+        if (exception != nil || isReadOnly || (className != nil && [ignoreClasses containsObject:className])) {
+            free(attributes);
+            if (exception) {
+                @throw exception;
+            }
+            continue;
+        }
+        BOOL added = class_addProperty(toClass, propertyName.UTF8String, attributes, attributeCount);
+        assert(added);
         free(attributes);
     }
     free(properties);
 }
 
--(void)performBlock:(void (^)(void))block
-{
-    CFRunLoopPerformBlock(self.runLoop, kCFRunLoopDefaultMode, block);
-}
-
--(void)performBlockAndWait:(void (^)(void))block
-{
-    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-    CFRunLoopPerformBlock(self.runLoop, kCFRunLoopDefaultMode, ^{
-        block();
-        dispatch_semaphore_signal(semaphore);
-    });
-    CFRunLoopWakeUp(self.runLoop);
-    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-}
-
 -(NSDictionary *)clientMetadata
 {
-    __block NSDictionary* clientMetadata = nil;
-    [self performBlockAndWait:^{
-        KCSClientMetadataRealm* metadata = [KCSClientMetadataRealm allObjectsInRealm:self.realm].lastObject;
-        if (metadata) {
-            clientMetadata = @{@"appkey" : metadata.appkey};
-        }
-    }];
+    RLMRealm* realm = self.realm;
+    NSDictionary* clientMetadata = nil;
+    KCSClientMetadataRealm* metadata = [KCSClientMetadataRealm allObjectsInRealm:realm].lastObject;
+    if (metadata) {
+        clientMetadata = @{ @"appkey" : metadata.appkey };
+    }
     return clientMetadata;
-    
 }
 
 -(BOOL)setClientMetadata:(NSDictionary *)metadata
 {
-    [self performBlockAndWait:^{
-        [self.realm transactionWithBlock:^{
-            [self.realm deleteObjects:[KCSClientMetadataRealm allObjectsInRealm:self.realm]];
-            [KCSClientMetadataRealm createOrUpdateInRealm:self.realm
-                                                withValue:metadata];
-        }];
+    RLMRealm* realm = self.realm;
+    [realm transactionWithBlock:^{
+        [realm deleteObjects:[KCSClientMetadataRealm allObjectsInRealm:realm]];
+        [KCSClientMetadataRealm createOrUpdateInRealm:realm
+                                            withValue:metadata];
     }];
     return YES;
 }
@@ -234,12 +276,11 @@
          collection:(NSString*)collection
 {
     __block BOOL result = NO;
-    [self performBlockAndWait:^{
-        [self.realm transactionWithBlock:^{
-            KCSUserRealm* user = [KCSUserRealm createOrUpdateInRealm:self.realm
-                                                           withValue:entity];
-            result = user != nil;
-        }];
+    RLMRealm* realm = self.realm;
+    [realm transactionWithBlock:^{
+        KCSUserRealm* user = [KCSUserRealm createOrUpdateInRealm:realm
+                                                       withValue:entity];
+        result = user != nil;
     }];
     return result;
 }
@@ -254,10 +295,9 @@
 
 -(void)clearCaches
 {
-    [self performBlockAndWait:^{
-        [self.realm transactionWithBlock:^{
-            [self.realm deleteAllObjects];
-        }];
+    RLMRealm* realm = self.realm;
+    [realm transactionWithBlock:^{
+        [realm deleteAllObjects];
     }];
 }
 

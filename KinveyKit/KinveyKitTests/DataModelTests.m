@@ -32,7 +32,7 @@
 @property (nonatomic, weak) TC* this;
 @property (nonatomic, retain) NSSet* setRef;
 @property (nonatomic, retain) NSMutableOrderedSet* oSetRef;
-@property (nonatomic, retain) NSArray* arrOfDicts;
+@property (nonatomic, retain) NSArray<NSDictionary*>* arrOfDicts;
 @end
 
 @implementation TC

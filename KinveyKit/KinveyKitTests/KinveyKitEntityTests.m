@@ -33,8 +33,8 @@
 #import "KCSFileStore.h"
 
 @interface HS1789 : NSObject <KCSPersistable>
-@property (nonatomic, copy) NSMutableSet* users;
-@property (nonatomic, strong) NSArray* location;
+@property (nonatomic, copy) NSMutableSet<KCSUser*><KCSUser>* users;
+@property (nonatomic, strong) CLLocation* location;
 @property (nonatomic, strong) NSString* entityId;
 @property (nonatomic, strong) KCSMetadata* metadata;
 @property (nonatomic, strong) NSString* name;

@@ -533,4 +533,8 @@ KCS_CONSTANT KCSUserAttributeFacebookId;
 
 @end
 
+@protocol KCSUser <NSObject>
+
+@end
+
 #endif

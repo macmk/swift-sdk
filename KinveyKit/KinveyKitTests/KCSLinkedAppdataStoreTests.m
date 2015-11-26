@@ -30,10 +30,9 @@
 #import "TestUtils.h"
 #import "KCSHiddenMethods.h"
 
-
 @interface TSSMessage : NSObject <KCSPersistable>
 @property (nonatomic, copy) NSString* objId;
-@property (nonatomic, copy) NSMutableArray* recipients;
+@property (nonatomic, copy) NSMutableArray<KCSUser*><KCSUser>* recipients;
 @end
 
 @implementation TSSMessage
