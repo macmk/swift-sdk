@@ -13,15 +13,15 @@
 
 @property NSString* fileId;
 @property NSString* filename;
-@property NSUInteger length;
+@property long long length;
 @property NSString* mimeType;
-@property NSNumber* publicFile;
+@property NSNumber<RLMInt>* publicFile;
 @property KCSMetadataRealm* metadata;
 @property NSString* localURL;
 @property NSData* data;
 @property NSString* remoteURL;
 @property NSDate* expirationDate;
-@property unsigned long long bytesWritten;
+@property long long bytesWritten;
 @property NSString* downloadURL;
 
 @end

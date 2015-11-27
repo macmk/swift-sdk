@@ -103,6 +103,8 @@
 
 @interface BrokenHostMappingObj : NSObject <KCSPersistable>
 
+@property NSString* objectId;
+
 @end
 
 @implementation BrokenHostMappingObj

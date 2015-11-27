@@ -10,4 +10,9 @@
 
 @implementation KCS_CLFloor_Realm
 
++(NSString *)primaryKey
+{
+    return @"level";
+}
+
 @end

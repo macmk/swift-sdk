@@ -10,4 +10,9 @@
 
 @implementation KCSFileRealm
 
++(NSString *)primaryKey
+{
+    return @"fileId";
+}
+
 @end

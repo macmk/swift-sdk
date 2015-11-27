@@ -12,11 +12,10 @@
 
 @interface KCSPerson : NSObject <KCSPersistable>
 
-@property (nonatomic, strong) NSString* personId;
-@property (nonatomic, strong) NSString* name;
-@property (nonatomic, assign) NSInteger age;
-@property (nonatomic, strong) KCSAddress* address;
-
-@property (nonatomic, strong) KCSMetadata* metadata;
+@property NSString* personId;
+@property NSString* name;
+@property NSInteger age;
+@property KCSAddress* address;
+@property KCSMetadata* metadata;
 
 @end

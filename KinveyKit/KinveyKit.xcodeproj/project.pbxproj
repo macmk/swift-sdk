@@ -869,6 +869,7 @@
 		578DB7001C06956200F456B1 /* KCS_CLLocation_Realm.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DB6F51C0692D200F456B1 /* KCS_CLLocation_Realm.m */; };
 		578DB7011C06956200F456B1 /* KCS_CLLocationCoordinate2D_Realm.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DB6F91C06930D00F456B1 /* KCS_CLLocationCoordinate2D_Realm.m */; };
 		578DB7021C06956200F456B1 /* KCS_CLFloor_Realm.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DB6FD1C0693AE00F456B1 /* KCS_CLFloor_Realm.m */; };
+		578DB7031C0787CF00F456B1 /* KCSFileRealm.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DB6F11C0685EE00F456B1 /* KCSFileRealm.m */; };
 		579419141AD35A28001CFF5A /* KeychainTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B75A601858C0BC0093144E /* KeychainTests.m */; };
 		579419151AD35A67001CFF5A /* FileUtilsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E342961850D6BB0056EA54 /* FileUtilsTest.m */; };
 		579523C11B869C9E000D1C46 /* KCSLogTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 57F556831AFC26B8008CB244 /* KCSLogTests.m */; };
@@ -5861,6 +5862,7 @@
 				578833EF1AB8CF5400078CC5 /* KCSFile.m in Sources */,
 				578834201AB8CF5400078CC5 /* KCSPropertyUtil.m in Sources */,
 				5788340F1AB8CF5400078CC5 /* KCSNetworkResponse.m in Sources */,
+				578DB7031C0787CF00F456B1 /* KCSFileRealm.m in Sources */,
 				57FF3E151AB9ED8000128BC7 /* KCSLinkedInHelper.m in Sources */,
 				5788340E1AB8CF5400078CC5 /* KCSHttpRequest.m in Sources */,
 				5788341D1AB8CF5400078CC5 /* KCSOfflineUpdate.m in Sources */,

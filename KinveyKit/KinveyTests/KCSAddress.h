@@ -11,8 +11,8 @@
 
 @interface KCSAddress : NSObject <KCSPersistable>
 
-@property (nonatomic, strong) NSString* city;
-@property (nonatomic, strong) NSString* province;
-@property (nonatomic, strong) NSString* country;
+@property NSString* city;
+@property NSString* province;
+@property NSString* country;
 
 @end
