@@ -16,7 +16,7 @@
 // contents is a violation of applicable laws.
 //
 
-@class KCSQuery;
+#import "KCSQuery.h"
 
 typedef enum KCSQueryErrors : NSInteger {
     KCSqueryPredicateNotSupportedError = -3000
@@ -32,6 +32,7 @@ KCS_DEPRECATED(Please use KCSQuery instead, 1.41.0)
 @property (nonatomic, copy) NSArray* sortDescriptors; //of NSSortDescriptors
 @property (nonatomic) NSUInteger limit;
 @property (nonatomic) NSUInteger offset;
+@property (nonatomic, strong) KCSQuery* query;
 
 - (NSString *)escapedQueryString;
 

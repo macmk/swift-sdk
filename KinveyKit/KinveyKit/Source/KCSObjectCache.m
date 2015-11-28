@@ -265,16 +265,23 @@ void setKinveyObjectId(NSObject<KCSPersistable>* obj, NSString* objId)
 }
 
 
-- (NSArray*) pullQuery:(KCSQuery2*)query route:(NSString*)route collection:(NSString*)collection
+- (NSArray*) pullQuery:(KCSQuery2*)query
+                 route:(NSString*)route
+            collection:(NSString*)collection
 {
+    if ([_persistenceLayer respondsToSelector:@selector(entitiesForQuery:route:collection:)]) {
+        return [_persistenceLayer entitiesForQuery:query
+                                             route:route
+                                        collection:collection];
+    }
+    
     NSArray* retVal;
-    NSString* queryKey = [query keyString];
     NSString* key = [self queryKey:query route:route collection:collection];
     __block NSArray* ids = [_queryCache objectForKey:key];
     BOOL shouldCacheFromPersistence = NO;
     if (!ids) {
         //not in the local cache, pull from the db
-        ids = [_persistenceLayer idsForQuery:queryKey route:route collection:collection];
+        ids = [_persistenceLayer idsForQuery:query route:route collection:collection];
         if ([ids count] > 0) {
             shouldCacheFromPersistence = YES;
         } else if ([query isAllQuery]) {

@@ -15,18 +15,23 @@
     return @{@"personId" : KCSEntityKeyId,
              @"metadata" : KCSEntityKeyMetadata,
              @"name"     : @"name",
-//             @"address"  : @"address",
+             @"address"  : @"address",
              @"age"      : @"age"};
 }
 
-//+(NSDictionary *)kinveyPropertyToCollectionMapping
-//{
-//    return @{ @"address" : @"Address" };
-//}
-//
-//+(NSDictionary *)kinveyObjectBuilderOptions
-//{
-//    return @{ KCS_REFERENCE_MAP_KEY : @{ @"address" : [KCSAddress class] } };
-//}
++(NSDictionary *)kinveyPropertyToCollectionMapping
+{
+    return @{ @"address" : @"Address" };
+}
+
++(NSDictionary *)kinveyObjectBuilderOptions
+{
+    return @{ KCS_REFERENCE_MAP_KEY : @{ @"address" : [KCSAddress class] } };
+}
+
+-(NSArray *)referenceKinveyPropertiesOfObjectsToSave
+{
+    return @[@"address"];
+}
 
 @end

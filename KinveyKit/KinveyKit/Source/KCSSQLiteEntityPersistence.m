@@ -28,6 +28,7 @@
 #import "KCSMutableOrderedDictionary.h"
 #import "KinveyPersistable.h"
 #import "KCSHttpRequest.h"
+#import "KCSQuery2+KCSInternal.h"
 
 //IMPORTANT NOTE: please, always increase this number, never decrease to avoid clear your cache!
 //IMPORTANT NOTE: if you changed the version, make sure that you have implemented a method that looks like -(void)upgradeDatabaseSchemaFromVersion5toVersion6:(KCS_FMDatabase*)db
@@ -640,10 +641,10 @@
     return updated;
 }
 
-- (NSArray*)idsForQuery:(NSString*)query route:(NSString*)route collection:(NSString*)collection
+- (NSArray*)idsForQuery:(KCSQuery2*)query route:(NSString*)route collection:(NSString*)collection
 {
     NSString* routeKey = [self tableForRoute:route collection:collection];
-    NSString* queryKey = [self queryKey:query routeKey:routeKey];
+    NSString* queryKey = [self queryKey:[query keyString] routeKey:routeKey];
 
     NSString* q = [NSString stringWithFormat:@"SELECT ids FROM queries WHERE id='%@'", queryKey];
     __block NSString* result = nil;

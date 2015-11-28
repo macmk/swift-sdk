@@ -346,6 +346,8 @@ typedef NS_ENUM(NSInteger, KCSSortDirection) {
  */
 + (KCSQuery *) queryWithQuery:(KCSQuery*) query;
 
++(KCSQuery*)queryWithPredicate:(NSPredicate*)predicate;
+
 
 ///---------------------------------------------------------------------------------------
 /// @name Modifying Queries
@@ -494,6 +496,8 @@ typedef NS_ENUM(NSInteger, KCSSortDirection) {
 @property (nonatomic, strong) KCSQuerySkipModifier *skipModifier;
 /*! The current list of sort modifiers.  Read only, use addSortModifier: and clearSortModifiers to modify. */
 @property (nonatomic, strong, readonly) NSArray *sortModifiers;
+
+@property (nonatomic, strong) NSPredicate* predicate;
 
 /*! Add a new sort modifier to our list of modifiers.
  

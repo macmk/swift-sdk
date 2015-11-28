@@ -42,6 +42,7 @@
 #import "KinveyErrorCodes.h"
 #import "KCSImageUtils.h"
 #import "NSString+KinveyAdditions.h"
+#import "KCSDataModel.h"
 
 #define kKMDKey @"_kmd"
 #define kACLKey @"_acl"
@@ -710,7 +711,9 @@ id valueForProperty(NSString* jsonName, id value, BOOL withRefs, id object, NSSt
             if (value == nil) {
                 return nil;
             }
-            
+            if ([value isKindOfClass:[KCSKinveyRef class]]) {
+                value = [value proxyForJson];
+            }
             dictionaryToMap[jsonName] = value;
         } // end test object name
     } // end for key in kinveyMapping

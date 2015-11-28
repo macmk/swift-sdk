@@ -68,6 +68,7 @@
     // 1-1 mapping of the client properties
     KCSLogForced(@"EXCEPTION Encountered: Name => %@, Reason => %@", @"UnsupportedFeatureException", @"This version of the Kinvey iOS library requires clients to override this method");
     
+#ifndef DEBUG
     NSString* errorMessage = [NSString stringWithFormat:@"Object \"%@\" of type \"%@\" does not implement 'hostToKinveyPropertyMapping', a required 'KCSPersistable' method for saving the object to the backend", self, [self class]];
     
     NSException* myException = [NSException
@@ -76,6 +77,7 @@
                                 userInfo:nil];
     
     @throw myException;
+#endif
 
     return nil;
 }

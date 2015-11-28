@@ -11,8 +11,10 @@
 
 @interface KCSAddress : NSObject <KCSPersistable>
 
+@property NSString* addressId;
 @property NSString* city;
 @property NSString* province;
 @property NSString* country;
+@property KCSMetadata* metadata;
 
 @end

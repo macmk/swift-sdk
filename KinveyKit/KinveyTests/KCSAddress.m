@@ -10,4 +10,13 @@
 
 @implementation KCSAddress
 
+-(NSDictionary *)hostToKinveyPropertyMapping
+{
+    return @{@"addressId" : KCSEntityKeyId,
+             @"metadata"  : KCSEntityKeyMetadata,
+             @"city"      : @"city",
+             @"province"  : @"province",
+             @"country"   : @"country"};
+}
+
 @end

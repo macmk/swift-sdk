@@ -663,6 +663,13 @@ BOOL kcsIsOperator(NSString* queryField)
     return newQuery;
 }
 
++(KCSQuery *)queryWithPredicate:(NSPredicate *)predicate
+{
+    KCSQuery* query = [KCSQuery query];
+    query.predicate = predicate;
+    return query;
+}
+
 
 #pragma mark - Modifying Queries
 - (void)addQuery: (KCSQuery *)query

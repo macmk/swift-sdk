@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "KinveyPersistable.h"
+#import "KCSQuery2.h"
 
 @protocol KCSEntityPersistence <NSObject>
 
@@ -19,7 +20,7 @@
 -(NSArray*)allIds:(NSString*)route
        collection:(NSString*)collection;
 
--(NSArray*)idsForQuery:(NSString*)query
+-(NSArray*)idsForQuery:(KCSQuery2*)query
                  route:(NSString*)route
             collection:(NSString*)collection;
 
@@ -82,5 +83,10 @@ collection:(NSString*)collection;
 
 #pragma mark - Management
 - (void) clearCaches;
+
+@optional
+-(NSArray<NSDictionary*>*)entitiesForQuery:(KCSQuery2*)query
+                                     route:(NSString*)route
+                                collection:(NSString*)collection;
 
 @end

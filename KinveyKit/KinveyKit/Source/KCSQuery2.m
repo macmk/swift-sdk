@@ -365,6 +365,7 @@ id kcsConvertMongoValToPredicate(id val)
 {
     KCSQuery2* q = [[self alloc] init];
     q.internalRepresentation = [query.query mutableCopy];
+    q.query = query;
     
     if ([[query sortModifiers] count] > 0) {
         NSMutableArray* sorts = [NSMutableArray arrayWithCapacity:query.sortModifiers.count];

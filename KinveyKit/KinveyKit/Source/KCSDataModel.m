@@ -25,7 +25,7 @@
 #import "KCSObjectMapper.h"
 
 @interface KCSDataModel ()
-@property (nonatomic, strong) NSMutableDictionary* collectionMap;
+@property (nonatomic, strong) NSMutableDictionary<NSString*, Class>* collectionMap;
 @end
 
 @implementation KCSDataModel
@@ -53,6 +53,11 @@
         NSAssert(NO, @"More than one class defined for a collection");
     }
     _collectionMap[collection] = class;
+}
+
+-(Class)classForCollection:(NSString *)collection
+{
+    return _collectionMap[collection];
 }
 
 - (id<KCSPersistable>) objectFromCollection:(NSString*)collection data:(NSDictionary*)entity
