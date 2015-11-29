@@ -564,10 +564,9 @@
 		57291BAD1BE19AE10066033E /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 57291BAC1BE19AE10066033E /* Event.m */; };
 		5736546F1AE17F3B00E3982B /* MLIBZ_239_DataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5736546E1AE17F3B00E3982B /* MLIBZ_239_DataHelper.m */; };
 		573654711AE1851B00E3982B /* MLIBZ_239_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573654701AE1851B00E3982B /* MLIBZ_239_Tests.swift */; };
-		573D7E461C094937007C8F89 /* KCSAcl.h in Headers */ = {isa = PBXBuildFile; fileRef = 573D7E441C094937007C8F89 /* KCSAcl.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		573D7E471C094937007C8F89 /* KCSAcl.m in Sources */ = {isa = PBXBuildFile; fileRef = 573D7E451C094937007C8F89 /* KCSAcl.m */; };
-		573D7E481C094963007C8F89 /* KCSAcl.m in Sources */ = {isa = PBXBuildFile; fileRef = 573D7E451C094937007C8F89 /* KCSAcl.m */; };
-		573D7E491C094968007C8F89 /* KCSAcl.h in Headers */ = {isa = PBXBuildFile; fileRef = 573D7E441C094937007C8F89 /* KCSAcl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		573D7E521C0A50E1007C8F89 /* KCSAclRealm.h in Headers */ = {isa = PBXBuildFile; fileRef = 573D7E501C0A50E1007C8F89 /* KCSAclRealm.h */; };
+		573D7E531C0A50E1007C8F89 /* KCSAclRealm.m in Sources */ = {isa = PBXBuildFile; fileRef = 573D7E511C0A50E1007C8F89 /* KCSAclRealm.m */; };
+		573D7E541C0A51F8007C8F89 /* KCSAclRealm.m in Sources */ = {isa = PBXBuildFile; fileRef = 573D7E511C0A50E1007C8F89 /* KCSAclRealm.m */; };
 		57405C761B2B9AB600238187 /* MLIBZ_326_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 57405C751B2B9AB600238187 /* MLIBZ_326_Tests.m */; };
 		5740AABD1B866B3700F153A2 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D3C5E67F14745EEE002D8F2B /* libsqlite3.dylib */; };
 		5740AABE1B866B3700F153A2 /* libKinvey.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57C8DAF91AB8C968007F2E42 /* libKinvey.a */; };
@@ -856,9 +855,6 @@
 		578DB6D81C05017200F456B1 /* KCSUserRealm.h in Headers */ = {isa = PBXBuildFile; fileRef = 578DB6D61C05017200F456B1 /* KCSUserRealm.h */; };
 		578DB6D91C05017200F456B1 /* KCSUserRealm.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DB6D71C05017200F456B1 /* KCSUserRealm.m */; };
 		578DB6DF1C05070800F456B1 /* KCSUserRealm.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DB6D71C05017200F456B1 /* KCSUserRealm.m */; };
-		578DB6E21C0507CC00F456B1 /* KCSAclRealm.h in Headers */ = {isa = PBXBuildFile; fileRef = 578DB6E01C0507CC00F456B1 /* KCSAclRealm.h */; };
-		578DB6E31C0507CC00F456B1 /* KCSAclRealm.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DB6E11C0507CC00F456B1 /* KCSAclRealm.m */; };
-		578DB6E41C0508C500F456B1 /* KCSAclRealm.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DB6E11C0507CC00F456B1 /* KCSAclRealm.m */; };
 		578DB6E71C05095F00F456B1 /* KCSMetadataRealm.h in Headers */ = {isa = PBXBuildFile; fileRef = 578DB6E51C05095F00F456B1 /* KCSMetadataRealm.h */; };
 		578DB6E81C05095F00F456B1 /* KCSMetadataRealm.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DB6E61C05095F00F456B1 /* KCSMetadataRealm.m */; };
 		578DB6E91C05098300F456B1 /* KCSMetadataRealm.m in Sources */ = {isa = PBXBuildFile; fileRef = 578DB6E61C05095F00F456B1 /* KCSMetadataRealm.m */; };
@@ -1959,8 +1955,8 @@
 		573654701AE1851B00E3982B /* MLIBZ_239_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLIBZ_239_Tests.swift; sourceTree = "<group>"; };
 		5739EC4C1B1F849E00B6BA91 /* MLIBZ_364_Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLIBZ_364_Tests.swift; sourceTree = "<group>"; };
 		573C7F251B2B467400B4A774 /* KCSCallbacksInMainThreadTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KCSCallbacksInMainThreadTests.swift; sourceTree = "<group>"; };
-		573D7E441C094937007C8F89 /* KCSAcl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSAcl.h; sourceTree = "<group>"; };
-		573D7E451C094937007C8F89 /* KCSAcl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCSAcl.m; sourceTree = "<group>"; };
+		573D7E501C0A50E1007C8F89 /* KCSAclRealm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSAclRealm.h; sourceTree = "<group>"; };
+		573D7E511C0A50E1007C8F89 /* KCSAclRealm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCSAclRealm.m; sourceTree = "<group>"; };
 		57405C751B2B9AB600238187 /* MLIBZ_326_Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLIBZ_326_Tests.m; sourceTree = "<group>"; };
 		5740AACA1B866B3700F153A2 /* KCSFileStoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KCSFileStoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5743915E1AEE9AD200D55AAF /* KCSTryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSTryCatch.h; sourceTree = "<group>"; };
@@ -2013,8 +2009,6 @@
 		578DB6CE1C04FA4300F456B1 /* KCSClientMetadataRealm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCSClientMetadataRealm.m; sourceTree = "<group>"; };
 		578DB6D61C05017200F456B1 /* KCSUserRealm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSUserRealm.h; sourceTree = "<group>"; };
 		578DB6D71C05017200F456B1 /* KCSUserRealm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCSUserRealm.m; sourceTree = "<group>"; };
-		578DB6E01C0507CC00F456B1 /* KCSAclRealm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSAclRealm.h; sourceTree = "<group>"; };
-		578DB6E11C0507CC00F456B1 /* KCSAclRealm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCSAclRealm.m; sourceTree = "<group>"; };
 		578DB6E51C05095F00F456B1 /* KCSMetadataRealm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSMetadataRealm.h; sourceTree = "<group>"; };
 		578DB6E61C05095F00F456B1 /* KCSMetadataRealm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCSMetadataRealm.m; sourceTree = "<group>"; };
 		578DB6F01C0685EE00F456B1 /* KCSFileRealm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSFileRealm.h; sourceTree = "<group>"; };
@@ -3073,10 +3067,10 @@
 				578DB6CE1C04FA4300F456B1 /* KCSClientMetadataRealm.m */,
 				578DB6D61C05017200F456B1 /* KCSUserRealm.h */,
 				578DB6D71C05017200F456B1 /* KCSUserRealm.m */,
-				578DB6E01C0507CC00F456B1 /* KCSAclRealm.h */,
-				578DB6E11C0507CC00F456B1 /* KCSAclRealm.m */,
 				578DB6E51C05095F00F456B1 /* KCSMetadataRealm.h */,
 				578DB6E61C05095F00F456B1 /* KCSMetadataRealm.m */,
+				573D7E501C0A50E1007C8F89 /* KCSAclRealm.h */,
+				573D7E511C0A50E1007C8F89 /* KCSAclRealm.m */,
 				578DB6F01C0685EE00F456B1 /* KCSFileRealm.h */,
 				578DB6F11C0685EE00F456B1 /* KCSFileRealm.m */,
 				578DB6F41C0692D200F456B1 /* KCS_CLLocation_Realm.h */,
@@ -3272,8 +3266,6 @@
 				2726F98A15E6CE370087099D /* KCSBuilders.m */,
 				27F360981598BF5C006B699E /* KCSMetadata.h */,
 				27F3609C1598C1CB006B699E /* KCSMetadata.m */,
-				573D7E441C094937007C8F89 /* KCSAcl.h */,
-				573D7E451C094937007C8F89 /* KCSAcl.m */,
 			);
 			name = appdataService;
 			sourceTree = "<group>";
@@ -3915,13 +3907,12 @@
 				57A8C8741BC0698100ADA28F /* KCSBase64.h in Headers */,
 				57A8C8851BC06A5C00ADA28F /* KCSMutableOrderedDictionary.h in Headers */,
 				57A8C8D41BC06BC400ADA28F /* KCSLog.h in Headers */,
-				578DB6E21C0507CC00F456B1 /* KCSAclRealm.h in Headers */,
-				573D7E461C094937007C8F89 /* KCSAcl.h in Headers */,
 				57A8C8CC1BC06BA600ADA28F /* KCSDataStoreOperationRequest.h in Headers */,
 				57A8C8751BC0698F00ADA28F /* KCSQuery.h in Headers */,
 				57A8C8761BC0699900ADA28F /* KinveyKit2.h in Headers */,
 				57A8C8771BC069AB00ADA28F /* KinveyPersistable.h in Headers */,
 				57A8C8C11BC06B7B00ADA28F /* KCSURLConnectionDelegateAdapter.h in Headers */,
+				573D7E521C0A50E1007C8F89 /* KCSAclRealm.h in Headers */,
 				57A8C8781BC069B900ADA28F /* KCSBackgroundAppdataStore.h in Headers */,
 				57A8C8B61BC06B3300ADA28F /* KinveyDataStoreInternal.h in Headers */,
 				57A8C8791BC069C600ADA28F /* KinveyErrorCodes.h in Headers */,
@@ -4063,7 +4054,6 @@
 				57FF3E101AB9BF3E00128BC7 /* KCSNSURLCxnFileOperation.h in Headers */,
 				57FF3E091AB9BF2700128BC7 /* KCSSQLiteEntityPersistence.h in Headers */,
 				57FF3D941AB9BD4700128BC7 /* KCSBackgroundAppdataStore.h in Headers */,
-				573D7E491C094968007C8F89 /* KCSAcl.h in Headers */,
 				57FF3D911AB9BD4700128BC7 /* KinveyErrorCodes.h in Headers */,
 				57FF3DBB1AB9BD4700128BC7 /* KCSOfflineUpdateDelegate.h in Headers */,
 				57FEE8F11B8E49C300CE0871 /* KCSRequest.h in Headers */,
@@ -5678,8 +5668,8 @@
 				57A8C8351BBF6B8100ADA28F /* KCSUser+SocialExtras.m in Sources */,
 				57A8C8341BBF6B7600ADA28F /* KCSBase64.m in Sources */,
 				57A8C8331BBF6B6E00ADA28F /* KCSReduceFunction.m in Sources */,
+				573D7E531C0A50E1007C8F89 /* KCSAclRealm.m in Sources */,
 				57A8C8321BBF6B6400ADA28F /* KCSBackgroundAppdataStore.m in Sources */,
-				578DB6E31C0507CC00F456B1 /* KCSAclRealm.m in Sources */,
 				57A8C8311BBF6B5B00ADA28F /* KCSImageUtils.m in Sources */,
 				57A8C8301BBF6B5100ADA28F /* KCSSocialRequest.m in Sources */,
 				57A8C82F1BBF6B4300ADA28F /* KCSClient+ConfigurationTest.m in Sources */,
@@ -5702,7 +5692,6 @@
 				57A8C81D1BBF6A7200ADA28F /* KCSNSURLRequestOperation.m in Sources */,
 				57A8C81C1BBF6A6700ADA28F /* KCSCachedStore.m in Sources */,
 				57A8C81A1BBF6A4D00ADA28F /* KCSMockRequestOperation.m in Sources */,
-				573D7E471C094937007C8F89 /* KCSAcl.m in Sources */,
 				57A8C8191BBF6A4100ADA28F /* KCSCustomEndpoints.m in Sources */,
 				57A8C8181BBF6A3600ADA28F /* KCSMICLoginViewController.m in Sources */,
 				57A8C8171BBF6A2A00ADA28F /* KCSDataModel.m in Sources */,
@@ -5828,7 +5817,7 @@
 				578834061AB8CF5400078CC5 /* KCSBase64.m in Sources */,
 				578833E51AB8CF5400078CC5 /* KCSReduceFunction.m in Sources */,
 				578833E01AB8CF5400078CC5 /* KCSBackgroundAppdataStore.m in Sources */,
-				578DB6E41C0508C500F456B1 /* KCSAclRealm.m in Sources */,
+				573D7E541C0A51F8007C8F89 /* KCSAclRealm.m in Sources */,
 				578833F01AB8CF5400078CC5 /* KCSImageUtils.m in Sources */,
 				5788342A1AB8CF5400078CC5 /* KCSSocialRequest.m in Sources */,
 				578833F81AB8CF5400078CC5 /* KCSClient+ConfigurationTest.m in Sources */,
@@ -5852,7 +5841,6 @@
 				578834101AB8CF5400078CC5 /* KCSNSURLRequestOperation.m in Sources */,
 				578833E11AB8CF5400078CC5 /* KCSCachedStore.m in Sources */,
 				578834121AB8CF5400078CC5 /* KCSMockRequestOperation.m in Sources */,
-				573D7E481C094963007C8F89 /* KCSAcl.m in Sources */,
 				578833F51AB8CF5400078CC5 /* KCSCustomEndpoints.m in Sources */,
 				57F62A901B30DB8800779A5B /* KCSMICLoginViewController.m in Sources */,
 				5788341F1AB8CF5400078CC5 /* KCSDataModel.m in Sources */,

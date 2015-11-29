@@ -18,13 +18,19 @@
 
 #import <Foundation/Foundation.h>
 
+@interface NSMutableDictionary (KinveyAdditionsMutable)
+
+-(instancetype)invert;
+
+@end
+
 @interface NSDictionary (KinveyAdditions)
 - (NSDictionary*) stripKeys:(NSArray*)keys;
 - (instancetype) dictionaryByAddingDictionary:(NSDictionary*)dictionary;
 
 - (NSString*) escapedJSON;
 - (NSString*)jsonString;
-- (NSDictionary*) invert;
+- (instancetype)invert;
 -(NSString*)queryString;
 -(NSString*)kcsJSONRepresentation;
 

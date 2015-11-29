@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <KinveyKit/KinveyKit.h>
 #import "KCSAddress.h"
-#import "KCSAcl.h"
 
 @interface KCSPerson : NSObject <KCSPersistable>
 
@@ -17,7 +16,6 @@
 @property NSString* name;
 @property NSInteger age;
 @property KCSAddress* address;
-@property KCSAcl* acl;
 @property KCSMetadata* metadata;
 
 @end

@@ -22,6 +22,15 @@
 #import "KinveyCoreInternal.h"
 #import "KCSMutableOrderedDictionary.h"
 
+@implementation NSMutableDictionary (KinveyAdditionsMutable)
+
+-(instancetype)invert
+{
+    return [super invert];
+}
+
+@end
+
 @implementation NSDictionary (KinveyAdditions)
 
 - (instancetype) stripKeys:(NSArray*)keys
@@ -69,7 +78,7 @@
     return nil;
 }
 
-- (NSDictionary*) invert
+-(instancetype)invert
 {
     NSMutableDictionary* d = [NSMutableDictionary dictionaryWithCapacity:self.count];
     [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {

@@ -7,14 +7,12 @@
 //
 
 #import <Realm/Realm.h>
-#import "KCSAclRealm.h"
 #import "KCSMetadataRealm.h"
 
 @interface KCSUserRealm : RLMObject
 
 @property NSString* userId;
 @property NSString* username;
-@property KCSAclRealm* acl;
 @property KCSMetadataRealm* metadata;
 
 //TODO offline query

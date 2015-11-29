@@ -12,6 +12,9 @@
 #import <objc/message.h>
 
 #import <Realm/Realm.h>
+#import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
+#import <UIKit/UIKit.h>
 
 #import "KinveyCoreInternal.h"
 #import "KinveyPersistable.h"
@@ -20,6 +23,11 @@
 #import "KCSAppdataStore.h"
 #import "KCSHiddenMethods.h"
 #import "KCSDataModel.h"
+#import "KCSAclRealm.h"
+#import "KCSFileRealm.h"
+#import "KCS_CLLocation_Realm.h"
+
+#define KCSEntityKeyAcl @"_acl"
 
 @interface KCSRealmEntityPersistence ()
 
@@ -32,32 +40,74 @@
 
 @synthesize persistenceId = _persistenceId;
 
-static NSMutableDictionary<NSString*, NSString*>* realGeneratedMap = nil;
+static NSMutableDictionary<NSString*, NSString*>* classMapOriginalRealm = nil;
+static NSMutableDictionary<NSString*, NSMutableSet<NSString*>*>* classMapRealmOriginal = nil;
+static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties = nil;
 
 +(void)initialize
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        realGeneratedMap = [NSMutableDictionary dictionary];
-        realGeneratedMap[@"NSArray"] = @"RLMArray";
-        realGeneratedMap[@"NSMutableArray"] = @"RLMArray";
-        realGeneratedMap[@"NSSet"] = @"RLMArray";
-        realGeneratedMap[@"NSMutableSet"] = @"RLMArray";
-        realGeneratedMap[@"NSOrderedSet"] = @"RLMArray";
-        realGeneratedMap[@"NSMutableOrderedSet"] = @"RLMArray";
-        realGeneratedMap[@"NSDictionary"] = @"NSDictionary";
-        realGeneratedMap[@"NSMutableDictionary"] = @"NSMutableDictionary";
+        classMapOriginalRealm = [NSMutableDictionary dictionary];
+        classMapRealmOriginal = [NSMutableDictionary dictionary];
         
-        realGeneratedMap[@"CLLocation"] = @"KCS_CLLocation_Realm";
-        realGeneratedMap[@"UIImage"] = @"NSData";
-        realGeneratedMap[@"NSString"] = @"NSString";
-        realGeneratedMap[@"NSMutableString"] = @"NSString";
-        realGeneratedMap[@"NSDate"] = @"NSDate";
-        realGeneratedMap[@"NSNumber"] = @"NSNumber";
+        [self registerOriginalClass:[NSArray class]
+                         realmClass:[RLMArray class]];
         
-        realGeneratedMap[@"KCSUser"] = @"KCSUserRealm";
-        realGeneratedMap[@"KCSFile"] = @"KCSFileRealm";
-        realGeneratedMap[@"KCSMetadata"] = @"KCSMetadataRealm";
+        [self registerOriginalClass:[NSMutableArray class]
+                         realmClass:[RLMArray class]];
+        
+        [self registerOriginalClass:[NSSet class]
+                         realmClass:[RLMArray class]];
+        
+        [self registerOriginalClass:[NSMutableSet class]
+                         realmClass:[RLMArray class]];
+        
+        [self registerOriginalClass:[NSOrderedSet class]
+                         realmClass:[RLMArray class]];
+        
+        [self registerOriginalClass:[NSMutableOrderedSet class]
+                         realmClass:[RLMArray class]];
+        
+        [self registerOriginalClass:[NSDictionary class]
+                         realmClass:[NSDictionary class]];
+        
+        [self registerOriginalClass:[NSMutableDictionary class]
+                         realmClass:[NSMutableDictionary class]];
+        
+        [self registerOriginalClass:[CLLocation class]
+                         realmClass:[KCS_CLLocation_Realm class]];
+        
+        [self registerOriginalClass:[UIImage class]
+                         realmClass:[NSData class]];
+        
+        [self registerOriginalClass:[NSString class]
+                         realmClass:[NSString class]];
+        
+        [self registerOriginalClass:[NSMutableString class]
+                         realmClass:[NSMutableString class]];
+        
+        [self registerOriginalClass:[NSDate class]
+                         realmClass:[NSDate class]];
+        
+        [self registerOriginalClass:[NSNumber class]
+                         realmClass:[NSNumber class]];
+        
+        [self registerOriginalClass:[KCSUser class]
+                         realmClass:[KCSUserRealm class]];
+        
+        [self registerOriginalClass:[KCSFile class]
+                         realmClass:[KCSFileRealm class]];
+        
+        [self registerOriginalClass:[KCSMetadata class]
+                         realmClass:[KCSMetadataRealm class]];
+        
+        realmClassProperties = [NSMutableDictionary dictionary];
+        
+        [self registerRealmClassProperties:[KCSUserRealm class]];
+        [self registerRealmClassProperties:[KCSFileRealm class]];
+        [self registerRealmClassProperties:[KCSMetadataRealm class]];
+        [self registerRealmClassProperties:[KCSAclRealm class]];
         
         unsigned int classesCount;
         Class* classes = objc_copyClassList(&classesCount);
@@ -69,12 +119,29 @@ static NSMutableDictionary<NSString*, NSString*>* realGeneratedMap = nil;
             className = [NSString stringWithUTF8String:class_getName(class)];
             if (!class_conformsToProtocol(class, @protocol(KCSPersistable))) continue;
             if ([ignoreClasses containsObject:className]) continue;
-            if (realGeneratedMap[className]) continue;
+            if (classMapOriginalRealm[className]) continue;
             
             [self createRealmClass:class];
         }
         free(classes);
     });
+}
+
++(void)registerOriginalClass:(Class)originalClass
+                  realmClass:(Class)realmClass
+{
+    [self registerOriginalClassName:NSStringFromClass(originalClass)
+                     realmClassName:NSStringFromClass(realmClass)];
+}
+
++(void)registerOriginalClassName:(NSString*)originalClassName
+                  realmClassName:(NSString*)realmClassName
+{
+    classMapOriginalRealm[originalClassName] = realmClassName;
+    NSMutableSet<NSString*>* originalClassNames = classMapRealmOriginal[realmClassName];
+    if (!originalClassNames) originalClassNames = [NSMutableSet setWithCapacity:1];
+    [originalClassNames addObject:originalClassName];
+    classMapRealmOriginal[realmClassName] = originalClassNames;
 }
 
 -(instancetype)initWithPersistenceId:(NSString *)key
@@ -118,17 +185,35 @@ static NSMutableDictionary<NSString*, NSString*>* realGeneratedMap = nil;
     NSString* realmClassName = [NSString stringWithFormat:@"%@_KinveyRealm", className];
     Class realmClass = objc_allocateClassPair([RLMObject class], realmClassName.UTF8String, 0);
     
-    if (realGeneratedMap[className]) return;
+    if (classMapOriginalRealm[className]) return;
     
-    realGeneratedMap[NSStringFromClass(class)] = NSStringFromClass(realmClass);
+    [self registerOriginalClass:class
+                     realmClass:realmClass];
     
     [self copyPropertiesFromClass:class
                           toClass:realmClass];
     
     objc_registerClassPair(realmClass);
     
+    [self registerRealmClassProperties:realmClass];
+    
     [self createPrimaryKeyMethodFromClass:class
                                   toClass:realmClass];
+}
+
++(void)registerRealmClassProperties:(Class)realmClass
+{
+    unsigned int propertyCount;
+    objc_property_t *properties = class_copyPropertyList(realmClass, &propertyCount);
+    NSMutableSet<NSString*>* propertyNames = [NSMutableSet setWithCapacity:propertyCount];
+    objc_property_t property;
+    for (int i = 0; i < propertyCount; i++) {
+        property = properties[i];
+        [propertyNames addObject:[NSString stringWithUTF8String:property_getName(property)]];
+    }
+    free(properties);
+    
+    realmClassProperties[NSStringFromClass(realmClass)] = propertyNames;
 }
 
 +(void)copyPropertiesFromClass:(Class)fromClass
@@ -226,15 +311,19 @@ static NSMutableDictionary<NSString*, NSString*>* realGeneratedMap = nil;
                                     ignoreProperty = YES;
                                     KCSLogWarn(KCS_LOG_CONTEXT_DATA, @"Data type requires a subtype: [%@ %@] (%@)", NSStringFromClass(fromClass), propertyName, className);
                                 } else {
-                                    if (realGeneratedMap[className] == nil) {
+                                    if (classMapOriginalRealm[className] == nil) {
                                         [self createRealmClass:NSClassFromString(className)];
                                     }
-                                    realmClassName = realGeneratedMap[className];
+                                    realmClassName = classMapOriginalRealm[className];
                                     if (realmClassName) {
                                         if (subtypeName) {
-                                            attribute.value = [NSString stringWithFormat:@"@\"%@<%@>\"", realmClassName, realGeneratedMap[subtypeName]].UTF8String;
+                                            attribute.value = [NSString stringWithFormat:@"@\"%@<%@>\"", realmClassName, classMapOriginalRealm[subtypeName]].UTF8String;
                                         } else {
                                             attribute.value = [NSString stringWithFormat:@"@\"%@\"", realmClassName].UTF8String;
+                                            if ([realmClassName isEqualToString:NSStringFromClass([KCSMetadataRealm class])])
+                                            {
+                                                [self createAclToClass:toClass];
+                                            }
                                         }
                                         attributes[i] = attribute;
                                     }
@@ -259,6 +348,16 @@ static NSMutableDictionary<NSString*, NSString*>* realGeneratedMap = nil;
         free(attributes);
     }
     free(properties);
+}
+
++(void)createAclToClass:(Class)toClass
+{
+    objc_property_attribute_t type = { "T", [NSString stringWithFormat:@"@\"%@\"", NSStringFromClass([KCSAclRealm  class])].UTF8String };
+    objc_property_attribute_t ownership = { "C", "" }; // C = copy
+    objc_property_attribute_t backingivar  = { "V", [NSString stringWithFormat:@"_%@", KCSEntityKeyAcl].UTF8String };
+    objc_property_attribute_t attrs[] = { type, ownership, backingivar };
+    BOOL added = class_addProperty(toClass, KCSEntityKeyAcl.UTF8String, attrs, 3);
+    assert(added);
 }
 
 +(void)createPrimaryKeyMethodFromClass:(Class)fromClass
@@ -350,14 +449,32 @@ static NSMutableDictionary<NSString*, NSString*>* realGeneratedMap = nil;
 }
 
 +(NSMutableDictionary<NSString*, NSObject*>*)createEntity:(NSDictionary<NSString*, NSObject*>*)entity
-                                      withPropertyMapping:(NSDictionary<NSString*, NSString*>*)propertyMapping
+                                               withObject:(NSObject<KCSPersistable>*)object
 {
     if (!entity) return nil;
+    NSDictionary<NSString*, NSString*>* propertyMapping = [object hostToKinveyPropertyMapping].invert;
     NSMutableDictionary<NSString*, NSObject*>* newEntity = [NSMutableDictionary dictionaryWithCapacity:entity.count];
     [entity enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSObject * _Nonnull obj, BOOL * _Nonnull stop) {
         NSString* keyMap = propertyMapping[key];
         if (keyMap) {
-            newEntity[keyMap] = entity[key];
+            id value = entity[key];
+            KCSDataModel* dataModel = [KCSAppdataStore caches].dataModel;
+            NSString* collection = [dataModel collectionForClass:[value class]];
+            if (collection) {
+                NSDictionary* entity = [dataModel jsonEntityForObject:value
+                                                                route:@"appdata"
+                                                           collection:collection];
+                newEntity[keyMap] = [self createEntity:entity
+                                            withObject:value];
+            } else {
+                newEntity[keyMap] = value;
+            }
+        } else if ([key isEqualToString:KCSEntityKeyAcl]) {
+            NSString* metadataPropertyName = propertyMapping[KCSEntityKeyMetadata];
+            KCSMetadata* metadata = metadataPropertyName ? [object valueForKey:metadataPropertyName] : nil;
+            if (metadata) {
+                newEntity[KCSEntityKeyAcl] = @{ @"creator" : metadata.creatorId };
+            }
         }
     }];
     return newEntity;
@@ -370,11 +487,10 @@ static NSMutableDictionary<NSString*, NSString*>* realGeneratedMap = nil;
 {
     __block BOOL result = NO;
     Class class = [[KCSAppdataStore caches].dataModel classForCollection:collection];
-    NSString* realmClassName = realGeneratedMap[NSStringFromClass(class)];
+    NSString* realmClassName = classMapOriginalRealm[NSStringFromClass(class)];
     Class realmClass = NSClassFromString(realmClassName);
-    NSDictionary* propertyMapping = [object hostToKinveyPropertyMapping];
     NSMutableDictionary<NSString*, NSObject*>* newEntity = [KCSRealmEntityPersistence createEntity:entity
-                                                                               withPropertyMapping:propertyMapping.invert];
+                                                                                        withObject:object];
     
     RLMRealm* realm = self.realm;
     [realm transactionWithBlock:^{
@@ -390,12 +506,34 @@ static NSMutableDictionary<NSString*, NSString*>* realGeneratedMap = nil;
                                   collection:(NSString *)collection
 {
     Class class = [[KCSAppdataStore caches].dataModel classForCollection:collection];
-    NSString* realmClassName = realGeneratedMap[NSStringFromClass(class)];
+    NSString* realmClassName = classMapOriginalRealm[NSStringFromClass(class)];
     Class realmClass = NSClassFromString(realmClassName);
     RLMRealm* realm = self.realm;
-    id realmObj = [realmClass objectsInRealm:realm
-                               withPredicate:query.query.predicate];
-    return nil;
+    RLMResults* results = [realmClass objectsInRealm:realm
+                                       withPredicate:query.query.predicate];
+    NSMutableArray<NSDictionary*>* array = [NSMutableArray arrayWithCapacity:results.count];
+    for (RLMObject* realmObj in results) {
+        [array addObject:[self dictionaryFromRealmObject:realmObj]];
+    }
+    return array;
+}
+
+-(NSObject<KCSPersistable>*)dictionaryFromRealmObject:(RLMObject*)realmObj
+{
+    NSString* realmClassName = [[realmObj class] className];
+    NSString* originalClassName = classMapRealmOriginal[realmClassName].anyObject;
+    NSObject<KCSPersistable>* obj = [[NSClassFromString(originalClassName) alloc] init];
+    id value = nil;
+    for (NSString* propertyName in realmClassProperties[realmClassName]) {
+        if ([propertyName isEqualToString:KCSEntityKeyAcl]) continue;
+        value = [realmObj valueForKey:propertyName];
+        if ([value isKindOfClass:[RLMObject class]]) {
+            value = [self dictionaryFromRealmObject:value];
+        }
+        [obj setValue:value
+               forKey:propertyName];
+    }
+    return obj;
 }
 
 -(NSArray *)idsForQuery:(KCSQuery2 *)query
@@ -408,6 +546,16 @@ static NSMutableDictionary<NSString*, NSString*>* realGeneratedMap = nil;
 -(NSDictionary *)entityForId:(NSString *)_id route:(NSString *)route collection:(NSString *)collection
 {
     return nil;
+}
+
+-(BOOL)setIds:(NSArray *)theseIds forQuery:(NSString *)query route:(NSString *)route collection:(NSString *)collection
+{
+    return NO;
+}
+
+-(BOOL)removeQuery:(NSString *)query route:(NSString *)route collection:(NSString *)collection
+{
+    return NO;
 }
 
 -(void)clearCaches

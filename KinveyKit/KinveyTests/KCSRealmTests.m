@@ -19,6 +19,9 @@
 @property (nonatomic, strong) KCSCollection* collectionAddress;
 @property (nonatomic, strong) id<KCSStore> storeAddress;
 
+@property (nonatomic, readonly) KCSPerson* person;
+@property (nonatomic, readonly) KCSAddress* address;
+
 @end
 
 @implementation KCSRealmTests
@@ -46,11 +49,27 @@
     [super tearDown];
 }
 
-- (void)testSave {
+-(KCSAddress *)address
+{
     KCSAddress* address = [[KCSAddress alloc] init];
     address.city = @"Vancouver";
     address.province = @"BC";
     address.country = @"Canada";
+    return address;
+}
+
+-(KCSPerson *)person
+{
+    KCSPerson* person = [[KCSPerson alloc] init];
+    person.name = @"Victor";
+    person.age = 29;
+    person.address = self.address;
+    return person;
+}
+
+- (void)testRealmSave {
+    KCSPerson* person = self.person;
+    KCSAddress* address = person.address;
     
     __block __weak XCTestExpectation* expectationSaveAddress = [self expectationWithDescription:@"saveAddress"];
     
@@ -76,11 +95,6 @@
      {
          expectationSaveAddress = nil;
      }];
-    
-    KCSPerson* person = [[KCSPerson alloc] init];
-    person.name = @"Victor";
-    person.age = 29;
-    person.address = address;
     
     __block __weak XCTestExpectation* expectationSavePerson = [self expectationWithDescription:@"savePerson"];
     
@@ -114,12 +128,14 @@
     }];
 }
 
--(void)testQuery {
-    [self testSave];
+-(void)testRealmQuery {
+    [self testRealmSave];
+    
+    KCSPerson* person = self.person;
     
     __block __weak XCTestExpectation* expectationQueryPerson = [self expectationWithDescription:@"queryPerson"];
     
-    KCSQuery* query = [KCSQuery queryWithPredicate:[NSPredicate predicateWithFormat:@"name == %@ AND acl.creator == %@", @"Victor", [KCSUser activeUser].userId]];
+    KCSQuery* query = [KCSQuery queryWithPredicate:[NSPredicate predicateWithFormat:@"name == %@ AND _acl.creator == %@", person.name, [KCSUser activeUser].userId]];
     [self.storePerson queryWithQuery:query
                  withCompletionBlock:^(NSArray<KCSPerson*> *objectsOrNil, NSError *errorOrNil)
     {
@@ -127,8 +143,17 @@
         XCTAssertNil(errorOrNil);
         XCTAssertEqual(objectsOrNil.count, 1);
         if (objectsOrNil.count > 0) {
-            KCSPerson* person = objectsOrNil.firstObject;
-            XCTAssertEqualObjects(person.name, @"Victor");
+            KCSPerson* _person = objectsOrNil.firstObject;
+            XCTAssertTrue([_person isKindOfClass:[KCSPerson class]]);
+            XCTAssertEqualObjects(person.name, _person.name);
+            XCTAssertEqual(person.age, _person.age);
+            XCTAssertNotNil(_person.address);
+            XCTAssertTrue([_person.address isKindOfClass:[KCSAddress class]]);
+            if ([_person.address isKindOfClass:[KCSAddress class]]) {
+                XCTAssertEqualObjects(person.address.city, _person.address.city);
+                XCTAssertEqualObjects(person.address.province, _person.address.province);
+                XCTAssertEqualObjects(person.address.country, _person.address.country);
+            }
         }
         
         [expectationQueryPerson fulfill];
@@ -139,33 +164,6 @@
     {
         expectationQueryPerson = nil;
     }];
-}
-
--(void)testNestedQuery {
-    [self testSave];
-    
-    __block __weak XCTestExpectation* expectationQueryPerson = [self expectationWithDescription:@"queryPerson"];
-    
-    KCSQuery* query = [KCSQuery queryWithPredicate:[NSPredicate predicateWithFormat:@"address.city == %@ AND acl.creator == %@", @"Vancouver", [KCSUser activeUser].userId]];
-    [self.storePerson queryWithQuery:query
-                 withCompletionBlock:^(NSArray<KCSPerson*> *objectsOrNil, NSError *errorOrNil)
-    {
-        XCTAssertNotNil(objectsOrNil);
-        XCTAssertNil(errorOrNil);
-        XCTAssertEqual(objectsOrNil.count, 1);
-        if (objectsOrNil.count > 0) {
-            KCSPerson* person = objectsOrNil.firstObject;
-            XCTAssertEqualObjects(person.name, @"Victor");
-        }
-        
-        [expectationQueryPerson fulfill];
-    } withProgressBlock:nil];
-    
-    [self waitForExpectationsWithTimeout:30
-                                 handler:^(NSError * _Nullable error)
-     {
-         expectationQueryPerson = nil;
-     }];
 }
 
 @end

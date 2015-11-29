@@ -25,6 +25,7 @@
 
 - (void) setClass:(Class)class forCollection:(NSString*)collection;
 -(Class)classForCollection:(NSString*)collection;
+-(NSString*)collectionForClass:(Class)clazz;
 
 //internal
 - (id<KCSPersistable>) objectFromCollection:(NSString*)collection data:(NSDictionary*)entity;

@@ -25,7 +25,7 @@
 #import "KCSObjectMapper.h"
 
 @interface KCSDataModel ()
-@property (nonatomic, strong) NSMutableDictionary<NSString*, Class>* collectionMap;
+@property (nonatomic, strong) NSMutableDictionary<NSString*, NSString*>* collectionMap;
 @end
 
 @implementation KCSDataModel
@@ -48,22 +48,28 @@
         return;
     }
     
-    if (_collectionMap[collection] != nil && [_collectionMap[collection]  isEqual:class] == NO) {
+    if (_collectionMap[collection] != nil && [_collectionMap[collection]  isEqualToString:NSStringFromClass(class)] == NO) {
         //TODO: make this robust - either ignore, overwrite, or make configurable
         NSAssert(NO, @"More than one class defined for a collection");
     }
-    _collectionMap[collection] = class;
+    _collectionMap[collection] = NSStringFromClass(class);
 }
 
 -(Class)classForCollection:(NSString *)collection
 {
-    return _collectionMap[collection];
+    return NSClassFromString(_collectionMap[collection]);
+}
+
+-(NSString *)collectionForClass:(Class)class
+{
+    NSString* className = NSStringFromClass(class);
+    return _collectionMap.invert[className];
 }
 
 - (id<KCSPersistable>) objectFromCollection:(NSString*)collection data:(NSDictionary*)entity
 {
     if (!entity) return nil;
-    Class class = _collectionMap[collection];
+    Class class = NSClassFromString(_collectionMap[collection]);
     if (!class) {
         KCSLogWarn(KCS_LOG_CONTEXT_DATA, @"No class registered for collection '%@', using NSMutableDictionary.", collection);
         class = [NSMutableDictionary class];
@@ -80,7 +86,7 @@
 - (NSDictionary*) jsonEntityForObject:(id<KCSPersistable>)object route:(NSString*)route collection:(NSString*)collection
 {
     if (!_collectionMap[collection]) {
-        _collectionMap[collection] = [object class];
+        _collectionMap[collection] = NSStringFromClass([object class]);
     }
     
     NSError* error = nil;
