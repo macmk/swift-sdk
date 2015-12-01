@@ -26,6 +26,8 @@
 #import "KCSAclRealm.h"
 #import "KCSFileRealm.h"
 #import "KCS_CLLocation_Realm.h"
+#import "KCS_NSURL_NString_Realm.h"
+#import "KCS_UIImage_NSData_Realm.h"
 
 #define KCSEntityKeyAcl @"_acl"
 
@@ -43,6 +45,7 @@
 static NSMutableDictionary<NSString*, NSString*>* classMapOriginalRealm = nil;
 static NSMutableDictionary<NSString*, NSMutableSet<NSString*>*>* classMapRealmOriginal = nil;
 static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties = nil;
+static NSMutableDictionary<NSString*, NSMutableDictionary<NSString*, NSValueTransformer*>*>* valueTransformerMap = nil;
 
 +(void)initialize
 {
@@ -50,6 +53,7 @@ static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties =
     dispatch_once(&onceToken, ^{
         classMapOriginalRealm = [NSMutableDictionary dictionary];
         classMapRealmOriginal = [NSMutableDictionary dictionary];
+        valueTransformerMap = [NSMutableDictionary dictionary];
         
         [self registerOriginalClass:[NSArray class]
                          realmClass:[RLMArray class]];
@@ -78,14 +82,14 @@ static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties =
         [self registerOriginalClass:[CLLocation class]
                          realmClass:[KCS_CLLocation_Realm class]];
         
-        [self registerOriginalClass:[UIImage class]
-                         realmClass:[NSData class]];
-        
         [self registerOriginalClass:[NSString class]
                          realmClass:[NSString class]];
         
         [self registerOriginalClass:[NSMutableString class]
                          realmClass:[NSMutableString class]];
+        
+        [self registerOriginalClass:[NSData class]
+                         realmClass:[NSData class]];
         
         [self registerOriginalClass:[NSDate class]
                          realmClass:[NSDate class]];
@@ -109,6 +113,12 @@ static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties =
         [self registerRealmClassProperties:[KCSMetadataRealm class]];
         [self registerRealmClassProperties:[KCSAclRealm class]];
         
+        [NSValueTransformer setValueTransformer:[[KCS_NSURL_NString_Realm alloc] init]
+                                        forName:NSStringFromClass([NSURL class])];
+        
+        [NSValueTransformer setValueTransformer:[[KCS_UIImage_NSData_Realm alloc] init]
+                                        forName:NSStringFromClass([UIImage class])];
+        
         unsigned int classesCount;
         Class* classes = objc_copyClassList(&classesCount);
         Class class = nil;
@@ -125,6 +135,27 @@ static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties =
         }
         free(classes);
     });
+}
+
++(void)registerValueTransformer:(NSValueTransformer*)valueTransformer
+                       forClass:(Class)class
+                   propertyName:(NSString*)propertyName
+{
+    [self registerValueTransformer:valueTransformer
+                      forClassName:NSStringFromClass(class)
+                      propertyName:propertyName];
+}
+
++(void)registerValueTransformer:(NSValueTransformer*)valueTransformer
+                   forClassName:(NSString*)className
+                   propertyName:(NSString*)propertyName
+{
+    NSMutableDictionary<NSString*, NSValueTransformer*>* propertyMap = valueTransformerMap[className];
+    if (!propertyMap) {
+        propertyMap = [NSMutableDictionary dictionary];
+        valueTransformerMap[className] = propertyMap;
+    }
+    propertyMap[propertyName] = valueTransformer;
 }
 
 +(void)registerOriginalClass:(Class)originalClass
@@ -221,14 +252,14 @@ static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties =
 {
     unsigned int propertyCount;
     objc_property_t *properties = class_copyPropertyList(fromClass, &propertyCount);
-    NSMutableDictionary<NSString*, NSObject*>* defaultPropertyValues = [NSMutableDictionary dictionaryWithCapacity:propertyCount];
-    NSSet<NSString*>* ignoreClasses = [NSSet setWithArray:@[@"NSURL", @"NSDictionary", @"NSMutableDictionary", @"NSAttributedString", @"NSMutableAttributedString"]];
+    NSSet<NSString*>* ignoreClasses = [NSSet setWithArray:@[@"NSDictionary", @"NSMutableDictionary", @"NSAttributedString", @"NSMutableAttributedString"]];
     NSSet<NSString*>* subtypeRequiredClasses = [NSSet setWithArray:@[@"NSArray", @"NSMutableArray", @"NSSet", @"NSMutableSet", @"NSOrderedSet", @"NSMutableOrderedSet", @"NSNumber"]];
     NSRegularExpression* regexClassName = [NSRegularExpression regularExpressionWithPattern:@"@\"(\\w+)(?:<(\\w+)>)?\""
                                                                                     options:0
                                                                                       error:nil];
     NSArray<NSTextCheckingResult*>* matches = nil;
     NSTextCheckingResult* textCheckingResult = nil;
+    NSValueTransformer* valueTransformer = nil;
     NSRange range;
     NSString *attributeValue = nil, *propertyName = nil, *className = nil, *subtypeName = nil, *realmClassName = nil;
     objc_property_t property;
@@ -249,31 +280,22 @@ static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties =
                 case 'T':
                     switch (attribute.value[0]) {
                         case 'c':
-                            defaultPropertyValues[propertyName] = @((char) 0);
                             break;
                         case 'i':
-                            defaultPropertyValues[propertyName] = @((int) 0);
                             break;
                         case 's':
-                            defaultPropertyValues[propertyName] = @((short) 0);
                             break;
                         case 'l':
-                            defaultPropertyValues[propertyName] = @((long) 0);
                             break;
                         case 'q':
-                            defaultPropertyValues[propertyName] = @((long long) 0);
                             break;
                         case 'C':
-                            defaultPropertyValues[propertyName] = @((unsigned char) 0);
                             break;
                         case 'I':
-                            defaultPropertyValues[propertyName] = @((unsigned int) 0);
                             break;
                         case 'S':
-                            defaultPropertyValues[propertyName] = @((unsigned short) 0);
                             break;
                         case 'L':
-                            defaultPropertyValues[propertyName] = @((unsigned long) 0);
                             break;
                         case 'Q': { //unsigned long long
                             ignoreProperty = YES;
@@ -281,13 +303,10 @@ static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties =
                             break;
                         }
                         case 'f':
-                            defaultPropertyValues[propertyName] = @((float) 0);
                             break;
                         case 'd':
-                            defaultPropertyValues[propertyName] = @((double) 0);
                             break;
                         case 'B':
-                            defaultPropertyValues[propertyName] = @((bool) NO);
                             break;
                         case '@':
                             attributeValue = [NSString stringWithUTF8String:attribute.value];
@@ -311,7 +330,13 @@ static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties =
                                     ignoreProperty = YES;
                                     KCSLogWarn(KCS_LOG_CONTEXT_DATA, @"Data type requires a subtype: [%@ %@] (%@)", NSStringFromClass(fromClass), propertyName, className);
                                 } else {
-                                    if (classMapOriginalRealm[className] == nil) {
+                                    valueTransformer = [NSValueTransformer valueTransformerForName:className];
+                                    if (valueTransformer && [valueTransformer isKindOfClass:[NSValueTransformer class]]) {
+                                        [self registerValueTransformer:valueTransformer
+                                                              forClass:fromClass
+                                                          propertyName:propertyName];
+                                        className = NSStringFromClass([[valueTransformer class] transformedValueClass]);
+                                    } else if (classMapOriginalRealm[className] == nil) {
                                         [self createRealmClass:NSClassFromString(className)];
                                     }
                                     realmClassName = classMapOriginalRealm[className];
@@ -501,9 +526,9 @@ static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties =
     return result;
 }
 
--(NSArray<NSDictionary *> *)entitiesForQuery:(KCSQuery2 *)query
-                                       route:(NSString *)route
-                                  collection:(NSString *)collection
+-(NSArray<NSObject<KCSPersistable>*> *)entitiesForQuery:(KCSQuery2 *)query
+                                                  route:(NSString *)route
+                                             collection:(NSString *)collection
 {
     Class class = [[KCSAppdataStore caches].dataModel classForCollection:collection];
     NSString* realmClassName = classMapOriginalRealm[NSStringFromClass(class)];
@@ -511,7 +536,7 @@ static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties =
     RLMRealm* realm = self.realm;
     RLMResults* results = [realmClass objectsInRealm:realm
                                        withPredicate:query.query.predicate];
-    NSMutableArray<NSDictionary*>* array = [NSMutableArray arrayWithCapacity:results.count];
+    NSMutableArray<NSObject<KCSPersistable>*>* array = [NSMutableArray arrayWithCapacity:results.count];
     for (RLMObject* realmObj in results) {
         [array addObject:[self dictionaryFromRealmObject:realmObj]];
     }
@@ -523,11 +548,15 @@ static NSMutableDictionary<NSString*, NSSet<NSString*>*>* realmClassProperties =
     NSString* realmClassName = [[realmObj class] className];
     NSString* originalClassName = classMapRealmOriginal[realmClassName].anyObject;
     NSObject<KCSPersistable>* obj = [[NSClassFromString(originalClassName) alloc] init];
+    NSValueTransformer* valueTransformer = nil;
     id value = nil;
     for (NSString* propertyName in realmClassProperties[realmClassName]) {
         if ([propertyName isEqualToString:KCSEntityKeyAcl]) continue;
         value = [realmObj valueForKey:propertyName];
-        if ([value isKindOfClass:[RLMObject class]]) {
+        valueTransformer = valueTransformerMap[originalClassName][propertyName];
+        if (valueTransformer) {
+            value = [valueTransformer reverseTransformedValue:value];
+        } else if ([value isKindOfClass:[RLMObject class]]) {
             value = [self dictionaryFromRealmObject:value];
         }
         [obj setValue:value

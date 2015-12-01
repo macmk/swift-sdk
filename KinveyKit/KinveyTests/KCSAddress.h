@@ -7,14 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <KinveyKit/KinveyKit.h>
 
-@interface KCSAddress : NSObject <KCSPersistable>
+@interface KCSAddress : NSObject
 
-@property NSString* addressId;
 @property NSString* city;
 @property NSString* province;
 @property NSString* country;
-@property KCSMetadata* metadata;
 
 @end

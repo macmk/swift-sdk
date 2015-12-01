@@ -10,28 +10,42 @@
 
 @implementation KCSPerson
 
+@synthesize address = _address;
+
 -(NSDictionary *)hostToKinveyPropertyMapping
 {
     return @{@"personId" : KCSEntityKeyId,
              @"metadata" : KCSEntityKeyMetadata,
              @"name"     : @"name",
              @"address"  : @"address",
+             @"company"  : @"company",
+//             @"picture"  : @"picture",
              @"age"      : @"age"};
 }
 
 +(NSDictionary *)kinveyPropertyToCollectionMapping
 {
-    return @{ @"address" : @"Address" };
+    return @{ @"company" : @"Company" };
 }
 
 +(NSDictionary *)kinveyObjectBuilderOptions
 {
-    return @{ KCS_REFERENCE_MAP_KEY : @{ @"address" : [KCSAddress class] } };
+    return @{ KCS_REFERENCE_MAP_KEY : @{ @"company" : [KCSCompany class] } };
 }
 
 -(NSArray *)referenceKinveyPropertiesOfObjectsToSave
 {
-    return @[@"address"];
+    return @[@"company"];
+}
+
+-(KCSAddress *)address
+{
+    return _address;
+}
+
+-(void)setAddress:(KCSAddress *)address
+{
+    _address = address;
 }
 
 @end

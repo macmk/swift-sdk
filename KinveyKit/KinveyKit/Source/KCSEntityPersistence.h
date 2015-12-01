@@ -85,8 +85,8 @@ collection:(NSString*)collection;
 - (void) clearCaches;
 
 @optional
--(NSArray<NSDictionary*>*)entitiesForQuery:(KCSQuery2*)query
-                                     route:(NSString*)route
-                                collection:(NSString*)collection;
+-(NSArray<NSObject<KCSPersistable>*>*)entitiesForQuery:(KCSQuery2*)query
+                                                 route:(NSString*)route
+                                            collection:(NSString*)collection;
 
 @end

@@ -701,6 +701,14 @@
 		57728FE31ABF22480043E779 /* KCSMutableOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 57728FE11ABF22480043E779 /* KCSMutableOrderedDictionary.m */; };
 		57728FE41ABF22EB0043E779 /* KCSMutableOrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 57728FE01ABF22480043E779 /* KCSMutableOrderedDictionary.h */; };
 		57728FE51ABF22EF0043E779 /* KCSMutableOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 57728FE11ABF22480043E779 /* KCSMutableOrderedDictionary.m */; };
+		577386A91C0CCFEC00EDDBEF /* KCSCompany.m in Sources */ = {isa = PBXBuildFile; fileRef = 577386A81C0CCFEC00EDDBEF /* KCSCompany.m */; };
+		577386AC1C0D21F000EDDBEF /* KCS_NSURL_NString_Realm.h in Headers */ = {isa = PBXBuildFile; fileRef = 577386AA1C0D21F000EDDBEF /* KCS_NSURL_NString_Realm.h */; };
+		577386AD1C0D21F000EDDBEF /* KCS_NSURL_NString_Realm.m in Sources */ = {isa = PBXBuildFile; fileRef = 577386AB1C0D21F000EDDBEF /* KCS_NSURL_NString_Realm.m */; };
+		577386AE1C0D339900EDDBEF /* KCS_NSURL_NString_Realm.m in Sources */ = {isa = PBXBuildFile; fileRef = 577386AB1C0D21F000EDDBEF /* KCS_NSURL_NString_Realm.m */; };
+		577386B01C0D3EB400EDDBEF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 577386AF1C0D3EB400EDDBEF /* Images.xcassets */; };
+		577386B41C0D440A00EDDBEF /* KCS_UIImage_NSData_Realm.h in Headers */ = {isa = PBXBuildFile; fileRef = 577386B21C0D440A00EDDBEF /* KCS_UIImage_NSData_Realm.h */; };
+		577386B51C0D440A00EDDBEF /* KCS_UIImage_NSData_Realm.m in Sources */ = {isa = PBXBuildFile; fileRef = 577386B31C0D440A00EDDBEF /* KCS_UIImage_NSData_Realm.m */; };
+		577386B61C0D44BF00EDDBEF /* KCS_UIImage_NSData_Realm.m in Sources */ = {isa = PBXBuildFile; fileRef = 577386B31C0D440A00EDDBEF /* KCS_UIImage_NSData_Realm.m */; };
 		577ACE061AEAB559006C2469 /* KCSProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 577ACE051AEAB559006C2469 /* KCSProtocolTests.swift */; };
 		577F7E3B1B868ACD0087CCC0 /* KCSFileStoreTestsSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 572ACA4F1B5027F000C098F7 /* KCSFileStoreTestsSwift.swift */; };
 		578076741AF7F2CF00C220C4 /* MemoryLeakTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578076731AF7F2CF00C220C4 /* MemoryLeakTests.swift */; };
@@ -1985,6 +1993,13 @@
 		576203781B87E511001E2B92 /* RequestConfigurationTestsHttpRequestHeaders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestConfigurationTestsHttpRequestHeaders.swift; sourceTree = "<group>"; };
 		57728FE01ABF22480043E779 /* KCSMutableOrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSMutableOrderedDictionary.h; sourceTree = "<group>"; };
 		57728FE11ABF22480043E779 /* KCSMutableOrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCSMutableOrderedDictionary.m; sourceTree = "<group>"; };
+		577386A71C0CCFEC00EDDBEF /* KCSCompany.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSCompany.h; sourceTree = "<group>"; };
+		577386A81C0CCFEC00EDDBEF /* KCSCompany.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCSCompany.m; sourceTree = "<group>"; };
+		577386AA1C0D21F000EDDBEF /* KCS_NSURL_NString_Realm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCS_NSURL_NString_Realm.h; sourceTree = "<group>"; };
+		577386AB1C0D21F000EDDBEF /* KCS_NSURL_NString_Realm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCS_NSURL_NString_Realm.m; sourceTree = "<group>"; };
+		577386AF1C0D3EB400EDDBEF /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		577386B21C0D440A00EDDBEF /* KCS_UIImage_NSData_Realm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCS_UIImage_NSData_Realm.h; sourceTree = "<group>"; };
+		577386B31C0D440A00EDDBEF /* KCS_UIImage_NSData_Realm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCS_UIImage_NSData_Realm.m; sourceTree = "<group>"; };
 		577ACE051AEAB559006C2469 /* KCSProtocolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KCSProtocolTests.swift; sourceTree = "<group>"; };
 		578076731AF7F2CF00C220C4 /* MemoryLeakTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoryLeakTests.swift; sourceTree = "<group>"; };
 		578076751AF7FCD500C220C4 /* KCSMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSMemory.h; sourceTree = "<group>"; };
@@ -3058,9 +3073,21 @@
 			name = RequestConfigurationTests;
 			sourceTree = "<group>";
 		};
+		577386B11C0D43E500EDDBEF /* Value Transformers */ = {
+			isa = PBXGroup;
+			children = (
+				577386AA1C0D21F000EDDBEF /* KCS_NSURL_NString_Realm.h */,
+				577386AB1C0D21F000EDDBEF /* KCS_NSURL_NString_Realm.m */,
+				577386B21C0D440A00EDDBEF /* KCS_UIImage_NSData_Realm.h */,
+				577386B31C0D440A00EDDBEF /* KCS_UIImage_NSData_Realm.m */,
+			);
+			name = "Value Transformers";
+			sourceTree = "<group>";
+		};
 		578DB6CC1C04F9C800F456B1 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
+				577386B11C0D43E500EDDBEF /* Value Transformers */,
 				578DB69C1C03C6D500F456B1 /* KCSRealmEntityPersistence.h */,
 				578DB69D1C03C6D500F456B1 /* KCSRealmEntityPersistence.m */,
 				578DB6CD1C04FA4300F456B1 /* KCSClientMetadataRealm.h */,
@@ -3170,6 +3197,9 @@
 				578DB6971C03AE8100F456B1 /* KCSPerson.m */,
 				578DB6991C03AE8F00F456B1 /* KCSAddress.h */,
 				578DB69A1C03AE8F00F456B1 /* KCSAddress.m */,
+				577386A71C0CCFEC00EDDBEF /* KCSCompany.h */,
+				577386A81C0CCFEC00EDDBEF /* KCSCompany.m */,
+				577386AF1C0D3EB400EDDBEF /* Images.xcassets */,
 			);
 			path = KinveyTests;
 			sourceTree = "<group>";
@@ -3839,6 +3869,7 @@
 				57A8C8561BC0676A00ADA28F /* NSString+KinveyAdditions.h in Headers */,
 				578DB6FE1C0693AE00F456B1 /* KCS_CLFloor_Realm.h in Headers */,
 				578DB69E1C03C6D500F456B1 /* KCSRealmEntityPersistence.h in Headers */,
+				577386AC1C0D21F000EDDBEF /* KCS_NSURL_NString_Realm.h in Headers */,
 				57A8C8571BC0677A00ADA28F /* KCSUserDiscovery.h in Headers */,
 				578DB6E71C05095F00F456B1 /* KCSMetadataRealm.h in Headers */,
 				57A8C8841BC06A5800ADA28F /* EXTScope.h in Headers */,
@@ -3911,6 +3942,7 @@
 				57A8C8751BC0698F00ADA28F /* KCSQuery.h in Headers */,
 				57A8C8761BC0699900ADA28F /* KinveyKit2.h in Headers */,
 				57A8C8771BC069AB00ADA28F /* KinveyPersistable.h in Headers */,
+				577386B41C0D440A00EDDBEF /* KCS_UIImage_NSData_Realm.h in Headers */,
 				57A8C8C11BC06B7B00ADA28F /* KCSURLConnectionDelegateAdapter.h in Headers */,
 				573D7E521C0A50E1007C8F89 /* KCSAclRealm.h in Headers */,
 				57A8C8781BC069B900ADA28F /* KCSBackgroundAppdataStore.h in Headers */,
@@ -5151,6 +5183,7 @@
 			files = (
 				57FF3E461ABA298800128BC7 /* TestConfig.plist in Resources */,
 				57FF3E431ABA294C00128BC7 /* mavericks.jpg in Resources */,
+				577386B01C0D3EB400EDDBEF /* Images.xcassets in Resources */,
 				57FF3E441ABA296200128BC7 /* InfoPlist.strings in Resources */,
 				57155E561BB604A400A13B97 /* persons.csv in Resources */,
 				5746402A1B3E0FA100D17CA0 /* video.mp4 in Resources */,
@@ -5698,6 +5731,7 @@
 				57A8C8161BBF6A1A00ADA28F /* CLLocation+Kinvey.m in Sources */,
 				57A8C8151BBF6A0C00ADA28F /* KCSPush.m in Sources */,
 				57A8C8141BBF69D700ADA28F /* KCSClient.m in Sources */,
+				577386AD1C0D21F000EDDBEF /* KCS_NSURL_NString_Realm.m in Sources */,
 				57A8C8131BBF69CB00ADA28F /* KCSDataStoreOperationRequest.m in Sources */,
 				57A8C8121BBF69BF00ADA28F /* KCSDataStore.m in Sources */,
 				57A8C8101BBF69A900ADA28F /* KCSMutableOrderedDictionary.m in Sources */,
@@ -5757,6 +5791,7 @@
 				57A8C7D91BBF665B00ADA28F /* EXTScope.m in Sources */,
 				57A8C7D81BBF664F00ADA28F /* KCS_DDTTYLogger.m in Sources */,
 				57A8C7D71BBF663F00ADA28F /* KCSFileRequestManager.m in Sources */,
+				577386B51C0D440A00EDDBEF /* KCS_UIImage_NSData_Realm.m in Sources */,
 				57A8C7D61BBF663000ADA28F /* KCSStore.m in Sources */,
 				57A8C7D51BBF662100ADA28F /* KCS_ContextFilterLogFormatter.m in Sources */,
 				57A8C7D31BBF660200ADA28F /* KCSUser2.m in Sources */,
@@ -5847,6 +5882,7 @@
 				578834271AB8CF5400078CC5 /* CLLocation+Kinvey.m in Sources */,
 				578833E71AB8CF5400078CC5 /* KCSPush.m in Sources */,
 				578833F61AB8CF5400078CC5 /* KCSClient.m in Sources */,
+				577386AE1C0D339900EDDBEF /* KCS_NSURL_NString_Realm.m in Sources */,
 				570FA7681B94D5CE00F51F4C /* KCSDataStoreOperationRequest.m in Sources */,
 				578834171AB8CF5400078CC5 /* KCSDataStore.m in Sources */,
 				578DB6DF1C05070800F456B1 /* KCSUserRealm.m in Sources */,
@@ -5906,6 +5942,7 @@
 				578833C81AB8CF5400078CC5 /* KCS_DDTTYLogger.m in Sources */,
 				578DB7001C06956200F456B1 /* KCS_CLLocation_Realm.m in Sources */,
 				578834211AB8CF5400078CC5 /* KCSFileRequestManager.m in Sources */,
+				577386B61C0D44BF00EDDBEF /* KCS_UIImage_NSData_Realm.m in Sources */,
 				578833DE1AB8CF5400078CC5 /* KCSStore.m in Sources */,
 				578833C91AB8CF5400078CC5 /* KCS_ContextFilterLogFormatter.m in Sources */,
 				578834151AB8CF5400078CC5 /* KCSUser2.m in Sources */,
@@ -5939,6 +5976,7 @@
 				5788343A1AB8D25500078CC5 /* KCSMetadataTests.m in Sources */,
 				575675011AF28D3500A7C0DB /* EmptyRequestConfigurationTests.swift in Sources */,
 				5718273B1AC2F3B50013A653 /* KCSMutableOrderedDictionaryTests.swift in Sources */,
+				577386A91C0CCFEC00EDDBEF /* KCSCompany.m in Sources */,
 				5788342F1AB8D25500078CC5 /* KCSOfflineStoreTests.m in Sources */,
 				57291BAD1BE19AE10066033E /* Event.m in Sources */,
 				578834471AB8D25500078CC5 /* PlatformUtilsTest.m in Sources */,

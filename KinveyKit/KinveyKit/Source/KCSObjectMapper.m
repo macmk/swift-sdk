@@ -21,6 +21,7 @@
 #import "KCSObjectMapper.h"
 
 #import <objc/runtime.h>
+#import <objc/message.h>
 
 //TODO: remove core location as dependency injection
 #import <CoreLocation/CoreLocation.h>
@@ -400,6 +401,14 @@ void populate(id object, NSDictionary* referencesClasses, NSDictionary* data, NS
                     if ([jsonKey isEqualToString:KCSEntityKeyId] && [object kinveyObjectId] != nil && [[object kinveyObjectId] isKindOfClass:[NSString class]] && [[object kinveyObjectId] isEqualToString:value] == NO) {
                         KCSLogWarning(@"%@ is having it's id overwritten.", object);
                     }
+                    if (valClass && [value isKindOfClass:[NSDictionary class]]) {
+                        id obj = [[valClass alloc] init];
+                        [(NSDictionary*) value enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull value, BOOL * _Nonnull stop)
+                        {
+                            [obj setValue:value forKey:key];
+                        }];
+                        value = obj;
+                    }
                     if ([object respondsToSelector:@selector(setValue:forKey:)]) {
                         [object setValue:value forKey:hostKey];
                     } else {
@@ -643,6 +652,31 @@ id valueForProperty(NSString* jsonName, id value, BOOL withRefs, id object, NSSt
     return nil;
 }
 
++(NSDictionary<NSString*, id>*)convertObject:(id)obj
+{
+    unsigned int propertyCount = 0;
+    objc_property_t* properties = class_copyPropertyList([obj class], &propertyCount);
+    NSMutableDictionary<NSString*, id>* values = [NSMutableDictionary dictionaryWithCapacity:propertyCount];
+    id (*getFunc)(id self, SEL sel) = (id (*)(id self, SEL sel)) objc_msgSend;
+    NSString* propertyName = nil;
+    id value;
+    for (unsigned int i = 0; i < propertyCount; i++) {
+        propertyName = [NSString stringWithUTF8String:property_getName(properties[i])];
+        value = getFunc(obj, NSSelectorFromString(propertyName));
+        if (!([value isKindOfClass:[NSArray class]] ||
+              [value isKindOfClass:[NSDictionary class]] ||
+              [value isKindOfClass:[NSString class]] ||
+              [value isKindOfClass:[NSNumber class]] ||
+              [value isKindOfClass:[NSNull class]]))
+        {
+            value = [self convertObject:value];
+        }
+        values[propertyName] = value;
+    }
+    free(properties);
+    return values;
+}
+
 + (KCSSerializedObject*) makeResourceEntityDictionaryFromObject:(id)object forCollection:(NSString*)collectionName withReferences:(BOOL)withRefs error:(NSError**)error
 {
     NSMutableDictionary *dictionaryToMap = [[NSMutableDictionary alloc] init];
@@ -713,6 +747,28 @@ id valueForProperty(NSString* jsonName, id value, BOOL withRefs, id object, NSSt
             }
             if ([value isKindOfClass:[KCSKinveyRef class]]) {
                 value = [value proxyForJson];
+            } else if (!([value isKindOfClass:[NSArray class]] ||
+                         [value isKindOfClass:[NSDictionary class]] ||
+                         [value isKindOfClass:[NSString class]] ||
+                         [value isKindOfClass:[NSNumber class]] ||
+                         [value isKindOfClass:[NSNull class]]))
+            {
+                Class class = [value class];
+                NSString* className = NSStringFromClass(class);
+                NSValueTransformer* valueTransformer = [NSValueTransformer valueTransformerForName:className];
+                if (valueTransformer && [valueTransformer isKindOfClass:[NSValueTransformer class]]) {
+                    value = [valueTransformer transformedValue:value];
+                } else {
+                    NSDictionary* kinveyPropertyMapping;
+                    @try {
+                        kinveyPropertyMapping = [value hostToKinveyPropertyMapping];
+                    } @catch (NSException *exception) {
+                        kinveyPropertyMapping = nil;
+                    }
+                    if (!kinveyPropertyMapping) {
+                        value = [self convertObject:value];
+                    }
+                }
             }
             dictionaryToMap[jsonName] = value;
         } // end test object name
