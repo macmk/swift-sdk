@@ -19,13 +19,14 @@
              @"name"     : @"name",
              @"address"  : @"address",
              @"company"  : @"company",
-//             @"picture"  : @"picture",
+             @"picture"  : @"picture",
              @"age"      : @"age"};
 }
 
 +(NSDictionary *)kinveyPropertyToCollectionMapping
 {
-    return @{ @"company" : @"Company" };
+    return @{ @"company" : @"Company",
+              @"picture" : KCSFileStoreCollectionName };
 }
 
 +(NSDictionary *)kinveyObjectBuilderOptions
@@ -36,16 +37,6 @@
 -(NSArray *)referenceKinveyPropertiesOfObjectsToSave
 {
     return @[@"company"];
-}
-
--(KCSAddress *)address
-{
-    return _address;
-}
-
--(void)setAddress:(KCSAddress *)address
-{
-    _address = address;
 }
 
 @end

@@ -20,6 +20,7 @@
 @property (nonatomic, strong) id<KCSStore> storeCompany;
 
 @property (nonatomic, readonly) KCSPerson* person;
+@property (nonatomic, readonly) UIImage* personPicture;
 @property (nonatomic, readonly) KCSAddress* address;
 @property (nonatomic, readonly) KCSCompany* company;
 
@@ -74,10 +75,15 @@
     person.age = 29;
     person.address = self.address;
     person.company = self.company;
-    person.picture = [UIImage imageNamed:@"Profile Picture"
-                                inBundle:[NSBundle bundleForClass:[self class]]
-           compatibleWithTraitCollection:nil];
+    person.picture = self.personPicture;
     return person;
+}
+
+-(UIImage *)personPicture
+{
+    return [UIImage imageNamed:@"Profile Picture"
+                      inBundle:[NSBundle bundleForClass:[self class]]
+ compatibleWithTraitCollection:nil];
 }
 
 - (void)testRealmSave {
@@ -127,6 +133,8 @@
             XCTAssertEqualObjects(person.name, _person.name);
             XCTAssertEqual(person.age, _person.age);
             XCTAssertNotNil(person.metadata);
+            XCTAssertNotNil(_person.picture);
+            XCTAssertTrue([_person.picture isKindOfClass:[UIImage class]]);
             
             XCTAssertNotNil(_person.address);
             XCTAssertTrue([_person.address isKindOfClass:[KCSAddress class]]);
@@ -177,6 +185,8 @@
             XCTAssertNotNil(_person.personId);
             XCTAssertEqualObjects(person.name, _person.name);
             XCTAssertEqual(person.age, _person.age);
+            XCTAssertNotNil(_person.picture);
+            XCTAssertTrue([_person.picture isKindOfClass:[UIImage class]]);
             
             XCTAssertNotNil(_person.address);
             XCTAssertTrue([_person.address isKindOfClass:[KCSAddress class]]);

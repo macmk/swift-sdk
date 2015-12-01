@@ -16,7 +16,7 @@
 @property NSString* personId;
 @property NSString* name;
 @property NSInteger age;
-//@property UIImage* picture;
+@property UIImage* picture;
 @property KCSAddress* address;
 @property KCSCompany* company;
 @property KCSMetadata* metadata;

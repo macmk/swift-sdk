@@ -745,7 +745,9 @@ id valueForProperty(NSString* jsonName, id value, BOOL withRefs, id object, NSSt
             if (value == nil) {
                 return nil;
             }
-            if ([value isKindOfClass:[KCSKinveyRef class]]) {
+            if ([value isKindOfClass:[KCSKinveyRef class]] ||
+                [value isKindOfClass:[KCSFile class]])
+            {
                 value = [value proxyForJson];
             } else if (!([value isKindOfClass:[NSArray class]] ||
                          [value isKindOfClass:[NSDictionary class]] ||
