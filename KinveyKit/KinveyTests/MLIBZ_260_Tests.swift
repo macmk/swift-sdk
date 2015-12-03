@@ -101,7 +101,7 @@ class MLIBZ_260_Tests: KCSTestCase {
                         dynamic var objectId: String?
                         dynamic var hey: String?
                         
-                        private override func hostToKinveyPropertyMapping() -> [NSObject : AnyObject]! {
+                        private func hostToKinveyPropertyMapping() -> [NSObject : AnyObject]! {
                             return [
                                 "objectId" : KCSEntityKeyId,
                                 "hey" : "hey"

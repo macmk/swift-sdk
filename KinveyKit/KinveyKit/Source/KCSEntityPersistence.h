@@ -20,7 +20,7 @@
 -(NSArray*)allIds:(NSString*)route
        collection:(NSString*)collection;
 
--(NSArray*)idsForQuery:(KCSQuery2*)query
+-(NSArray*)idsForQuery:(id)query
                  route:(NSString*)route
             collection:(NSString*)collection;
 
@@ -33,7 +33,7 @@
                       route:(NSString*)route
                  collection:(NSString*)collection;
 
--(BOOL)removeQuery:(NSString*)query
+-(BOOL)removeQuery:(KCSQuery2*)query
              route:(NSString*)route
         collection:(NSString*)collection;
 
@@ -85,8 +85,13 @@ collection:(NSString*)collection;
 - (void) clearCaches;
 
 @optional
+
 -(NSArray<NSObject<KCSPersistable>*>*)entitiesForQuery:(KCSQuery2*)query
                                                  route:(NSString*)route
                                             collection:(NSString*)collection;
+
+-(NSObject<KCSPersistable>*)objectForId:(NSString*)_id
+                                  route:(NSString*)route
+                             collection:(NSString*)collection;
 
 @end

@@ -16,6 +16,9 @@
 // contents is a violation of applicable laws.
 //
 
+#ifndef KinveyKit_KCSQuery2_h
+#define KinveyKit_KCSQuery2_h
+
 #import "KCSQuery.h"
 
 typedef enum KCSQueryErrors : NSInteger {
@@ -40,3 +43,5 @@ KCS_DEPRECATED(Please use KCSQuery instead, 1.41.0)
 
 
 @end
+
+#endif

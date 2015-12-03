@@ -14,7 +14,7 @@ class City: NSObject {
     var name: String!
     var metadata: KCSMetadata?
     
-    override func hostToKinveyPropertyMapping() -> [NSObject : AnyObject]! {
+    override func hostToKinveyPropertyMapping() -> [String : String]! {
         return [
             "objectId" : KCSEntityKeyId,
             "name" : "name",

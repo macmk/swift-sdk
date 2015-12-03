@@ -116,7 +116,7 @@ implementing these methods.
  @return The dictionary that maps from objective-c to Kinvey (JSON) mapping.
 
  */
-- (NSDictionary*)hostToKinveyPropertyMapping;
+- (NSDictionary<NSString*, NSString*>*)hostToKinveyPropertyMapping;
 
 
 @optional

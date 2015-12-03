@@ -96,7 +96,7 @@ void setKinveyObjectId(NSObject<KCSPersistable>* obj, NSString* objId)
 @interface KCSObjectCache () <NSCacheDelegate>
 @property (nonatomic, strong) id<KCSEntityPersistence> persistenceLayer;
 @property (nonatomic, strong) KCSOfflineUpdate* offline;
-@property (nonatomic, strong) NSMutableDictionary* caches;
+@property (nonatomic, strong) NSMutableDictionary<NSString*, NSMutableDictionary<NSString*, NSCache*>*>* caches;
 @property (nonatomic, strong) NSCache* queryCache;
 @end
 
@@ -168,9 +168,14 @@ void setKinveyObjectId(NSObject<KCSPersistable>* obj, NSString* objId)
 {
     id obj = [cache objectForKey:_id];
     if (!obj) {
-        NSDictionary* entity;
-        entity = [_persistenceLayer entityForId:_id route:route collection:collection];
-        obj = [_dataModel objectFromCollection:collection data:entity];
+        if ([_persistenceLayer respondsToSelector:@selector(objectForId:route:collection:)]) {
+            obj = [_persistenceLayer objectForId:_id
+                                           route:route
+                                      collection:collection];
+        } else {
+            NSDictionary* entity = [_persistenceLayer entityForId:_id route:route collection:collection];
+            obj = [_dataModel objectFromCollection:collection data:entity];
+        }
     }
     return obj;
 }
@@ -385,7 +390,6 @@ void setKinveyObjectId(NSObject<KCSPersistable>* obj, NSString* objId)
 
 - (BOOL) removeQuery:(KCSQuery2*)query route:(NSString*)route collection:(NSString*)collection
 {
-    NSString* queryKey = [query keyString];
     NSString* key = [self queryKey:query route:route collection:collection];
     
     [_queryCache removeObjectForKey:key];
@@ -395,7 +399,7 @@ void setKinveyObjectId(NSObject<KCSPersistable>* obj, NSString* objId)
     }
 
     __block BOOL removeSuccessful = NO;
-    removeSuccessful = [_persistenceLayer removeQuery:queryKey route:route collection:collection];
+    removeSuccessful = [_persistenceLayer removeQuery:query route:route collection:collection];
     return removeSuccessful;
 }
 

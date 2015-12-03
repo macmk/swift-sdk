@@ -707,8 +707,9 @@
     return count;
 }
 
-- (BOOL) removeQuery:(NSString*)query route:(NSString*)route collection:(NSString*)collection
+- (BOOL) removeQuery:(KCSQuery2*)_query route:(NSString*)route collection:(NSString*)collection
 {
+    NSString* query = [_query keyString];
     KCSLogDebug(KCS_LOG_CONTEXT_DATA, @"remove query: '%@'", query);
     //TODO: deal with cleaning up unneeded entities - this just removes the query - not the associated objects
     

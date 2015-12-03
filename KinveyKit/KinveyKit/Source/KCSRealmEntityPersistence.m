@@ -587,24 +587,25 @@ static NSMutableDictionary<NSString*, NSMutableDictionary<NSString*, NSValueTran
     return result;
 }
 
--(NSArray<NSObject<KCSPersistable>*> *)entitiesForQuery:(KCSQuery2 *)query
+-(NSArray<NSObject<KCSPersistable>*> *)entitiesForQuery:(KCSQuery2*)query
                                                   route:(NSString *)route
                                              collection:(NSString *)collection
 {
     Class class = [[KCSAppdataStore caches].dataModel classForCollection:collection];
     NSString* realmClassName = classMapOriginalRealm[NSStringFromClass(class)];
     Class realmClass = NSClassFromString(realmClassName);
+    NSPredicate* predicate = query.query.predicate;
     RLMRealm* realm = self.realm;
     RLMResults* results = [realmClass objectsInRealm:realm
-                                       withPredicate:query.query.predicate];
+                                       withPredicate:predicate];
     NSMutableArray<NSObject<KCSPersistable>*>* array = [NSMutableArray arrayWithCapacity:results.count];
     for (RLMObject* realmObj in results) {
-        [array addObject:[self dictionaryFromRealmObject:realmObj]];
+        [array addObject:[self objectFromRealmObject:realmObj]];
     }
     return array;
 }
 
--(NSObject<KCSPersistable>*)dictionaryFromRealmObject:(RLMObject*)realmObj
+-(NSObject<KCSPersistable>*)objectFromRealmObject:(RLMObject*)realmObj
 {
     NSString* realmClassName = [[realmObj class] className];
     NSString* originalClassName = classMapRealmOriginal[realmClassName].anyObject;
@@ -618,7 +619,7 @@ static NSMutableDictionary<NSString*, NSMutableDictionary<NSString*, NSValueTran
         if (valueTransformer) {
             value = [valueTransformer reverseTransformedValue:value];
         } else if ([value isKindOfClass:[RLMObject class]]) {
-            value = [self dictionaryFromRealmObject:value];
+            value = [self objectFromRealmObject:value];
         }
         [obj setValue:value
                forKey:propertyName];
@@ -638,7 +639,56 @@ static NSMutableDictionary<NSString*, NSMutableDictionary<NSString*, NSValueTran
     return nil;
 }
 
--(NSDictionary *)entityForId:(NSString *)_id route:(NSString *)route collection:(NSString *)collection
+-(NSObject<KCSPersistable> *)objectForId:(NSString *)_id
+                                   route:(NSString *)route
+                              collection:(NSString *)collection
+{
+    NSObject<KCSPersistable>* (*objectForId)(id, SEL, NSString*, NSString*, NSString*) = (NSObject<KCSPersistable>* (*)(id, SEL, NSString*, NSString*, NSString*)) objc_msgSend;
+    return objectForId(self, NSSelectorFromString([NSString stringWithFormat:@"objectForId:%@Route:collection:", route]), _id, route, collection);
+}
+
+-(NSObject<KCSPersistable> *)objectForId:(NSString *)_id
+                               userRoute:(NSString *)route
+                              collection:(NSString *)collection
+{
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:@"userId == %@", _id];
+    RLMRealm* realm = self.realm;
+    RLMResults* results = [KCSUserRealm objectsInRealm:realm
+                                         withPredicate:predicate];
+    for (KCSUserRealm* userRealmObj in results) {
+        KCSUser* user = [[KCSUser alloc] init];
+        user.userId = userRealmObj.userId;
+        user.username = userRealmObj.username;
+        user.metadata = (KCSMetadata*) [self objectFromRealmObject:userRealmObj.metadata];
+        return user;
+    }
+    return nil;
+}
+
+-(NSObject<KCSPersistable> *)objectForId:(NSString *)_id
+                            appdataRoute:(NSString *)route
+                              collection:(NSString *)collection
+{
+    Class class = [[KCSAppdataStore caches].dataModel classForCollection:collection];
+    NSString* realmClassName = classMapOriginalRealm[NSStringFromClass(class)];
+    Class realmClass = NSClassFromString(realmClassName);
+    
+    id<KCSPersistable> sampleObj = [[class alloc] init];
+    
+    NSDictionary<NSString*, NSString*>* propertyMapping = [sampleObj hostToKinveyPropertyMapping].invert;
+    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"%@ == %%@", propertyMapping[KCSEntityKeyId]], _id];
+    RLMRealm* realm = self.realm;
+    RLMResults* results = [realmClass objectsInRealm:realm
+                                       withPredicate:predicate];
+    for (RLMObject* realmObj in results) {
+        return [self objectFromRealmObject:realmObj];
+    }
+    return nil;
+}
+
+-(NSDictionary *)entityForId:(NSString *)_id
+                       route:(NSString *)route
+                  collection:(NSString *)collection
 {
     return nil;
 }
@@ -648,9 +698,22 @@ static NSMutableDictionary<NSString*, NSMutableDictionary<NSString*, NSValueTran
     return YES;
 }
 
--(BOOL)removeQuery:(NSString *)query route:(NSString *)route collection:(NSString *)collection
+-(BOOL)removeQuery:(KCSQuery2*)query
+             route:(NSString *)route
+        collection:(NSString *)collection
 {
-    return NO;
+    Class class = [[KCSAppdataStore caches].dataModel classForCollection:collection];
+    NSString* realmClassName = classMapOriginalRealm[NSStringFromClass(class)];
+    Class realmClass = NSClassFromString(realmClassName);
+    NSPredicate* predicate = query.query.predicate;
+    RLMRealm* realm = self.realm;
+    RLMResults* results = [realmClass objectsInRealm:realm
+                                       withPredicate:predicate];
+    NSError* error = nil;
+    [realm transactionWithBlock:^{
+        [realm deleteObjects:results];
+    } error:&error];
+    return error == nil;
 }
 
 -(void)clearCaches

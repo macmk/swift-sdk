@@ -10,6 +10,7 @@
 #import <KinveyKit/KinveyKit.h>
 
 #import "KCSPerson.h"
+#import "KCSHiddenMethods.h"
 
 @interface KCSRealmTests : KCSTestCase
 
@@ -99,6 +100,10 @@
 }
 
 - (void)testRealmSave {
+    [self save];
+}
+
+- (KCSPerson*)save {
     KCSPerson* person = self.person;
     KCSCompany* company = person.company;
     
@@ -133,6 +138,8 @@
     
     __block __weak XCTestExpectation* expectationSavePerson = [self expectationWithDescription:@"savePerson"];
     
+    __block KCSPerson* result = nil;
+    
     [self.storePerson saveObject:person
        withCompletionBlock:^(NSArray<KCSPerson*> *objectsOrNil, NSError *errorOrNil)
     {
@@ -141,6 +148,7 @@
         XCTAssertEqual(objectsOrNil.count, 1);
         if (objectsOrNil.count > 0) {
             KCSPerson* _person = objectsOrNil.firstObject;
+            result = _person;
             XCTAssertEqual(person, _person);
             XCTAssertTrue([_person isKindOfClass:[KCSPerson class]]);
             XCTAssertNotNil(person.personId);
@@ -186,10 +194,12 @@
     {
         expectationSavePerson = nil;
     }];
+    
+    return result;
 }
 
 -(void)testRealmQuery {
-    [self testRealmSave];
+    [self save];
     
     KCSPerson* person = self.person;
     
@@ -249,6 +259,97 @@
          {
              expectationQueryPerson = nil;
          }];
+    }];
+}
+
+-(void)testRealmQueryById {
+    KCSPerson* person = [self save];
+    
+    KCSObjectCache* objectCache = [KCSAppdataStore caches];
+    NSMutableDictionary<NSString*, NSMutableDictionary<NSString*, NSCache*>*>* caches = [objectCache valueForKey:@"caches"];
+    
+    [self measureBlock:^{
+        [caches[@"appdata"][self.collectionPerson.collectionName] removeAllObjects];
+        NSArray* objects = [objectCache pullIds:@[person.personId]
+                                          route:@"appdata"
+                                     collection:self.collectionPerson.collectionName];
+        XCTAssertNotNil(objects);
+        XCTAssertEqual(objects.count, 1);
+        XCTAssertTrue([objects.firstObject isKindOfClass:[KCSPerson class]]);
+    }];
+}
+
+-(void)testRealmQueryUserById {
+    KCSObjectCache* objectCache = [KCSAppdataStore caches];
+    NSMutableDictionary<NSString*, NSMutableDictionary<NSString*, NSCache*>*>* caches = [objectCache valueForKey:@"caches"];
+    
+    [self measureBlock:^{
+        [caches[@"user"][KCSUserCollectionName] removeAllObjects];
+        NSArray* objects = [objectCache pullIds:@[[KCSUser activeUser].userId]
+                                          route:@"user"
+                                     collection:KCSUserCollectionName];
+        XCTAssertNotNil(objects);
+        XCTAssertEqual(objects.count, 1);
+        XCTAssertTrue([objects.firstObject isKindOfClass:[KCSUser class]]);
+    }];
+}
+
+-(void)testRealmRemoveByQuery {
+    [self measureBlock:^{
+        KCSPerson* person = [self save];
+        
+        __block __weak XCTestExpectation* expectationRemovePerson = [self expectationWithDescription:@"removePerson"];
+        
+        KCSQuery* query = [KCSQuery queryWithPredicate:[NSPredicate predicateWithFormat:@"name == %@ AND _acl.creator == %@", person.name, [KCSUser activeUser].userId]];
+        [self.storePerson removeObject:query
+                   withCompletionBlock:^(unsigned long count, NSError *errorOrNil)
+        {
+            XCTAssertEqual(count, 1);
+            
+            [expectationRemovePerson fulfill];
+        } withProgressBlock:nil];
+        
+        [self waitForExpectationsWithTimeout:30
+                                     handler:^(NSError * _Nullable error)
+         {
+             expectationRemovePerson = nil;
+         }];
+        
+        query = [KCSQuery queryWithPredicate:[NSPredicate predicateWithFormat:@"_acl.creator == %@", [KCSUser activeUser].userId]];
+        NSArray* array = [[KCSAppdataStore caches] pullQuery:[KCSQuery2 queryWithQuery1:query]
+                                                       route:@"appdata"
+                                                  collection:self.collectionPerson.collectionName];
+        XCTAssertNotNil(array);
+        XCTAssertEqual(array.count, 0);
+    }];
+}
+
+-(void)testRealmRemoveById {
+    [self measureBlock:^{
+        KCSPerson* person = [self save];
+        
+        __block __weak XCTestExpectation* expectationRemovePerson = [self expectationWithDescription:@"removePerson"];
+        
+        [self.storePerson removeObject:person.personId
+                   withCompletionBlock:^(unsigned long count, NSError *errorOrNil)
+        {
+            XCTAssertEqual(count, 1);
+            
+            [expectationRemovePerson fulfill];
+        } withProgressBlock:nil];
+        
+        [self waitForExpectationsWithTimeout:30
+                                     handler:^(NSError * _Nullable error)
+        {
+            expectationRemovePerson = nil;
+        }];
+        
+        KCSQuery* query = [KCSQuery queryWithPredicate:[NSPredicate predicateWithFormat:@"_acl.creator == %@", [KCSUser activeUser].userId]];
+        NSArray* array = [[KCSAppdataStore caches] pullQuery:[KCSQuery2 queryWithQuery1:query]
+                                                       route:@"appdata"
+                                                  collection:self.collectionPerson.collectionName];
+        XCTAssertNotNil(array);
+        XCTAssertEqual(array.count, 0);
     }];
 }
 

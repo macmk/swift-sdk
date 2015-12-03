@@ -36,6 +36,7 @@
 #import "KinveyDataStore.h"
 #import "KCSNetworkResponse.h"
 #import "KCSNetworkOperation.h"
+#import "NSDictionary+KinveyAdditions.h"
 
 #import "KCSCachedStore.h"
 #import "KCSAppdataStore.h"
@@ -1419,6 +1420,33 @@ andResaveAfterReferencesSaved:^{
     }
     
     KCSDataStore* store2 = [[KCSDataStore alloc] initWithCollection:self.backingCollection.collectionName];
+    
+    if (completionBlock) {
+        KCSDeletionBlock deletionBlock = completionBlock;
+        completionBlock = ^(NSDictionary* deletionDictOrNil, NSError* errorOrNil) {
+            if (deletionDictOrNil && !errorOrNil) {
+                KCSCollection* collection = self.backingCollection;
+                NSString* collectionName = collection.collectionName;
+                NSString* route = [collection route];
+                
+                KCSQuery* query = nil;
+                if (![object isKindOfClass:[KCSQuery class]]) {
+                    Class class = [[KCSAppdataStore caches].dataModel classForCollection:collectionName];
+                    id<KCSPersistable> sampleObj = [[class alloc] init];
+                    NSDictionary<NSString*, NSString*>* propertyMapping = [sampleObj hostToKinveyPropertyMapping].invert;
+                    NSPredicate* predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"%@ == %%@", propertyMapping[KCSEntityKeyId]], object];
+                    query = [KCSQuery queryWithPredicate:predicate];
+                } else {
+                    query = object;
+                }
+                KCSQuery2* query2 = [KCSQuery2 queryWithQuery1:query];
+                [[KCSAppdataStore caches] removeQuery:query2
+                                                route:route
+                                           collection:collectionName];
+            }
+            deletionBlock(deletionDictOrNil, errorOrNil);
+        };
+    }
     
     id<KCSNetworkOperation> op = nil;
     KCSMultipleRequest* requests = [[KCSMultipleRequest alloc] init];
