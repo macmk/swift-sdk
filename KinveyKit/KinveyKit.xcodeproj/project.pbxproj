@@ -718,6 +718,9 @@
 		576B69E11C0FBC28002D91FC /* KCS_NSURL_NSString_NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 576B69DF1C0FBC28002D91FC /* KCS_NSURL_NSString_NSValueTransformer.h */; };
 		576B69E21C0FBC28002D91FC /* KCS_NSURL_NSString_NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 576B69E01C0FBC28002D91FC /* KCS_NSURL_NSString_NSValueTransformer.m */; };
 		576B69E31C0FBFE6002D91FC /* KCS_NSURL_NSString_NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 576B69E01C0FBC28002D91FC /* KCS_NSURL_NSString_NSValueTransformer.m */; };
+		576B69E61C0FDCE4002D91FC /* KCS_NSString_NSDate_NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 576B69E41C0FDCE4002D91FC /* KCS_NSString_NSDate_NSValueTransformer.h */; };
+		576B69E71C0FDCE4002D91FC /* KCS_NSString_NSDate_NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 576B69E51C0FDCE4002D91FC /* KCS_NSString_NSDate_NSValueTransformer.m */; };
+		576B69E81C0FDDEF002D91FC /* KCS_NSString_NSDate_NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 576B69E51C0FDCE4002D91FC /* KCS_NSString_NSDate_NSValueTransformer.m */; };
 		57728FE21ABF22480043E779 /* KCSMutableOrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 57728FE01ABF22480043E779 /* KCSMutableOrderedDictionary.h */; };
 		57728FE31ABF22480043E779 /* KCSMutableOrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 57728FE11ABF22480043E779 /* KCSMutableOrderedDictionary.m */; };
 		57728FE41ABF22EB0043E779 /* KCSMutableOrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 57728FE01ABF22480043E779 /* KCSMutableOrderedDictionary.h */; };
@@ -2014,6 +2017,8 @@
 		576B69DB1C0FA451002D91FC /* KCS_NSArray_KCS_CLLocation_Realm_NSValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCS_NSArray_KCS_CLLocation_Realm_NSValueTransformer.m; sourceTree = "<group>"; };
 		576B69DF1C0FBC28002D91FC /* KCS_NSURL_NSString_NSValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCS_NSURL_NSString_NSValueTransformer.h; sourceTree = "<group>"; };
 		576B69E01C0FBC28002D91FC /* KCS_NSURL_NSString_NSValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCS_NSURL_NSString_NSValueTransformer.m; sourceTree = "<group>"; };
+		576B69E41C0FDCE4002D91FC /* KCS_NSString_NSDate_NSValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCS_NSString_NSDate_NSValueTransformer.h; sourceTree = "<group>"; };
+		576B69E51C0FDCE4002D91FC /* KCS_NSString_NSDate_NSValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCS_NSString_NSDate_NSValueTransformer.m; sourceTree = "<group>"; };
 		57728FE01ABF22480043E779 /* KCSMutableOrderedDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSMutableOrderedDictionary.h; sourceTree = "<group>"; };
 		57728FE11ABF22480043E779 /* KCSMutableOrderedDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCSMutableOrderedDictionary.m; sourceTree = "<group>"; };
 		577386A71C0CCFEC00EDDBEF /* KCSCompany.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCSCompany.h; sourceTree = "<group>"; };
@@ -3102,6 +3107,8 @@
 				576B69C51C0F7BD8002D91FC /* KCS_NSArray_CLLocation_NSValueTransformer.m */,
 				576B69DF1C0FBC28002D91FC /* KCS_NSURL_NSString_NSValueTransformer.h */,
 				576B69E01C0FBC28002D91FC /* KCS_NSURL_NSString_NSValueTransformer.m */,
+				576B69E41C0FDCE4002D91FC /* KCS_NSString_NSDate_NSValueTransformer.h */,
+				576B69E51C0FDCE4002D91FC /* KCS_NSString_NSDate_NSValueTransformer.m */,
 			);
 			name = "Value Transformers";
 			sourceTree = "<group>";
@@ -3938,6 +3945,7 @@
 				57A8C8631BC0683B00ADA28F /* KCSLinkedAppdataStore.h in Headers */,
 				57A8C8B91BC06B4A00ADA28F /* KCSKeychain.h in Headers */,
 				57A8C8C61BC06B8F00ADA28F /* KCSFile+KCSInternal.h in Headers */,
+				576B69E61C0FDCE4002D91FC /* KCS_NSString_NSDate_NSValueTransformer.h in Headers */,
 				57A8C8D71BC06BD000ADA28F /* KCS_DDAbstractDatabaseLogger.h in Headers */,
 				578DB6D81C05017200F456B1 /* KCSUserRealm.h in Headers */,
 				57A8C8A11BC06ADC00ADA28F /* KCSNSURLSessionOperation.h in Headers */,
@@ -5788,6 +5796,7 @@
 				576B69BC1C0E2FBD002D91FC /* KCS_CLLocation_Realm.m in Sources */,
 				57A8C7FD1BBF68AA00ADA28F /* KCSClient2+KCSInternal.m in Sources */,
 				57A8C7FC1BBF689D00ADA28F /* KCSClientConfiguration+KCSInternal.m in Sources */,
+				576B69E71C0FDCE4002D91FC /* KCS_NSString_NSDate_NSValueTransformer.m in Sources */,
 				57A8C7FB1BBF689100ADA28F /* KCSPush2.m in Sources */,
 				57A8C7FA1BBF688300ADA28F /* KCSPlatformUtils.m in Sources */,
 				57A8C7F91BBF683600ADA28F /* KCSGroup.m in Sources */,
@@ -5942,6 +5951,7 @@
 				576B69BD1C0E3040002D91FC /* KCS_CLLocation_Realm.m in Sources */,
 				5788340D1AB8CF5400078CC5 /* NSString+KinveyAdditions.m in Sources */,
 				578834111AB8CF5400078CC5 /* KCSNSURLSessionOperation.m in Sources */,
+				576B69E81C0FDDEF002D91FC /* KCS_NSString_NSDate_NSValueTransformer.m in Sources */,
 				578834011AB8CF5400078CC5 /* KCSClient2+KCSInternal.m in Sources */,
 				578834021AB8CF5400078CC5 /* KCSClientConfiguration+KCSInternal.m in Sources */,
 				578834261AB8CF5400078CC5 /* KCSPush2.m in Sources */,

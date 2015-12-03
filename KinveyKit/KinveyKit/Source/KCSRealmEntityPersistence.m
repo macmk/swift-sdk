@@ -32,6 +32,7 @@
 #import "KCS_NSArray_KCS_CLLocation_Realm_NSValueTransformer.h"
 #import "KCS_NSURL_NSString_NSValueTransformer.h"
 #import "KCS_UIImage_NSData_NSValueTransformer.h"
+#import "KCS_NSString_NSDate_NSValueTransformer.h"
 
 #import "NSValueTransformer+Kinvey.h"
 #import "KCSObjcRuntime.h"
@@ -160,6 +161,10 @@ static NSMutableDictionary<NSString*, NSMutableDictionary<NSString*, NSValueTran
         [NSValueTransformer setValueTransformer:[KCS_UIImage_NSData_NSValueTransformer sharedInstance]
                                       fromClass:[UIImage class]
                                         toClass:[KCS_UIImage_NSData_NSValueTransformer transformedValueClass]];
+        
+        [NSValueTransformer setValueTransformer:[KCS_NSString_NSDate_NSValueTransformer sharedInstance]
+                                      fromClass:[NSString class]
+                                        toClass:[KCS_NSString_NSDate_NSValueTransformer transformedValueClass]];
         
         unsigned int classesCount;
         Class* classes = objc_copyClassList(&classesCount);

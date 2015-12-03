@@ -19,6 +19,7 @@
 @property UIImage* picture;
 @property KCSAddress* address;
 @property KCSCompany* company;
+@property NSDate* dateOfBirth;
 @property KCSMetadata* metadata;
 
 @end

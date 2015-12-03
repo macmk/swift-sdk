@@ -14,13 +14,14 @@
 
 -(NSDictionary *)hostToKinveyPropertyMapping
 {
-    return @{@"personId" : KCSEntityKeyId,
-             @"metadata" : KCSEntityKeyMetadata,
-             @"name"     : @"name",
-             @"address"  : @"address",
-             @"company"  : @"company",
-             @"picture"  : @"picture",
-             @"age"      : @"age"};
+    return @{@"personId"    : KCSEntityKeyId,
+             @"metadata"    : KCSEntityKeyMetadata,
+             @"name"        : @"name",
+             @"address"     : @"address",
+             @"company"     : @"company",
+             @"picture"     : @"picture",
+             @"age"         : @"age",
+             @"dateOfBirth" : @"dateOfBirth"};
 }
 
 +(NSDictionary *)kinveyPropertyToCollectionMapping

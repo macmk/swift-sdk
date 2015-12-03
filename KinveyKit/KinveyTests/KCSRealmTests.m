@@ -80,6 +80,9 @@
     person.address = self.address;
     person.company = self.company;
     person.picture = self.personPicture;
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss zzz";
+    person.dateOfBirth = [dateFormatter dateFromString:@"1986-03-07 04:32:07 UTC"];
     return person;
 }
 
@@ -144,9 +147,14 @@
             XCTAssertEqualObjects(person.name, _person.name);
             XCTAssertEqual(person.age, _person.age);
             XCTAssertNotNil(person.metadata);
+            
             XCTAssertNotNil(_person.picture);
             XCTAssertTrue([_person.picture isKindOfClass:[UIImage class]]);
             XCTAssertEqualObjects(person.picture, _person.picture);
+            
+            XCTAssertNotNil(_person.dateOfBirth);
+            XCTAssertTrue([_person.dateOfBirth isKindOfClass:[NSDate class]]);
+            XCTAssertEqualObjects(person.dateOfBirth, _person.dateOfBirth);
             
             XCTAssertNotNil(_person.address);
             XCTAssertTrue([_person.address isKindOfClass:[KCSAddress class]]);
@@ -203,6 +211,10 @@
                  XCTAssertEqual(person.age, _person.age);
                  XCTAssertNotNil(_person.picture);
                  XCTAssertTrue([_person.picture isKindOfClass:[UIImage class]]);
+                 
+                 XCTAssertNotNil(_person.dateOfBirth);
+                 XCTAssertTrue([_person.dateOfBirth isKindOfClass:[NSDate class]]);
+                 XCTAssertEqualObjects(person.dateOfBirth, _person.dateOfBirth);
                  
                  XCTAssertNotNil(_person.address);
                  XCTAssertTrue([_person.address isKindOfClass:[KCSAddress class]]);
