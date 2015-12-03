@@ -15,7 +15,8 @@
     return @{@"companyId" : KCSEntityKeyId,
              @"metadata"  : KCSEntityKeyMetadata,
              @"name"      : @"name",
-             @"url"       : @"url"};
+             @"url"       : @"url",
+             @"location"  : KCSEntityKeyGeolocation};
 }
 
 @end

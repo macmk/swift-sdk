@@ -1,5 +1,5 @@
 //
-//  KCS_NSURL_NString_Realm.h
+//  KCS_UIImage_NSDate_Realm.h
 //  KinveyKit
 //
 //  Created by Victor Barros on 2015-11-30.
@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface KCS_NSURL_NString_Realm : NSValueTransformer
+@interface KCS_UIImage_NSData_NSValueTransformer : NSValueTransformer
+
++(instancetype)sharedInstance;
 
 @end

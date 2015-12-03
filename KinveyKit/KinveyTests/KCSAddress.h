@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 
 @interface KCSAddress : NSObject
 
 @property NSString* city;
 @property NSString* province;
 @property NSString* country;
+@property CLLocation* location;
 
 @end

@@ -14,6 +14,7 @@
 @property NSString* companyId;
 @property NSString* name;
 @property NSURL* url;
+@property CLLocation* location;
 @property KCSMetadata* metadata;
 
 @end

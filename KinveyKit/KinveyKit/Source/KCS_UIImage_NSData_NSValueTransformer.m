@@ -6,10 +6,20 @@
 //  Copyright © 2015 Kinvey. All rights reserved.
 //
 
-#import "KCS_UIImage_NSData_Realm.h"
+#import "KCS_UIImage_NSData_NSValueTransformer.h"
 #import <UIKit/UIKit.h>
 
-@implementation KCS_UIImage_NSData_Realm
+@implementation KCS_UIImage_NSData_NSValueTransformer
+
++(instancetype)sharedInstance
+{
+    static KCS_UIImage_NSData_NSValueTransformer* instance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[self alloc] init];
+    });
+    return instance;
+}
 
 +(Class)transformedValueClass
 {

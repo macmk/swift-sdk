@@ -1,24 +1,23 @@
 //
-//  KCSCLLocationRealm.h
+//  KCS_CLLocation_Realm.h
 //  KinveyKit
 //
-//  Created by Victor Barros on 2015-11-25.
+//  Created by Victor Barros on 2015-12-01.
 //  Copyright © 2015 Kinvey. All rights reserved.
 //
 
 #import <Realm/Realm.h>
-#import "KCS_CLLocationCoordinate2D_Realm.h"
-#import "KCS_CLFloor_Realm.h"
+#import <MapKit/MapKit.h>
 
 @interface KCS_CLLocation_Realm : RLMObject
 
-@property KCS_CLLocationCoordinate2D_Realm* coordinate;
-@property double altitude;
-@property KCS_CLFloor_Realm* floor;
-@property double horizontalAccuracy;
-@property double verticalAccuracy;
-@property NSDate* timestamp;
-@property double speed;
-@property double course;
+@property CLLocationDegrees latitude;
+@property CLLocationDegrees longitude;
+
++(instancetype)locationWithLatitude:(CLLocationDegrees)latitude
+                          longitude:(CLLocationDegrees)longitude;
+
+-(instancetype)initWithLatitude:(CLLocationDegrees)latitude
+                      longitude:(CLLocationDegrees)longitude;
 
 @end

@@ -56,6 +56,8 @@
     KCSCompany* company = [[KCSCompany alloc] init];
     company.name = @"Kinvey";
     company.url = [NSURL URLWithString:@"http://www.kinvey.com"];
+    company.location = [[CLLocation alloc] initWithLatitude:42.3536711
+                                                  longitude:-71.0587098];
     return company;
 }
 
@@ -65,6 +67,8 @@
     address.city = @"Vancouver";
     address.province = @"BC";
     address.country = @"Canada";
+    address.location = [[CLLocation alloc] initWithLatitude:49.2827
+                                                  longitude:-123.1207];
     return address;
 }
 
@@ -81,9 +85,14 @@
 
 -(UIImage *)personPicture
 {
-    return [UIImage imageNamed:@"Profile Picture"
-                      inBundle:[NSBundle bundleForClass:[self class]]
- compatibleWithTraitCollection:nil];
+    static UIImage* image;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        image = [UIImage imageNamed:@"Profile Picture"
+                           inBundle:[NSBundle bundleForClass:[self class]]
+      compatibleWithTraitCollection:nil];
+    });
+    return image;
 }
 
 - (void)testRealmSave {
@@ -106,6 +115,8 @@
              XCTAssertNotNil(company.metadata);
              XCTAssertEqualObjects(company.name, _company.name);
              XCTAssertEqualObjects(company.url, _company.url);
+             XCTAssertEqualObjects(company.location, _company.location);
+             XCTAssertTrue([_company.location isKindOfClass:[CLLocation class]]);
          }
          
          [expectationSaveCompany fulfill];
@@ -135,6 +146,7 @@
             XCTAssertNotNil(person.metadata);
             XCTAssertNotNil(_person.picture);
             XCTAssertTrue([_person.picture isKindOfClass:[UIImage class]]);
+            XCTAssertEqualObjects(person.picture, _person.picture);
             
             XCTAssertNotNil(_person.address);
             XCTAssertTrue([_person.address isKindOfClass:[KCSAddress class]]);
@@ -142,6 +154,9 @@
                 XCTAssertEqualObjects(person.address.city, _person.address.city);
                 XCTAssertEqualObjects(person.address.province, _person.address.province);
                 XCTAssertEqualObjects(person.address.country, _person.address.country);
+                XCTAssertEqualObjects(person.address.location, _person.address.location);
+                XCTAssertNotNil(_person.address.location);
+                XCTAssertTrue([_person.address.location isKindOfClass:[CLLocation class]]);
             }
             
             XCTAssertNotNil(_person.company);
@@ -170,50 +185,58 @@
     
     KCSPerson* person = self.person;
     
-    __block __weak XCTestExpectation* expectationQueryPerson = [self expectationWithDescription:@"queryPerson"];
-    
-    KCSQuery* query = [KCSQuery queryWithPredicate:[NSPredicate predicateWithFormat:@"name == %@ AND _acl.creator == %@", person.name, [KCSUser activeUser].userId]];
-    [self.storePerson queryWithQuery:query
-                 withCompletionBlock:^(NSArray<KCSPerson*> *objectsOrNil, NSError *errorOrNil)
-    {
-        XCTAssertNotNil(objectsOrNil);
-        XCTAssertNil(errorOrNil);
-        XCTAssertEqual(objectsOrNil.count, 1);
-        if (objectsOrNil.count > 0) {
-            KCSPerson* _person = objectsOrNil.firstObject;
-            XCTAssertTrue([_person isKindOfClass:[KCSPerson class]]);
-            XCTAssertNotNil(_person.personId);
-            XCTAssertEqualObjects(person.name, _person.name);
-            XCTAssertEqual(person.age, _person.age);
-            XCTAssertNotNil(_person.picture);
-            XCTAssertTrue([_person.picture isKindOfClass:[UIImage class]]);
-            
-            XCTAssertNotNil(_person.address);
-            XCTAssertTrue([_person.address isKindOfClass:[KCSAddress class]]);
-            if ([_person.address isKindOfClass:[KCSAddress class]]) {
-                XCTAssertEqualObjects(person.address.city, _person.address.city);
-                XCTAssertEqualObjects(person.address.province, _person.address.province);
-                XCTAssertEqualObjects(person.address.country, _person.address.country);
-            }
-            
-            XCTAssertNotNil(_person.company);
-            XCTAssertTrue([_person.company isKindOfClass:[KCSCompany class]]);
-            if ([_person.company isKindOfClass:[KCSCompany class]]) {
-                XCTAssertNotNil(_person.company.companyId);
-                XCTAssertEqualObjects(person.company.name, _person.company.name);
-                XCTAssertTrue([_person.company.url isKindOfClass:[NSURL class]]);
-                XCTAssertEqualObjects(person.company.url, _person.company.url);
-                XCTAssertNotNil(_person.company.metadata);
-            }
-        }
+    [self measureBlock:^{
+        __block __weak XCTestExpectation* expectationQueryPerson = [self expectationWithDescription:@"queryPerson"];
         
-        [expectationQueryPerson fulfill];
-    } withProgressBlock:nil];
-    
-    [self waitForExpectationsWithTimeout:30
-                                 handler:^(NSError * _Nullable error)
-    {
-        expectationQueryPerson = nil;
+        KCSQuery* query = [KCSQuery queryWithPredicate:[NSPredicate predicateWithFormat:@"name == %@ AND _acl.creator == %@", person.name, [KCSUser activeUser].userId]];
+        [self.storePerson queryWithQuery:query
+                     withCompletionBlock:^(NSArray<KCSPerson*> *objectsOrNil, NSError *errorOrNil)
+         {
+             XCTAssertNotNil(objectsOrNil);
+             XCTAssertNil(errorOrNil);
+             XCTAssertEqual(objectsOrNil.count, 1);
+             if (objectsOrNil.count > 0) {
+                 KCSPerson* _person = objectsOrNil.firstObject;
+                 XCTAssertTrue([_person isKindOfClass:[KCSPerson class]]);
+                 XCTAssertNotNil(_person.personId);
+                 XCTAssertEqualObjects(person.name, _person.name);
+                 XCTAssertEqual(person.age, _person.age);
+                 XCTAssertNotNil(_person.picture);
+                 XCTAssertTrue([_person.picture isKindOfClass:[UIImage class]]);
+                 
+                 XCTAssertNotNil(_person.address);
+                 XCTAssertTrue([_person.address isKindOfClass:[KCSAddress class]]);
+                 if ([_person.address isKindOfClass:[KCSAddress class]]) {
+                     XCTAssertEqualObjects(person.address.city, _person.address.city);
+                     XCTAssertEqualObjects(person.address.province, _person.address.province);
+                     XCTAssertEqualObjects(person.address.country, _person.address.country);
+                     XCTAssertNotNil(_person.address.location);
+                     XCTAssertTrue([_person.address.location isKindOfClass:[CLLocation class]]);
+                 }
+                 
+                 XCTAssertNotNil(_person.company);
+                 XCTAssertTrue([_person.company isKindOfClass:[KCSCompany class]]);
+                 if ([_person.company isKindOfClass:[KCSCompany class]]) {
+                     XCTAssertNotNil(_person.company.companyId);
+                     XCTAssertEqualObjects(person.company.name, _person.company.name);
+                     XCTAssertTrue([_person.company.url isKindOfClass:[NSURL class]]);
+                     XCTAssertEqualObjects(person.company.url, _person.company.url);
+                     XCTAssertNotNil(_person.company.metadata);
+                     XCTAssertTrue([_person.company.location isKindOfClass:[CLLocation class]]);
+                     double accuracy = 0.0000000001;
+                     XCTAssertEqualWithAccuracy(person.company.location.coordinate.latitude, _person.company.location.coordinate.latitude, accuracy);
+                     XCTAssertEqualWithAccuracy(person.company.location.coordinate.longitude, _person.company.location.coordinate.longitude, accuracy);
+                 }
+             }
+             
+             [expectationQueryPerson fulfill];
+         } withProgressBlock:nil];
+        
+        [self waitForExpectationsWithTimeout:30
+                                     handler:^(NSError * _Nullable error)
+         {
+             expectationQueryPerson = nil;
+         }];
     }];
 }
 

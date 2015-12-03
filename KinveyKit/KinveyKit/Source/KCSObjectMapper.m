@@ -44,6 +44,9 @@
 #import "KCSImageUtils.h"
 #import "NSString+KinveyAdditions.h"
 #import "KCSDataModel.h"
+#import "CLLocation+Kinvey.h"
+#import "NSValueTransformer+Kinvey.h"
+#import "KCSObjcRuntime.h"
 
 #define kKMDKey @"_kmd"
 #define kACLKey @"_acl"
@@ -165,6 +168,7 @@ NSDictionary* builderOptions(id object)
 @end
 
 @implementation KCSObjectMapper
+
 + (id)populateObject:(id)object withData: (NSDictionary *)data
 {
     return [self populateObjectWithLinkedResources:object withData:data resourceDictionary:nil];
@@ -248,7 +252,11 @@ bool isAUserObject(id object)
     return isDictionary == NO && isKCSObject == YES;
 }
 
-void populate(id object, NSDictionary* referencesClasses, NSDictionary* data, NSMutableDictionary* resourcesToLoad, KCSSerializedObject* serializedObject)
++(void)populateObject:(id)object
+    referencesClasses:(NSDictionary*)referencesClasses
+                 data:(NSDictionary*)data
+      resourcesToLoad:(NSMutableDictionary*)resourcesToLoad
+     serializedObject:(KCSSerializedObject*)serializedObject
 {
     BOOL hasFlatMap = NO;
     NSString *dictName = nil;
@@ -401,13 +409,26 @@ void populate(id object, NSDictionary* referencesClasses, NSDictionary* data, NS
                     if ([jsonKey isEqualToString:KCSEntityKeyId] && [object kinveyObjectId] != nil && [[object kinveyObjectId] isKindOfClass:[NSString class]] && [[object kinveyObjectId] isEqualToString:value] == NO) {
                         KCSLogWarning(@"%@ is having it's id overwritten.", object);
                     }
-                    if (valClass && [value isKindOfClass:[NSDictionary class]]) {
-                        id obj = [[valClass alloc] init];
-                        [(NSDictionary*) value enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull value, BOOL * _Nonnull stop)
-                        {
-                            [obj setValue:value forKey:key];
-                        }];
-                        value = obj;
+                    if (valClass &&
+                        [value isKindOfClass:[NSDictionary class]])
+                    {
+                        if ([valueType isEqualToString:NSStringFromClass([UIImage class])]) {
+                            value = nil;
+                        } else {
+                            id obj = [[valClass alloc] init];
+                            [(NSDictionary*) value enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull value, BOOL * _Nonnull stop)
+                            {
+                                NSString* type = [KCSObjcRuntime typeForProperty:key
+                                                                        inObject:obj];
+                                NSValueTransformer* valueTransformer = [NSValueTransformer valueTransformerFromClass:[value class]
+                                                                                                             toClass:NSClassFromString(type)];
+                                if (valueTransformer) {
+                                    value = [valueTransformer transformedValue:value];
+                                }
+                                [obj setValue:value forKey:key];
+                            }];
+                            value = obj;
+                        }
                     }
                     if ([object respondsToSelector:@selector(setValue:forKey:)]) {
                         [object setValue:value forKey:hostKey];
@@ -444,13 +465,21 @@ void populate(id object, NSDictionary* referencesClasses, NSDictionary* data, NS
     if ([object isKindOfClass:[NSDictionary class]] && ![object isKindOfClass:[NSMutableDictionary class]]) {
         object = ((NSObject*) object).mutableCopy;
     }
-    populate(object, nil, data, nil, serializedObject);
+    [self populateObject:object
+       referencesClasses:nil
+                    data:data
+         resourcesToLoad:nil
+        serializedObject:serializedObject];
     return object;
 }
 
 + (id)populateObjectWithLinkedResources:(id)object withData: (NSDictionary *)data resourceDictionary:(NSMutableDictionary*)resourcesToLoad
 {
-    populate(object, @{}, data, resourcesToLoad, nil);
+    [self populateObject:object
+       referencesClasses:@{}
+                    data:data
+         resourcesToLoad:resourcesToLoad
+        serializedObject:nil];
     return object;
 }
 
@@ -663,7 +692,10 @@ id valueForProperty(NSString* jsonName, id value, BOOL withRefs, id object, NSSt
     for (unsigned int i = 0; i < propertyCount; i++) {
         propertyName = [NSString stringWithUTF8String:property_getName(properties[i])];
         value = getFunc(obj, NSSelectorFromString(propertyName));
-        if (!([value isKindOfClass:[NSArray class]] ||
+        if ([value isKindOfClass:[CLLocation class]]) {
+            CLLocation* location = value;
+            value = CLLocationCoordinate2DToKCS(location.coordinate);
+        } else if (!([value isKindOfClass:[NSArray class]] ||
               [value isKindOfClass:[NSDictionary class]] ||
               [value isKindOfClass:[NSString class]] ||
               [value isKindOfClass:[NSNumber class]] ||
@@ -698,6 +730,8 @@ id valueForProperty(NSString* jsonName, id value, BOOL withRefs, id object, NSSt
         referencesToSave = [NSMutableArray array];
         kinveyRefMapping = [[object class] kinveyPropertyToCollectionMapping];
     }
+    
+    NSValueTransformer* valueTransformer = nil;
     
     for (NSString* clientPropertyName in [kinveyMapping allKeys]) {
         NSString *jsonName = [kinveyMapping valueForKey:clientPropertyName];
@@ -757,10 +791,17 @@ id valueForProperty(NSString* jsonName, id value, BOOL withRefs, id object, NSSt
             {
                 Class class = [value class];
                 NSString* className = NSStringFromClass(class);
-                NSValueTransformer* valueTransformer = [NSValueTransformer valueTransformerForName:className];
-                if (valueTransformer && [valueTransformer isKindOfClass:[NSValueTransformer class]]) {
-                    value = [valueTransformer transformedValue:value];
+                NSString* type = [KCSObjcRuntime typeForProperty:clientPropertyName
+                                                        inObject:object];
+                if ([className isEqualToString:type]) {
+                    valueTransformer = nil;
                 } else {
+                    valueTransformer = [NSValueTransformer valueTransformerFromClassName:className
+                                                                             toClassName:type];
+                }
+                if (valueTransformer) {
+                    value = [valueTransformer transformedValue:value];
+                } else if (![value isKindOfClass:[UIImage class]]) {
                     NSDictionary* kinveyPropertyMapping;
                     @try {
                         kinveyPropertyMapping = [value hostToKinveyPropertyMapping];
