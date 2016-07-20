@@ -79,23 +79,26 @@
 		5783B6671C1A13CB0077F8A6 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5783B6661C1A13CB0077F8A6 /* libsqlite3.tbd */; };
 		578F5C911C99EE5C00B20F17 /* DeltaSetCacheTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F5C901C99EE5C00B20F17 /* DeltaSetCacheTestCase.swift */; };
 		578F5C931C99EED100B20F17 /* KIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F5C921C99EED100B20F17 /* KIF.swift */; };
+		578F6B6F1D3ECF4400ADA1D1 /* MongoDBPredicateAdaptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 578F6ABC1D3ECF4200ADA1D1 /* MongoDBPredicateAdaptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		578F6B701D3ECF4400ADA1D1 /* MongoDBPredicateAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 578F6ABD1D3ECF4200ADA1D1 /* MongoDBPredicateAdaptor.m */; };
+		578F6B861D3ED0DD00ADA1D1 /* CustomDateFormatTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B7D1D3ED0D300ADA1D1 /* CustomDateFormatTransform.swift */; };
+		578F6B871D3ED0DD00ADA1D1 /* DateFormatterTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B7E1D3ED0D300ADA1D1 /* DateFormatterTransform.swift */; };
+		578F6B881D3ED0DD00ADA1D1 /* DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B7F1D3ED0D300ADA1D1 /* DateTransform.swift */; };
+		578F6B891D3ED0DD00ADA1D1 /* EnumTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B801D3ED0D300ADA1D1 /* EnumTransform.swift */; };
+		578F6B8A1D3ED0DD00ADA1D1 /* ISO8601DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B811D3ED0D300ADA1D1 /* ISO8601DateTransform.swift */; };
+		578F6B8B1D3ED0DD00ADA1D1 /* NSDecimalNumberTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B821D3ED0D300ADA1D1 /* NSDecimalNumberTransform.swift */; };
+		578F6B8C1D3ED0DD00ADA1D1 /* TransformOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B831D3ED0D300ADA1D1 /* TransformOf.swift */; };
+		578F6B8D1D3ED0DD00ADA1D1 /* TransformType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B841D3ED0D300ADA1D1 /* TransformType.swift */; };
+		578F6B8E1D3ED0DD00ADA1D1 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B851D3ED0D300ADA1D1 /* URLTransform.swift */; };
+		578F6B8F1D3ED0E000ADA1D1 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B741D3ED0D300ADA1D1 /* FromJSON.swift */; };
+		578F6B901D3ED0E000ADA1D1 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B751D3ED0D300ADA1D1 /* Map.swift */; };
+		578F6B911D3ED0E000ADA1D1 /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B761D3ED0D300ADA1D1 /* Mappable.swift */; };
+		578F6B921D3ED0E000ADA1D1 /* Mapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B771D3ED0D300ADA1D1 /* Mapper.swift */; };
+		578F6B931D3ED0E000ADA1D1 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B781D3ED0D300ADA1D1 /* Operators.swift */; };
+		578F6B941D3ED0E000ADA1D1 /* ToJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B791D3ED0D300ADA1D1 /* ToJSON.swift */; };
+		578F6C4D1D3ED11C00ADA1D1 /* CallStackAnalyser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578F6B961D3ED11300ADA1D1 /* CallStackAnalyser.swift */; };
 		579224F81D13304700499D0A /* ObjectMapper.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 57B7687C1D10C01F0086AA38 /* ObjectMapper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		579224F91D13308400499D0A /* RealmSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 57B0C1DC1CDCE88900492D6C /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5793B85D1D219A450088B5F9 /* FromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B84D1D219A450088B5F9 /* FromJSON.swift */; };
-		5793B85E1D219A450088B5F9 /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B84E1D219A450088B5F9 /* Map.swift */; };
-		5793B85F1D219A450088B5F9 /* Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B84F1D219A450088B5F9 /* Mappable.swift */; };
-		5793B8601D219A450088B5F9 /* Mapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B8501D219A450088B5F9 /* Mapper.swift */; };
-		5793B8611D219A450088B5F9 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B8511D219A450088B5F9 /* Operators.swift */; };
-		5793B8621D219A450088B5F9 /* ToJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B8521D219A450088B5F9 /* ToJSON.swift */; };
-		5793B8631D219A450088B5F9 /* CustomDateFormatTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B8541D219A450088B5F9 /* CustomDateFormatTransform.swift */; };
-		5793B8641D219A450088B5F9 /* DateFormatterTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B8551D219A450088B5F9 /* DateFormatterTransform.swift */; };
-		5793B8651D219A450088B5F9 /* DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B8561D219A450088B5F9 /* DateTransform.swift */; };
-		5793B8661D219A450088B5F9 /* EnumTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B8571D219A450088B5F9 /* EnumTransform.swift */; };
-		5793B8671D219A450088B5F9 /* ISO8601DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B8581D219A450088B5F9 /* ISO8601DateTransform.swift */; };
-		5793B8681D219A450088B5F9 /* NSDecimalNumberTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B8591D219A450088B5F9 /* NSDecimalNumberTransform.swift */; };
-		5793B8691D219A450088B5F9 /* TransformOf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B85A1D219A450088B5F9 /* TransformOf.swift */; };
-		5793B86A1D219A450088B5F9 /* TransformType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B85B1D219A450088B5F9 /* TransformType.swift */; };
-		5793B86B1D219A450088B5F9 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5793B85C1D219A450088B5F9 /* URLTransform.swift */; };
 		5793B87D1D2306A60088B5F9 /* EncryptedDataStoreTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57471A2F1CCAED1600628933 /* EncryptedDataStoreTestCase.swift */; };
 		5793B88C1D2306A60088B5F9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57BEAE2E1C98805E00479206 /* QuartzCore.framework */; };
 		5793B88D1D2306A60088B5F9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57BEAE2C1C98805600479206 /* CoreGraphics.framework */; };
@@ -143,8 +146,6 @@
 		57B0C2151CDCE90D00492D6C /* PromiseKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 57B0C1D81CDCE88900492D6C /* PromiseKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57B0C2161CDCF25900492D6C /* KIF.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 57B0C1D21CDCE88900492D6C /* KIF.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		57B0E9501C5FF52200BA984F /* Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B0E94F1C5FF52200BA984F /* Push.swift */; };
-		57B23CF51C7F8C12006403CC /* MongoDBPredicateAdaptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 57B23CF31C7F8C12006403CC /* MongoDBPredicateAdaptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		57B23CF61C7F8C12006403CC /* MongoDBPredicateAdaptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 57B23CF41C7F8C12006403CC /* MongoDBPredicateAdaptor.m */; };
 		57B23E831C7F9510006403CC /* KCSCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 57B23D871C7F9414006403CC /* KCSCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		57B23E841C7F9510006403CC /* KCSSync.h in Headers */ = {isa = PBXBuildFile; fileRef = 57B23D881C7F9414006403CC /* KCSSync.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		57B23E851C7F9562006403CC /* KCSQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 57B23DA31C7F9414006403CC /* KCSQuery.h */; };
@@ -629,21 +630,24 @@
 		5783B6661C1A13CB0077F8A6 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		578F5C901C99EE5C00B20F17 /* DeltaSetCacheTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeltaSetCacheTestCase.swift; sourceTree = "<group>"; };
 		578F5C921C99EED100B20F17 /* KIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KIF.swift; sourceTree = "<group>"; };
-		5793B84D1D219A450088B5F9 /* FromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
-		5793B84E1D219A450088B5F9 /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
-		5793B84F1D219A450088B5F9 /* Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
-		5793B8501D219A450088B5F9 /* Mapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mapper.swift; sourceTree = "<group>"; };
-		5793B8511D219A450088B5F9 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
-		5793B8521D219A450088B5F9 /* ToJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToJSON.swift; sourceTree = "<group>"; };
-		5793B8541D219A450088B5F9 /* CustomDateFormatTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDateFormatTransform.swift; sourceTree = "<group>"; };
-		5793B8551D219A450088B5F9 /* DateFormatterTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatterTransform.swift; sourceTree = "<group>"; };
-		5793B8561D219A450088B5F9 /* DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTransform.swift; sourceTree = "<group>"; };
-		5793B8571D219A450088B5F9 /* EnumTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumTransform.swift; sourceTree = "<group>"; };
-		5793B8581D219A450088B5F9 /* ISO8601DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISO8601DateTransform.swift; sourceTree = "<group>"; };
-		5793B8591D219A450088B5F9 /* NSDecimalNumberTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDecimalNumberTransform.swift; sourceTree = "<group>"; };
-		5793B85A1D219A450088B5F9 /* TransformOf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformOf.swift; sourceTree = "<group>"; };
-		5793B85B1D219A450088B5F9 /* TransformType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformType.swift; sourceTree = "<group>"; };
-		5793B85C1D219A450088B5F9 /* URLTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLTransform.swift; sourceTree = "<group>"; };
+		578F6ABC1D3ECF4200ADA1D1 /* MongoDBPredicateAdaptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MongoDBPredicateAdaptor.h; sourceTree = "<group>"; };
+		578F6ABD1D3ECF4200ADA1D1 /* MongoDBPredicateAdaptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MongoDBPredicateAdaptor.m; sourceTree = "<group>"; };
+		578F6B741D3ED0D300ADA1D1 /* FromJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FromJSON.swift; sourceTree = "<group>"; };
+		578F6B751D3ED0D300ADA1D1 /* Map.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
+		578F6B761D3ED0D300ADA1D1 /* Mappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mappable.swift; sourceTree = "<group>"; };
+		578F6B771D3ED0D300ADA1D1 /* Mapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mapper.swift; sourceTree = "<group>"; };
+		578F6B781D3ED0D300ADA1D1 /* Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		578F6B791D3ED0D300ADA1D1 /* ToJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToJSON.swift; sourceTree = "<group>"; };
+		578F6B7D1D3ED0D300ADA1D1 /* CustomDateFormatTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDateFormatTransform.swift; sourceTree = "<group>"; };
+		578F6B7E1D3ED0D300ADA1D1 /* DateFormatterTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterTransform.swift; sourceTree = "<group>"; };
+		578F6B7F1D3ED0D300ADA1D1 /* DateTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTransform.swift; sourceTree = "<group>"; };
+		578F6B801D3ED0D300ADA1D1 /* EnumTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumTransform.swift; sourceTree = "<group>"; };
+		578F6B811D3ED0D300ADA1D1 /* ISO8601DateTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ISO8601DateTransform.swift; sourceTree = "<group>"; };
+		578F6B821D3ED0D300ADA1D1 /* NSDecimalNumberTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSDecimalNumberTransform.swift; sourceTree = "<group>"; };
+		578F6B831D3ED0D300ADA1D1 /* TransformOf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformOf.swift; sourceTree = "<group>"; };
+		578F6B841D3ED0D300ADA1D1 /* TransformType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformType.swift; sourceTree = "<group>"; };
+		578F6B851D3ED0D300ADA1D1 /* URLTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLTransform.swift; sourceTree = "<group>"; };
+		578F6B961D3ED11300ADA1D1 /* CallStackAnalyser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallStackAnalyser.swift; sourceTree = "<group>"; };
 		5793B8991D2306A60088B5F9 /* KinveyTests Encrypted.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "KinveyTests Encrypted.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		57A27C811C178F17000DF951 /* Kinvey.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Kinvey.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57A27C841C178F17000DF951 /* Kinvey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Kinvey.h; sourceTree = "<group>"; };
@@ -699,8 +703,6 @@
 		57B0C20E1CDCE88900492D6C /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Realm.framework; sourceTree = "<group>"; };
 		57B0C2101CDCE88900492D6C /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RealmSwift.framework; sourceTree = "<group>"; };
 		57B0E94F1C5FF52200BA984F /* Push.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Push.swift; sourceTree = "<group>"; };
-		57B23CF31C7F8C12006403CC /* MongoDBPredicateAdaptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MongoDBPredicateAdaptor.h; path = "Carthage/Checkouts/NSPredicate-MongoDB-Adaptor/MongoDBPredicateAdaptor.h"; sourceTree = SOURCE_ROOT; };
-		57B23CF41C7F8C12006403CC /* MongoDBPredicateAdaptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MongoDBPredicateAdaptor.m; path = "Carthage/Checkouts/NSPredicate-MongoDB-Adaptor/MongoDBPredicateAdaptor.m"; sourceTree = SOURCE_ROOT; };
 		57B23D3D1C7F9414006403CC /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		57B23D3E1C7F9414006403CC /* KCS_DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KCS_DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
 		57B23D3F1C7F9414006403CC /* KCS_DDAbstractDatabaseLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KCS_DDAbstractDatabaseLogger.m; sourceTree = "<group>"; };
@@ -1169,44 +1171,62 @@
 			path = KinveyApp;
 			sourceTree = "<group>";
 		};
-		5793B84B1D219A0E0088B5F9 /* ObjectMapper */ = {
+		578F6A051D3ECF4100ADA1D1 /* NSPredicate-MongoDB-Adaptor */ = {
 			isa = PBXGroup;
 			children = (
-				5793B84C1D219A450088B5F9 /* Core */,
-				5793B8531D219A450088B5F9 /* Transforms */,
+				578F6ABC1D3ECF4200ADA1D1 /* MongoDBPredicateAdaptor.h */,
+				578F6ABD1D3ECF4200ADA1D1 /* MongoDBPredicateAdaptor.m */,
 			);
-			name = ObjectMapper;
-			sourceTree = "<group>";
-		};
-		5793B84C1D219A450088B5F9 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				5793B84D1D219A450088B5F9 /* FromJSON.swift */,
-				5793B84E1D219A450088B5F9 /* Map.swift */,
-				5793B84F1D219A450088B5F9 /* Mappable.swift */,
-				5793B8501D219A450088B5F9 /* Mapper.swift */,
-				5793B8511D219A450088B5F9 /* Operators.swift */,
-				5793B8521D219A450088B5F9 /* ToJSON.swift */,
-			);
-			name = Core;
-			path = Carthage/Checkouts/ObjectMapper/ObjectMapper/Core;
+			name = "NSPredicate-MongoDB-Adaptor";
+			path = "Carthage/Checkouts/NSPredicate-MongoDB-Adaptor";
 			sourceTree = SOURCE_ROOT;
 		};
-		5793B8531D219A450088B5F9 /* Transforms */ = {
+		578F6B721D3ED0D300ADA1D1 /* ObjectMapper */ = {
 			isa = PBXGroup;
 			children = (
-				5793B8541D219A450088B5F9 /* CustomDateFormatTransform.swift */,
-				5793B8551D219A450088B5F9 /* DateFormatterTransform.swift */,
-				5793B8561D219A450088B5F9 /* DateTransform.swift */,
-				5793B8571D219A450088B5F9 /* EnumTransform.swift */,
-				5793B8581D219A450088B5F9 /* ISO8601DateTransform.swift */,
-				5793B8591D219A450088B5F9 /* NSDecimalNumberTransform.swift */,
-				5793B85A1D219A450088B5F9 /* TransformOf.swift */,
-				5793B85B1D219A450088B5F9 /* TransformType.swift */,
-				5793B85C1D219A450088B5F9 /* URLTransform.swift */,
+				578F6B731D3ED0D300ADA1D1 /* Core */,
+				578F6B7C1D3ED0D300ADA1D1 /* Transforms */,
 			);
-			name = Transforms;
-			path = Carthage/Checkouts/ObjectMapper/ObjectMapper/Transforms;
+			name = ObjectMapper;
+			path = Carthage/Checkouts/ObjectMapper/ObjectMapper;
+			sourceTree = SOURCE_ROOT;
+		};
+		578F6B731D3ED0D300ADA1D1 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				578F6B741D3ED0D300ADA1D1 /* FromJSON.swift */,
+				578F6B751D3ED0D300ADA1D1 /* Map.swift */,
+				578F6B761D3ED0D300ADA1D1 /* Mappable.swift */,
+				578F6B771D3ED0D300ADA1D1 /* Mapper.swift */,
+				578F6B781D3ED0D300ADA1D1 /* Operators.swift */,
+				578F6B791D3ED0D300ADA1D1 /* ToJSON.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		578F6B7C1D3ED0D300ADA1D1 /* Transforms */ = {
+			isa = PBXGroup;
+			children = (
+				578F6B7D1D3ED0D300ADA1D1 /* CustomDateFormatTransform.swift */,
+				578F6B7E1D3ED0D300ADA1D1 /* DateFormatterTransform.swift */,
+				578F6B7F1D3ED0D300ADA1D1 /* DateTransform.swift */,
+				578F6B801D3ED0D300ADA1D1 /* EnumTransform.swift */,
+				578F6B811D3ED0D300ADA1D1 /* ISO8601DateTransform.swift */,
+				578F6B821D3ED0D300ADA1D1 /* NSDecimalNumberTransform.swift */,
+				578F6B831D3ED0D300ADA1D1 /* TransformOf.swift */,
+				578F6B841D3ED0D300ADA1D1 /* TransformType.swift */,
+				578F6B851D3ED0D300ADA1D1 /* URLTransform.swift */,
+			);
+			path = Transforms;
+			sourceTree = "<group>";
+		};
+		578F6B951D3ED11300ADA1D1 /* swiftcallstacktrace */ = {
+			isa = PBXGroup;
+			children = (
+				578F6B961D3ED11300ADA1D1 /* CallStackAnalyser.swift */,
+			);
+			name = swiftcallstacktrace;
+			path = Carthage/Checkouts/swiftcallstacktrace;
 			sourceTree = SOURCE_ROOT;
 		};
 		57A27C771C178F17000DF951 = {
@@ -1240,8 +1260,9 @@
 			children = (
 				57B0C14E1CDC4D8200492D6C /* Kinvey.xcconfig */,
 				57B0C1C01CDCE3E600492D6C /* KinveyTests.xcconfig */,
-				57B23CF21C7F8C02006403CC /* NSPredicate-MongoDB-Adaptor */,
-				5793B84B1D219A0E0088B5F9 /* ObjectMapper */,
+				578F6B951D3ED11300ADA1D1 /* swiftcallstacktrace */,
+				578F6A051D3ECF4100ADA1D1 /* NSPredicate-MongoDB-Adaptor */,
+				578F6B721D3ED0D300ADA1D1 /* ObjectMapper */,
 				57B23E801C7F9414006403CC /* KinveyKit */,
 				5747102C1C7B8ECE0096B15F /* ObjC */,
 				57DB87E91C62B1CB002BA684 /* Extensions */,
@@ -1420,15 +1441,6 @@
 			);
 			name = watchOS;
 			path = Carthage/Build/watchOS;
-			sourceTree = "<group>";
-		};
-		57B23CF21C7F8C02006403CC /* NSPredicate-MongoDB-Adaptor */ = {
-			isa = PBXGroup;
-			children = (
-				57B23CF31C7F8C12006403CC /* MongoDBPredicateAdaptor.h */,
-				57B23CF41C7F8C12006403CC /* MongoDBPredicateAdaptor.m */,
-			);
-			name = "NSPredicate-MongoDB-Adaptor";
 			sourceTree = "<group>";
 		};
 		57B23D4C1C7F9414006403CC /* Extensions */ = {
@@ -2097,7 +2109,6 @@
 				57B23ECA1C7FA7A0006403CC /* KCSFileRequest.h in Headers */,
 				57B23F091C7FAF58006403CC /* NSError+KinveyKit.h in Headers */,
 				57B23EB41C7FA5D5006403CC /* KCSBackgroundAppdataStore.h in Headers */,
-				57B23CF51C7F8C12006403CC /* MongoDBPredicateAdaptor.h in Headers */,
 				57B23EC21C7FA720006403CC /* KCSDataStoreOperationRequest.h in Headers */,
 				57E4DB131C8A1E170017B406 /* KNVClient+Internal.h in Headers */,
 				57B23F801C7FB9A5006403CC /* NSValueTransformer+Kinvey.h in Headers */,
@@ -2160,6 +2171,7 @@
 				57B23EEB1C7FA9B2006403CC /* KCSMultipleRequest.h in Headers */,
 				57B23F4B1C7FB187006403CC /* KCS_NSArray_KCS_CLLocation_Realm_NSValueTransformer.h in Headers */,
 				57B23EB61C7FA610006403CC /* KCSCachedStore.h in Headers */,
+				578F6B6F1D3ECF4400ADA1D1 /* MongoDBPredicateAdaptor.h in Headers */,
 				57B23F6A1C7FB1D4006403CC /* KCS_KSReachability.h in Headers */,
 				57B23ED81C7FA884006403CC /* KCSLogManager.h in Headers */,
 				57B23F261C7FB000006403CC /* KCSMetadata.h in Headers */,
@@ -2465,23 +2477,23 @@
 				57B23F4C1C7FB187006403CC /* KCS_NSArray_KCS_CLLocation_Realm_NSValueTransformer.m in Sources */,
 				57E4DB111C8A19250017B406 /* ObjC.swift in Sources */,
 				574B0FAD1C729F3300CDC48F /* RemoveByQueryOperation.swift in Sources */,
+				578F6B891D3ED0DD00ADA1D1 /* EnumTransform.swift in Sources */,
 				5728212F1C63E10700373EC8 /* FileStore.swift in Sources */,
 				57B23F531C7FB198006403CC /* CLLocation+Kinvey.m in Sources */,
 				57757F3E1C652A5600C810E9 /* Reachability.swift in Sources */,
 				575772861C4728E5001D56F5 /* TTL.swift in Sources */,
 				57B23F0D1C7FAF84006403CC /* KCSPropertyUtil.m in Sources */,
+				578F6B931D3ED0E000ADA1D1 /* Operators.swift in Sources */,
 				57B23F6B1C7FB1E3006403CC /* KCSUser2+KinveyUserService.m in Sources */,
 				573DD9851D11CCD6006ECF1C /* RealmCache.swift in Sources */,
 				57A27CA21C17910E000DF951 /* Acl.swift in Sources */,
-				5793B85F1D219A450088B5F9 /* Mappable.swift in Sources */,
 				57AC52881D395F7D000887D3 /* AuthSource.swift in Sources */,
 				57E1C3A31C17B3FF00578974 /* Query.swift in Sources */,
-				5793B8661D219A450088B5F9 /* EnumTransform.swift in Sources */,
 				57B23EB71C7FA62A006403CC /* KCSClient+KinveyDataStore.m in Sources */,
-				5793B8611D219A450088B5F9 /* Operators.swift in Sources */,
 				57B23F481C7FB187006403CC /* KCS_CLLocation_Realm_ValueTransformer.m in Sources */,
 				57A27C9E1C178FB5000DF951 /* Client.swift in Sources */,
 				57B23F641C7FB1C6006403CC /* KCS_FMResultSet.m in Sources */,
+				578F6B8E1D3ED0DD00ADA1D1 /* URLTransform.swift in Sources */,
 				57E4DB051C89FE170017B406 /* KNVUser.m in Sources */,
 				57E7C7A51C504AC500848748 /* Cache.swift in Sources */,
 				57557FE61D185BC3001D991C /* RealmResultsArray.swift in Sources */,
@@ -2498,20 +2510,17 @@
 				57E7C7AF1C50539200848748 /* Sync.swift in Sources */,
 				574B0FAB1C729EC900CDC48F /* SaveOperation.swift in Sources */,
 				577155BB1CA21CC200C91B4B /* Migration.swift in Sources */,
-				5793B8621D219A450088B5F9 /* ToJSON.swift in Sources */,
-				5793B8641D219A450088B5F9 /* DateFormatterTransform.swift in Sources */,
 				57B23EC51C7FA75D006403CC /* KCSFile.m in Sources */,
 				57E7C7A91C504E7B00848748 /* PendingOperation.swift in Sources */,
 				57B23E9E1C7FA2BC006403CC /* KCSHttpRequest.m in Sources */,
 				57A27CA41C179118000DF951 /* Metadata.swift in Sources */,
 				57B23F5A1C7FB1B6006403CC /* KCS_DDFileLogger.m in Sources */,
-				5793B8601D219A450088B5F9 /* Mapper.swift in Sources */,
-				5793B8691D219A450088B5F9 /* TransformOf.swift in Sources */,
 				57E4DB281C8A4B6D0017B406 /* KNVDataStore.m in Sources */,
 				577C9E781C1F89C700BF49EE /* Credential.swift in Sources */,
+				578F6B871D3ED0DD00ADA1D1 /* DateFormatterTransform.swift in Sources */,
 				57FEB6B91C8E480300B43FC0 /* SyncOperation.swift in Sources */,
 				57B23EA91C7FA492006403CC /* KCSClient.m in Sources */,
-				5793B8651D219A450088B5F9 /* DateTransform.swift in Sources */,
+				578F6B861D3ED0DD00ADA1D1 /* CustomDateFormatTransform.swift in Sources */,
 				57A2ED8E1C49D20B006D26A9 /* HttpRequest.swift in Sources */,
 				57B23F701C7FB264006403CC /* KCSURLConnectionDelegateAdapter.m in Sources */,
 				57B23EDD1C7FA8BF006403CC /* KCSPendingOperationRealm.m in Sources */,
@@ -2526,14 +2535,17 @@
 				574912711C59323B00EA4F26 /* DataStoreType.swift in Sources */,
 				57E7C7B11C50539C00848748 /* SyncManager.swift in Sources */,
 				E9073D011C986D9600475E16 /* CustomEndpoint.swift in Sources */,
+				578F6B8B1D3ED0DD00ADA1D1 /* NSDecimalNumberTransform.swift in Sources */,
 				57B23EF01C7FAA18006403CC /* KCSMockFileOperation.m in Sources */,
 				57A2ED901C49D30B006D26A9 /* Endpoint.swift in Sources */,
 				57B23F3F1C7FB15C006403CC /* KCSURLProtocol.m in Sources */,
 				5781D1271CE29AA700369F40 /* ObjCRuntime.swift in Sources */,
 				57B23F691C7FB1D1006403CC /* KCS_KSReachability.m in Sources */,
+				578F6B8D1D3ED0DD00ADA1D1 /* TransformType.swift in Sources */,
 				57E1C3B51C18253B00578974 /* JsonResponseParser.swift in Sources */,
 				57B23F4A1C7FB187006403CC /* KCS_NSArray_CLLocation_NSValueTransformer.m in Sources */,
 				5728212D1C63E0F500373EC8 /* File.swift in Sources */,
+				578F6B701D3ECF4400ADA1D1 /* MongoDBPredicateAdaptor.m in Sources */,
 				57B23F661C7FB1C6006403CC /* KCS_FMDatabasePool.m in Sources */,
 				57B23ECF1C7FA7F8006403CC /* KCSGroup.m in Sources */,
 				57B23EE11C7FA930006403CC /* KCSNSURLSessionOperation.m in Sources */,
@@ -2541,9 +2553,11 @@
 				57B23EE81C7FA96E006403CC /* KCSMockServer.m in Sources */,
 				57B23F411C7FB167006403CC /* KCSUser2.m in Sources */,
 				57470FA71C7698B30096B15F /* MultiRequest.swift in Sources */,
+				578F6B901D3ED0E000ADA1D1 /* Map.swift in Sources */,
 				57B23F021C7FAF39006403CC /* NSDictionary+KinveyAdditions.m in Sources */,
 				57B23F391C7FB0CD006403CC /* KCSQueryAdapter.m in Sources */,
 				57B23F5E1C7FB1B6006403CC /* KCS_DDTTYLogger.m in Sources */,
+				578F6B8C1D3ED0DD00ADA1D1 /* TransformOf.swift in Sources */,
 				57E7C7A71C504B0900848748 /* CacheManager.swift in Sources */,
 				57B23EEC1C7FA9F3006403CC /* KCSNSURLCxnFileOperation.m in Sources */,
 				57B23EB11C7FA59C006403CC /* DataStoreOperation.m in Sources */,
@@ -2566,17 +2580,15 @@
 				57470FAB1C769EF00096B15F /* PurgeOperation.swift in Sources */,
 				57E7C7B31C51545900848748 /* ReadPolicy.swift in Sources */,
 				5714EBB21CCEEAF9001E3ECF /* RemoveByIdOperation.swift in Sources */,
-				5793B86B1D219A450088B5F9 /* URLTransform.swift in Sources */,
 				57B23F331C7FB046006403CC /* KCSPing2.m in Sources */,
 				57B23EEA1C7FA9AC006403CC /* KCSMutipleRequest.m in Sources */,
 				57B23EBF1C7FA6C0006403CC /* KCSFileStore.m in Sources */,
+				578F6B8A1D3ED0DD00ADA1D1 /* ISO8601DateTransform.swift in Sources */,
 				57B23EBD1C7FA69D006403CC /* KCSDataStore.m in Sources */,
 				57E7C7B71C519FD000848748 /* HttpHeaderCredential.swift in Sources */,
 				57E7C7B51C51981400848748 /* RequestType.swift in Sources */,
-				57B23CF61C7F8C12006403CC /* MongoDBPredicateAdaptor.m in Sources */,
 				57B23F521C7FB187006403CC /* KCS_UIImage_NSData_NSValueTransformer.m in Sources */,
 				572C45901C86AC7C00A41935 /* ValueTransformer.swift in Sources */,
-				5793B85E1D219A450088B5F9 /* Map.swift in Sources */,
 				57A2ED861C49B9D5006D26A9 /* Response.swift in Sources */,
 				57B23EC31C7FA732006403CC /* KCSErrorUtilities.m in Sources */,
 				57B23F3D1C7FB14F006403CC /* KCSSaveGraph.m in Sources */,
@@ -2587,36 +2599,37 @@
 				57B23F111C7FAFA9006403CC /* KCSMutableOrderedDictionary.m in Sources */,
 				5783B5071C1910B00077F8A6 /* JsonObject.swift in Sources */,
 				576E95A41C1FB10700258CC3 /* DataStore.swift in Sources */,
+				578F6B8F1D3ED0E000ADA1D1 /* FromJSON.swift in Sources */,
+				578F6B911D3ED0E000ADA1D1 /* Mappable.swift in Sources */,
 				57B23F6E1C7FB252006403CC /* KCSMICRequest2.m in Sources */,
 				57B23E8A1C7F97ED006403CC /* KCSReachability.m in Sources */,
 				572C457B1C86690700A41935 /* NSDate.swift in Sources */,
 				572C458E1C86A70000A41935 /* NSDate2StringValueTransformer.swift in Sources */,
+				578F6B921D3ED0E000ADA1D1 /* Mapper.swift in Sources */,
 				57B23EF91C7FAEEE006403CC /* KCSEntityPersistence.m in Sources */,
 				57E4DB191C8A26CA0017B406 /* Keychain.swift in Sources */,
 				57A27CA01C178FC0000DF951 /* User.swift in Sources */,
 				57B23EAB1C7FA510006403CC /* KinveyUser.m in Sources */,
 				57E4DB151C8A26880017B406 /* UserDefaults.swift in Sources */,
 				57B23F321C7FB046006403CC /* KCSClientConfiguration.m in Sources */,
-				5793B8681D219A450088B5F9 /* NSDecimalNumberTransform.swift in Sources */,
 				57B23F051C7FAF39006403CC /* NSString+KinveyAdditions.m in Sources */,
 				575792C01D412CD20065CC22 /* UserQuery.swift in Sources */,
 				57B23ECD1C7FA7D3006403CC /* KCSFileUtils.m in Sources */,
-				5793B85D1D219A450088B5F9 /* FromJSON.swift in Sources */,
+				578F6C4D1D3ED11C00ADA1D1 /* CallStackAnalyser.swift in Sources */,
 				57A2ED881C49BADD006D26A9 /* HttpResponse.swift in Sources */,
 				57B23F4E1C7FB187006403CC /* KCS_NSString_NSDate_NSValueTransformer.m in Sources */,
 				57403A7D1C4D92E3008ECCD4 /* Error.swift in Sources */,
+				578F6B881D3ED0DD00ADA1D1 /* DateTransform.swift in Sources */,
 				57B23F501C7FB187006403CC /* KCS_NSURL_NSString_NSValueTransformer.m in Sources */,
 				574B0FA91C729EB900CDC48F /* FindOperation.swift in Sources */,
 				57A3BF981C8912A900DCD439 /* KNVClient.m in Sources */,
 				57B23F461C7FB183006403CC /* KCS_CLLocation_Realm.m in Sources */,
 				57B23F0B1C7FAF84006403CC /* KCSPersistableDescription.m in Sources */,
 				57B23F351C7FB061006403CC /* KCSPlatformUtils.m in Sources */,
-				5793B86A1D219A450088B5F9 /* TransformType.swift in Sources */,
 				57379DA51C72AAA900E240E9 /* Operation.swift in Sources */,
 				57B23F551C7FB1A4006403CC /* KCS_DDASLLogger.m in Sources */,
 				57B23ED51C7FA855006403CC /* KCSLogFormatter.m in Sources */,
 				57B23E901C7F988D006403CC /* KCSKeychain.m in Sources */,
-				5793B8631D219A450088B5F9 /* CustomDateFormatTransform.swift in Sources */,
 				57B23EFF1C7FAF1B006403CC /* KCSDBTools.m in Sources */,
 				57470FA11C76834B0096B15F /* ReadOperation.swift in Sources */,
 				57B23F581C7FB1B6006403CC /* KCS_DDAbstractDatabaseLogger.m in Sources */,
@@ -2625,6 +2638,7 @@
 				57162EEF1CB83A2400A3C408 /* KCSClient2+KCSInternal.m in Sources */,
 				57B23F041C7FAF39006403CC /* NSError+KinveyKit.m in Sources */,
 				57B23EE51C7FA947006403CC /* KCSNetworkResponse.m in Sources */,
+				578F6B941D3ED0E000ADA1D1 /* ToJSON.swift in Sources */,
 				57B23EC91C7FA79E006403CC /* KCSFileRequest.m in Sources */,
 				577E6FA41D18B33900B5DA36 /* Results.swift in Sources */,
 				57470FA31C76847F0096B15F /* WriteOperation.swift in Sources */,
@@ -2639,7 +2653,6 @@
 				5728213B1C6482C000373EC8 /* NSURLSessionTaskRequest.swift in Sources */,
 				57E1C3B31C1822B100578974 /* ResponseParser.swift in Sources */,
 				57B23F3B1C7FB133006403CC /* KCSRequest.m in Sources */,
-				5793B8671D219A450088B5F9 /* ISO8601DateTransform.swift in Sources */,
 				57B23E941C7F993F006403CC /* KCSMICLoginViewController.m in Sources */,
 				57B23ED31C7FA833006403CC /* KCSImageUtils.m in Sources */,
 				57B23EB51C7FA608006403CC /* KCSCachedStore.m in Sources */,
@@ -2957,6 +2970,13 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Checkouts/NSPredicate-MongoDB-Adaptor/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Checkouts/NSPredicate-MongoDB-Adaptor/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/NSPredicate-MongoDB-Adaptor/Carthage/Build/tvOS",
+					"$(PROJECT_DIR)/Carthage/Checkouts/NSPredicate-MongoDB-Adaptor/Carthage/Build/watchOS",
+				);
 				GCC_PREFIX_HEADER = "../KinveyKit/KinveyKit/KinveyKit-Prefix.pch";
 				INFOPLIST_FILE = Kinvey/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -2981,6 +3001,13 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Checkouts/NSPredicate-MongoDB-Adaptor/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Checkouts/NSPredicate-MongoDB-Adaptor/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/NSPredicate-MongoDB-Adaptor/Carthage/Build/tvOS",
+					"$(PROJECT_DIR)/Carthage/Checkouts/NSPredicate-MongoDB-Adaptor/Carthage/Build/watchOS",
+				);
 				GCC_PREFIX_HEADER = "../KinveyKit/KinveyKit/KinveyKit-Prefix.pch";
 				INFOPLIST_FILE = Kinvey/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

@@ -7,6 +7,8 @@
 //
 
 @testable import Kinvey
+import RealmSwift
+import ObjectiveC
 
 class Person: Entity {
     
@@ -15,6 +17,8 @@ class Person: Entity {
     dynamic var age: Int = 0
     
     dynamic var address: Address?
+    
+    dynamic var color: UIColor?
     
     override class func collectionName() -> String {
         return "Person"
@@ -26,41 +30,43 @@ class Person: Entity {
         personId <- ("personId", map[PersistableIdKey])
         name <- map["name"]
         age <- map["age"]
-        address <- ("address", map["address"], AddressTransform())
+        address <- ("address", map["address"])
+        color <- ("color", map["color"], ColorTransform())
     }
     
 }
 
-class AddressTransform: TransformType {
+class ColorTransform: TransformType {
     
-    typealias Object = Address
-    typealias JSON = [String : AnyObject]
+    typealias Object = UIColor
+    typealias JSON = [String : CGFloat]
     
     func transformFromJSON(value: AnyObject?) -> Object? {
-        var jsonDict: [String : AnyObject]? = nil
-        if let value = value as? String,
-            let data = value.dataUsingEncoding(NSUTF8StringEncoding),
-            let json = try? NSJSONSerialization.JSONObjectWithData(data, options: [])
+        if let value = value as? JSON,
+            let red = value["red"],
+            let green = value["green"],
+            let blue = value["blue"],
+            let alpha = value["alpha"]
         {
-            jsonDict = json as? [String : AnyObject]
-        } else {
-            jsonDict = value as? [String : AnyObject]
-        }
-        if let jsonDict = jsonDict {
-            let address = Address()
-            address.city = jsonDict["city"] as? String
-            return address
+            return UIColor(red: red, green: green, blue: blue, alpha: alpha)
         }
         return nil
     }
     
     func transformToJSON(value: Object?) -> JSON? {
         if let value = value {
-            var json = [String : AnyObject]()
-            if let city = value.city {
-                json["city"] = city
+            var red = CGFloat(0)
+            var green = CGFloat(0)
+            var blue = CGFloat(0)
+            var alpha = CGFloat(0)
+            if value.getRed(&red, green: &green, blue: &blue, alpha: &alpha) {
+                return [
+                    "red" : red,
+                    "green" : green,
+                    "blue" : blue,
+                    "alpha" : alpha
+                ]
             }
-            return json
         }
         return nil
     }
@@ -70,5 +76,11 @@ class AddressTransform: TransformType {
 class Address: Entity {
     
     dynamic var city: String?
+    
+    override func propertyMapping(map: Map) {
+        super.propertyMapping(map)
+        
+        city <- map["city"]
+    }
     
 }

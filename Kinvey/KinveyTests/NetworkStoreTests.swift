@@ -47,7 +47,7 @@ class NetworkStoreTests: StoreTestCase {
         }
     }
     
-    func testSaveAddress() {
+    func testSaveAddressAndColor() {
         let person = Person()
         person.name = "Victor Barros"
         
@@ -55,6 +55,8 @@ class NetworkStoreTests: StoreTestCase {
         address.city = "Vancouver"
         
         person.address = address
+        
+        person.color = UIColor.orangeColor()
         
         weak var expectationSave = expectationWithDescription("Save")
         
@@ -67,6 +69,14 @@ class NetworkStoreTests: StoreTestCase {
                 
                 if let address = person.address {
                     XCTAssertNotNil(address.city)
+                    XCTAssertEqual(address.city, "Vancouver")
+                }
+                
+                XCTAssertNotNil(person.color)
+                
+                if let color = person.color {
+                    XCTAssertNotNil(color)
+                    XCTAssertEqual(color, UIColor.orangeColor())
                 }
             }
             

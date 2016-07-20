@@ -4,3 +4,4 @@ github "tjboneman/NSPredicate-MongoDB-Adaptor" "8219490ee63b7506024a16f4cc5fb3da
 github "Hearst-DD/ObjectMapper" "1.3.0"
 github "mxcl/PromiseKit" "3.2.1"
 github "realm/realm-cocoa" "v1.0.2"
+github "nurun/swiftcallstacktrace" "e71f3f348dc80da43adda50d5ef5c89e0c3f178d"

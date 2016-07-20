@@ -78,6 +78,7 @@ public class Entity: Object, Persistable {
     }
     
     public override class func ignoredProperties() -> [String] {
+        let _ = entityIdProperty()
         var properties = [String]()
         for property in ObjCRuntime.properties(self) {
             if !(ObjCRuntime.type(property.1, isSubtypeOf: NSDate.self) ||

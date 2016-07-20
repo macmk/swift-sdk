@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import Realm
 
 /// Protocol that turns a NSObject into a persistable class to be used in a `DataStore`.
 public protocol Persistable: Mappable {
@@ -80,6 +81,49 @@ public func <- <Transform: TransformType>(inout left: Transform.Object, right: (
 /// Override operator used during the `propertyMapping(_:)` method.
 public func <- <Transform: TransformType>(inout left: Transform.Object?, right: (String, Map, Transform)) {
     kinveyMappingType(left: right.0, right: right.1.currentKey!)
+    if !(left is NSDate ||
+        left is NSData ||
+        left is NSString ||
+        left is RLMObjectBase ||
+        left is RLMOptionalBase ||
+        left is RLMListBase ||
+        left is RLMCollection),
+        let callingMethodInfo = CallStackAnalyser.getCallingClassAndMethodInScope(true),
+        let cls = NSClassFromString(callingMethodInfo.0) where NSClassFromString("_\(callingMethodInfo.0)") == nil
+    {
+        let newClassName = "_\(callingMethodInfo.0)"
+        let newClass: AnyClass = objc_allocateClassPair(cls, newClassName, 0)
+        print("\(NSClassFromString(newClassName))")
+        defer {
+            objc_registerClassPair(newClass)
+        }
+        
+        let valueName = "_\(right.0)Value"
+        
+        let size = sizeof(NSString.self)
+        let align = log2(Double(size))
+        let ivarAdded = class_addIvar(newClass, (valueName as NSString).cStringUsingEncoding(NSUTF8StringEncoding), size, UInt8(align), "@")
+        
+        let property = class_getProperty(cls, right.0)
+        var attrsCount = UInt32(0)
+        let attrs = property_copyAttributeList(property, &attrsCount)
+        defer {
+            free(attrs)
+        }
+        var attrsResults = [objc_property_attribute_t]()
+        for i in 0 ..< Int(attrsCount) {
+            var attr = attrs[i]
+            if let name = String.fromCString(attr.name), let value = String.fromCString(attr.value) {
+                if name == "T" {
+                    attr.value = "@\"NSString\"".cStringUsingEncoding(NSUTF8StringEncoding)
+                } else if name == "V" {
+                    attr.value = ("_\(value)Value" as NSString).cStringUsingEncoding(NSUTF8StringEncoding)
+                }
+                attrsResults.append(attr)
+            }
+        }
+        let propertyAdded = class_addProperty(newClass, valueName, attrsResults, UInt32(attrsResults.count))
+    }
     left <- (right.1, right.2)
 }
 
