@@ -415,6 +415,9 @@
 		57FEB6B91C8E480300B43FC0 /* SyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FEB6B81C8E480300B43FC0 /* SyncOperation.swift */; };
 		57FF4F6D1CCFE71B002947FF /* RemoveOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF4F6C1CCFE71B002947FF /* RemoveOperation.swift */; };
 		57FF4F6F1CD02FF7002947FF /* OperationQueueRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57FF4F6E1CD02FF7002947FF /* OperationQueueRequest.swift */; };
+		96243CCE1DDD192200E096A6 /* PubNub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96243CCD1DDD192200E096A6 /* PubNub.framework */; };
+		96243CCF1DDD196700E096A6 /* PubNub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 96243CCD1DDD192200E096A6 /* PubNub.framework */; };
+		96243CD01DDD196700E096A6 /* PubNub.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 96243CCD1DDD192200E096A6 /* PubNub.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E9073D011C986D9600475E16 /* CustomEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9073D001C986D9600475E16 /* CustomEndpoint.swift */; };
 /* End PBXBuildFile section */
 
@@ -526,6 +529,7 @@
 				5745DC821C97904400E7E764 /* Kinvey.framework in CopyFiles */,
 				57B0C2131CDCE8E200492D6C /* Realm.framework in CopyFiles */,
 				579224F91D13308400499D0A /* RealmSwift.framework in CopyFiles */,
+				96243CD01DDD196700E096A6 /* PubNub.framework in CopyFiles */,
 				57B0C2151CDCE90D00492D6C /* PromiseKit.framework in CopyFiles */,
 				57B0C2141CDCE8FC00492D6C /* KeychainAccess.framework in CopyFiles */,
 				579224F81D13304700499D0A /* ObjectMapper.framework in CopyFiles */,
@@ -1012,6 +1016,7 @@
 		57FEB6B81C8E480300B43FC0 /* SyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncOperation.swift; sourceTree = "<group>"; };
 		57FF4F6C1CCFE71B002947FF /* RemoveOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveOperation.swift; sourceTree = "<group>"; };
 		57FF4F6E1CD02FF7002947FF /* OperationQueueRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationQueueRequest.swift; sourceTree = "<group>"; };
+		96243CCD1DDD192200E096A6 /* PubNub.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PubNub.framework; sourceTree = "<group>"; };
 		E9073D001C986D9600475E16 /* CustomEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomEndpoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1022,6 +1027,7 @@
 			files = (
 				5765B8641C97751000080FFA /* Kinvey.framework in Frameworks */,
 				5756FE861D136C330087141E /* RealmSwift.framework in Frameworks */,
+				96243CCF1DDD196700E096A6 /* PubNub.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1040,6 +1046,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				96243CCE1DDD192200E096A6 /* PubNub.framework in Frameworks */,
 				5783B6671C1A13CB0077F8A6 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1327,6 +1334,7 @@
 		57B0C1C11CDCE88900492D6C /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				96243CCD1DDD192200E096A6 /* PubNub.framework */,
 				57B7687C1D10C01F0086AA38 /* ObjectMapper.framework */,
 				57B0C1D01CDCE88900492D6C /* KeychainAccess.framework */,
 				57B0C1D21CDCE88900492D6C /* KIF.framework */,
@@ -2964,6 +2972,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GCC_PREFIX_HEADER = "../KinveyKit/KinveyKit/KinveyKit-Prefix.pch";
 				INFOPLIST_FILE = Kinvey/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -2993,6 +3005,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				GCC_PREFIX_HEADER = "../KinveyKit/KinveyKit/KinveyKit-Prefix.pch";
 				INFOPLIST_FILE = Kinvey/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
