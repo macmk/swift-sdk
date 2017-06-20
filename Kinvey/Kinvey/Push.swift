@@ -201,7 +201,9 @@ open class Push {
                     UNUserNotificationCenter.current().setNotificationCategories(categories)
                 }
                 self.replaceAppDelegateMethods(completionHandler)
-                UIApplication.shared.registerForRemoteNotifications()
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
             } else {
                 if let error = error {
                     completionHandler?(.failure(error))

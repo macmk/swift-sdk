@@ -65,6 +65,10 @@ open class Entity: Object, Persistable {
         fatalError("Method \(#function) must be overridden")
     }
     
+    open class func newInstance() -> Self {
+        return self.init()
+    }
+    
     /// The `_id` property mapped in the Kinvey backend.
     public dynamic var entityId: String?
     

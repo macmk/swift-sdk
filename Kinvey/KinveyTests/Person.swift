@@ -50,6 +50,10 @@ class Person: Entity {
         return "Person"
     }
     
+    override class func newInstance() -> Person {
+        return Person()
+    }
+    
     override func propertyMapping(_ map: Map) {
         super.propertyMapping(map)
         

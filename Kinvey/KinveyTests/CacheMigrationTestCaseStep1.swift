@@ -22,6 +22,10 @@ class Person: Entity {
         return "CacheMigrationTestCase_Person"
     }
     
+    override class func newInstance() -> Person {
+        return Person()
+    }
+    
     override func propertyMapping(_ map: Map) {
         super.propertyMapping(map)
         

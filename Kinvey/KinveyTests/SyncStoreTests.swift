@@ -1972,10 +1972,14 @@ class SyncStoreTests: StoreTestCase {
     }
     
     func testRealmCacheNotEntity() {
-        class NotEntityPersistable: NSObject, Persistable {
+        final class NotEntityPersistable: NSObject, Persistable {
             
             static func collectionName() -> String {
                 return "NotEntityPersistable"
+            }
+            
+            static func newInstance() -> NotEntityPersistable {
+                return NotEntityPersistable()
             }
             
             required override init() {
@@ -1995,10 +1999,14 @@ class SyncStoreTests: StoreTestCase {
     }
     
     func testRealmSyncNotEntity() {
-        class NotEntityPersistable: NSObject, Persistable {
+        final class NotEntityPersistable: NSObject, Persistable {
             
             static func collectionName() -> String {
                 return "NotEntityPersistable"
+            }
+            
+            static func newInstance() -> NotEntityPersistable {
+                return NotEntityPersistable()
             }
             
             required override init() {

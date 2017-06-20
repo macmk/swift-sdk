@@ -28,6 +28,10 @@ class LongData: Entity {
         return "longdata"
     }
     
+    override class func newInstance() -> LongData {
+        return LongData()
+    }
+    
     override func propertyMapping(_ map: Map) {
         super.propertyMapping(map)
         

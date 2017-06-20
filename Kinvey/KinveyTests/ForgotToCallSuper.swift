@@ -18,6 +18,10 @@ class ForgotToCallSuperEntity: Entity {
         return "ForgotToCallSuper"
     }
     
+    override class func newInstance() -> ForgotToCallSuperEntity {
+        return ForgotToCallSuperEntity()
+    }
+    
     override func propertyMapping(_ map: Map) {
         myProperty <- ("myProperty", map["myProperty"])
     }
@@ -33,6 +37,10 @@ class ForgotToCallSuperEntity2: Entity {
         return "ForgotToCallSuper"
     }
     
+    override class func newInstance() -> ForgotToCallSuperEntity2 {
+        return ForgotToCallSuperEntity2()
+    }
+    
     override func propertyMapping(_ map: Map) {
         myId <- ("myId", map[Key.entityId])
         myProperty <- ("myProperty", map["myProperty"])
@@ -40,12 +48,16 @@ class ForgotToCallSuperEntity2: Entity {
     
 }
 
-class ForgotToCallSuperPersistable: Persistable {
+final class ForgotToCallSuperPersistable: Persistable {
     
     dynamic var myProperty: String?
     
     class func collectionName() -> String {
         return "ForgotToCallSuper"
+    }
+    
+    class func newInstance() -> ForgotToCallSuperPersistable {
+        return ForgotToCallSuperPersistable()
     }
     
     required init() {

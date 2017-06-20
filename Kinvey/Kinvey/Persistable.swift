@@ -27,6 +27,8 @@ public protocol Persistable: Mappable {
     /// Provides the collection name to be matched with the backend.
     static func collectionName() -> String
     
+    static func newInstance() -> Self
+    
     /// Default Constructor.
     init()
     
@@ -465,7 +467,7 @@ extension Persistable {
         let currentThread = Thread.current
         let className = StringFromClass(cls: self as! AnyClass)
         currentThread.threadDictionary[KinveyMappingTypeKey] = [className : PropertyMap()]
-        let obj = self.init()
+        let obj = self.newInstance()
         let _ = obj.toJSON()
         if let kinveyMappingType = currentThread.threadDictionary[KinveyMappingTypeKey] as? [String : PropertyMap],
             let kinveyMappingClassType = kinveyMappingType[className]

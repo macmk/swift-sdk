@@ -932,7 +932,7 @@ open class DataStore<T: Persistable> where T: NSObject {
             } catch {
                 reject(error)
             }
-        }.then { realtimeRouter in
+        }.then { (realtimeRouter) -> Void in
             realtimeRouter.subscribe(
                 channel: self.channelName,
                 context: self,
