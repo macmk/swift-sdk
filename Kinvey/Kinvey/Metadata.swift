@@ -42,9 +42,9 @@ public class Metadata: Object, Mappable {
     
     }
     
-    internal dynamic var lmt: String?
-    internal dynamic var ect: String?
-    internal dynamic var lrt: Date = Date()
+    @objc internal dynamic var lmt: String?
+    @objc internal dynamic var ect: String?
+    @objc internal dynamic var lrt: Date = Date()
     
     /// Last Read Time
     open var lastReadTime: Date {
@@ -74,7 +74,7 @@ public class Metadata: Object, Mappable {
     }
     
     /// Authentication Token.
-    open internal(set) dynamic var authtoken: String?
+    @objc open internal(set) dynamic var authtoken: String?
     
     /// Default Constructor.
     public required init() {

@@ -66,13 +66,13 @@ open class Entity: Object, Persistable {
     }
     
     /// The `_id` property mapped in the Kinvey backend.
-    public dynamic var entityId: String?
+    @objc public dynamic var entityId: String?
     
     /// The `_kmd` property mapped in the Kinvey backend.
-    public dynamic var metadata: Metadata?
+    @objc public dynamic var metadata: Metadata?
     
     /// The `_acl` property mapped in the Kinvey backend.
-    public dynamic var acl: Acl?
+    @objc public dynamic var acl: Acl?
     
     /// Default Constructor.
     public required init() {
@@ -161,7 +161,7 @@ open class Entity: Object, Persistable {
 
 open class StringValue: Object, ExpressibleByStringLiteral {
     
-    public dynamic var value = ""
+    @objc public dynamic var value = ""
     
     public convenience required init(unicodeScalarLiteral value: String) {
         self.init()
@@ -187,7 +187,7 @@ open class StringValue: Object, ExpressibleByStringLiteral {
 
 open class IntValue: Object, ExpressibleByIntegerLiteral {
     
-    public dynamic var value = 0
+    @objc public dynamic var value = 0
     
     public convenience required init(integerLiteral value: Int) {
         self.init()
@@ -203,7 +203,7 @@ open class IntValue: Object, ExpressibleByIntegerLiteral {
 
 open class FloatValue: Object, ExpressibleByFloatLiteral {
     
-    public dynamic var value = Float(0)
+    @objc public dynamic var value = Float(0)
     
     public convenience required init(floatLiteral value: Float) {
         self.init()
@@ -219,7 +219,7 @@ open class FloatValue: Object, ExpressibleByFloatLiteral {
 
 open class DoubleValue: Object, ExpressibleByFloatLiteral {
     
-    public dynamic var value = 0.0
+    @objc public dynamic var value = 0.0
     
     public convenience required init(floatLiteral value: Double) {
         self.init()
@@ -235,7 +235,7 @@ open class DoubleValue: Object, ExpressibleByFloatLiteral {
 
 open class BoolValue: Object, ExpressibleByBooleanLiteral {
     
-    public dynamic var value = false
+    @objc public dynamic var value = false
     
     public convenience required init(booleanLiteral value: Bool) {
         self.init()

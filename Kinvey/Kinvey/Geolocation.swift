@@ -14,8 +14,8 @@ import MapKit
 
 public final class GeoPoint: Object {
     
-    open dynamic var latitude: CLLocationDegrees = 0.0
-    open dynamic var longitude: CLLocationDegrees = 0.0
+    @objc open dynamic var latitude: CLLocationDegrees = 0.0
+    @objc open dynamic var longitude: CLLocationDegrees = 0.0
     
     public convenience init(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         self.init()

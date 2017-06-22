@@ -43,7 +43,7 @@ class AclTransformType: TransformType {
 public final class Acl: Object, BuilderType {
     
     /// The `userId` of the `User` used to create the record.
-    open dynamic var creator: String?
+    @objc open dynamic var creator: String?
     
     /// The `userId` of the `User` used to create the record.
     open let globalRead = RealmOptional<Bool>()
@@ -51,7 +51,7 @@ public final class Acl: Object, BuilderType {
     /// The `userId` of the `User` used to create the record.
     open let globalWrite = RealmOptional<Bool>()
     
-    fileprivate dynamic var readersValue: String?
+    @objc fileprivate dynamic var readersValue: String?
     
     /// Specifies the list of user _ids that are explicitly allowed to read the entity.
     open var readers: [String]? {
@@ -72,7 +72,7 @@ public final class Acl: Object, BuilderType {
         }
     }
     
-    fileprivate dynamic var writersValue: String?
+    @objc fileprivate dynamic var writersValue: String?
     
     /// Specifies the list of user _ids that are explicitly allowed to modify the entity.
     open var writers: [String]? {

@@ -30,15 +30,15 @@ public enum ImageRepresentation {
         }
         let newRep = NSBitmapImageRep(cgImage: cgImage)
         newRep.size = image.size
-        var fileType: NSBitmapImageFileType!
-        var properties: [String : Any]!
+        var fileType: NSBitmapImageRep.FileType!
+        var properties: [NSBitmapImageRep.PropertyKey : Any]!
         switch self {
         case .png:
-            fileType = NSPNGFileType
+            fileType = .png
             properties = [:]
         case .jpeg(let compressionQuality):
-            fileType = NSJPEGFileType
-            properties = [NSImageCompressionFactor : compressionQuality]
+            fileType = .jpeg
+            properties = [.compressionFactor : compressionQuality]
         }
         return newRep.representation(using: fileType, properties: properties)
     }

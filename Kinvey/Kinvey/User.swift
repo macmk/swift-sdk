@@ -30,7 +30,7 @@ open class User: NSObject, Credential, Mappable {
         return _userId!
     }
     
-    private dynamic var _userId: String?
+    @objc private dynamic var _userId: String?
     
     /// `_acl` property of the user.
     open fileprivate(set) var acl: Acl?
