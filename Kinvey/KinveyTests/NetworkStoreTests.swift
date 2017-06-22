@@ -2054,7 +2054,7 @@ class NetworkStoreTests: StoreTestCase {
         store.group(
             keys: ["name"],
             min: "age",
-            minType: Float.self,
+            minType: Double.self,
             condition: NSPredicate(format: "age > %@", NSNumber(value: 18))
         ) { (result, error) in
             XCTAssertNotNil(result)

@@ -202,6 +202,7 @@ class DataTypeTestCase: StoreTestCase {
 }
 
 class EntityWithDate : Entity {
+    
     dynamic var date:Date?
     
     override class func collectionName() -> String {
@@ -228,7 +229,7 @@ class ColorTransformType : TransformType {
             let alpha = value["alpha"] as? CGFloat
         {
             #if os(macOS)
-                return Color(calibratedRed: red, green: green, blue: blue, alpha: alpha).usingColorSpaceName(NSCalibratedRGBColorSpace)
+                return Color(calibratedRed: red, green: green, blue: blue, alpha: alpha).usingColorSpaceName(NSColorSpaceName.calibratedRGB)
             #else
                 return Color(red: red, green: green, blue: blue, alpha: alpha)
             #endif
@@ -257,21 +258,21 @@ class ColorTransformType : TransformType {
 
 class DataType: Entity {
     
-    dynamic var boolValue: Bool = false
-    dynamic var fullName: FullName?
+    @objc dynamic var boolValue: Bool = false
+    @objc dynamic var fullName: FullName?
     
-    fileprivate dynamic var fullName2Value: String?
-    dynamic var fullName2: FullName2?
+    @objc fileprivate dynamic var fullName2Value: String?
+    @objc dynamic var fullName2: FullName2?
     
-    dynamic var objectValue: NSObject?
-    dynamic var stringValueNotOptional: String! = ""
-    dynamic var fullName2DefaultValue = FullName2()
-    dynamic var fullName2DefaultValueNotOptional: FullName2! = FullName2()
-    dynamic var fullName2DefaultValueTransformed = FullName2()
-    dynamic var fullName2DefaultValueNotOptionalTransformed: FullName2! = FullName2()
+    @objc dynamic var objectValue: NSObject?
+    @objc dynamic var stringValueNotOptional: String! = ""
+    @objc dynamic var fullName2DefaultValue = FullName2()
+    @objc dynamic var fullName2DefaultValueNotOptional: FullName2! = FullName2()
+    @objc dynamic var fullName2DefaultValueTransformed = FullName2()
+    @objc dynamic var fullName2DefaultValueNotOptionalTransformed: FullName2! = FullName2()
     
-    fileprivate dynamic var colorValueString: String?
-    dynamic var colorValue: Color? {
+    @objc fileprivate dynamic var colorValueString: String?
+    @objc dynamic var colorValue: Color? {
         get {
             if let colorValueString = colorValueString,
                 let data = colorValueString.data(using: String.Encoding.utf8),
@@ -392,13 +393,8 @@ class FontDescriptorTransformType: TransformType {
     
     struct Attribute {
         
-        #if !os(macOS)
-            static let name = UIFontDescriptor.AttributeName.name
-            static let size = UIFontDescriptor.AttributeName.size
-        #else
-            static let name = NSFontNameAttribute
-            static let size = NSFontSizeAttribute
-        #endif
+        static let name = FontDescriptor.AttributeName.name
+        static let size = FontDescriptor.AttributeName.size
         
     }
     

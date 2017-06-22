@@ -125,9 +125,9 @@ public class Metadata: Object, Mappable {
 
 public final class UserMetadata: Metadata {
     
-    open internal(set) var emailVerification: EmailVerification?
-    open internal(set) var passwordReset: PasswordReset?
-    open internal(set) var userStatus: UserStatus?
+    @objc open internal(set) dynamic var emailVerification: EmailVerification?
+    @objc open internal(set) dynamic var passwordReset: PasswordReset?
+    @objc open internal(set) dynamic var userStatus: UserStatus?
     
     public override func mapping(map: Map) {
         super.mapping(map: map)
@@ -189,8 +189,8 @@ extension PasswordReset: Mappable {
 
 public final class UserStatus: Object {
     
-    open internal(set) var value: String?
-    open internal(set) var lastChange: Date?
+    @objc open internal(set) dynamic var value: String?
+    @objc open internal(set) dynamic var lastChange: Date?
     
 }
 

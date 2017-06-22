@@ -24,7 +24,13 @@ extension BuilderType {
     
     /// Builder Constructor.
     public init(_ block: (Self) -> Void) {
-        self.init()
+        var obj: Self!
+        if let clazz = Self.self as? NSObject.Type {
+            obj = (clazz.init() as! Self)
+        } else {
+            obj = Self.self.init()
+        }
+        self = obj
         block(self)
     }
     

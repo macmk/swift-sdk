@@ -465,7 +465,12 @@ extension Persistable {
         let currentThread = Thread.current
         let className = StringFromClass(cls: self as! AnyClass)
         currentThread.threadDictionary[KinveyMappingTypeKey] = [className : PropertyMap()]
-        let obj = self.init()
+        var obj: Self!
+        if let clazz = self as? NSObject.Type {
+            obj = (clazz.init() as! Self)
+        } else {
+            obj = self.init()
+        }
         let _ = obj.toJSON()
         if let kinveyMappingType = currentThread.threadDictionary[KinveyMappingTypeKey] as? [String : PropertyMap],
             let kinveyMappingClassType = kinveyMappingType[className]
