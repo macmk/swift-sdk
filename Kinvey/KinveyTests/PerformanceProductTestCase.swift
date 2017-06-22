@@ -269,7 +269,7 @@ class PerformanceProductTestCase: KinveyTestCase {
                         XCTAssertNotNil(product)
                         XCTAssertNil(error)
                         
-                        fulfill()
+                        fulfill(())
                     }
                 }
                 promises.append(promise)
@@ -278,7 +278,7 @@ class PerformanceProductTestCase: KinveyTestCase {
             if promises.count >= batchSize {
                 weak var expectationSave = self.expectation(description: "Save")
                 
-                when(fulfilled: promises).then {
+                when(fulfilled: promises).then { _ in
                     expectationSave?.fulfill()
                 }.catch { error in
                     expectationSave?.fulfill()

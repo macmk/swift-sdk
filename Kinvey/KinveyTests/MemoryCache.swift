@@ -40,9 +40,11 @@ class MemoryCache<T: Persistable>: Cache<T>, CacheType where T: NSObject {
                 return json
             })
         }
-        return memory.filter({ (key, obj) -> Bool in
+        return memory.filter({ arg -> Bool in
+            let (_, obj) = arg
             return predicate.evaluate(with: obj)
-        }).map({ (key, obj) -> Type in
+        }).map({ arg -> Type in
+            let (_, obj) = arg
             return obj
         })
     }

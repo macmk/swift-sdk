@@ -116,11 +116,11 @@ class PubNubRealtimeRouter: NSObject, RealtimeRouter {
                         reject(Error.unknownError(httpResponse: nil, data: nil, error: publishStatus.errorData.information))
                     }
                 } else {
-                    fulfill()
+                    fulfill(())
                 }
             }
-        }.then {
-            completionHandler?(.success())
+        }.then { void in
+            completionHandler?(.success(void))
         }.catch { error in
             completionHandler?(.failure(error))
         }
@@ -148,9 +148,7 @@ extension PubNubRealtimeRouter: PNObjectEventListener {
             fireOnStatus(status: .unexpectedDisconnect)
         default:
             if status.isError, let errorStatus = status as? PNErrorStatus {
-                let callbacks = errorStatus.errorData.channels.flatMap {
-                    self[$0].map { $1 }
-                }
+                let callbacks = errorStatus.errorData.channels.flatMap { self[$0].values }
                 let error = Error.unknownError(httpResponse: nil, data: nil, error: errorStatus.errorData.information)
                 for callback in callbacks {
                     callback.onError(error)

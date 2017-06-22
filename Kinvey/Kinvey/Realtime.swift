@@ -64,7 +64,7 @@ public class LiveStream<Type: BaseMappable> {
         return userPromise.then { activeUser in
             return Promise<(User, RealtimeRouter)> { fulfill, reject in
                 if let realtimeRouter = activeUser.realtimeRouter {
-                    fulfill(activeUser, realtimeRouter)
+                    fulfill((activeUser, realtimeRouter))
                 } else {
                     reject(Error.invalidOperation(description: "Active User not register for realtime"))
                 }
@@ -78,13 +78,13 @@ public class LiveStream<Type: BaseMappable> {
         Promise<Void> { fulfill, reject in
             request.execute() { (data, response, error) in
                 if let response = response, response.isOK, let _ = data {
-                    fulfill()
+                    fulfill(())
                 } else {
                     reject(buildError(data, response, error, self.client))
                 }
             }
-        }.then {
-            completionHandler?(.success())
+        }.then { void in
+            completionHandler?(.success(void))
         }.catch { error in
             completionHandler?(.failure(error))
         }
@@ -92,10 +92,11 @@ public class LiveStream<Type: BaseMappable> {
     }
     
     public func send(userId: String, message: Type, retry: Bool = true, completionHandler: ((Result<Void, Swift.Error>) -> Void)? = nil) {
-        realtimeRouterPromise.then { activeUser, realtimeRouter in
+        realtimeRouterPromise.then { arg -> Promise<(RealtimeRouter, String)> in
+            let (_, realtimeRouter) = arg
             return Promise<(RealtimeRouter, String)> { fulfill, reject in
                 if let channelName = self.substreamChannelNameMap[userId] {
-                    fulfill(realtimeRouter, channelName)
+                    fulfill((realtimeRouter, channelName))
                 } else {
                     let request = self.client.networkRequestFactory.buildLiveStreamPublish(streamName: self.name, userId: userId)
                     request.execute() { (data, response, error) in
@@ -107,19 +108,20 @@ public class LiveStream<Type: BaseMappable> {
                             let substreamChannelName = jsonDict["substreamChannelName"]
                         {
                             self.substreamChannelNameMap[userId] = substreamChannelName
-                            fulfill(realtimeRouter, substreamChannelName)
+                            fulfill((realtimeRouter, substreamChannelName))
                         } else {
                             reject(buildError(data, response, error, self.client))
                         }
                     }
                 }
             }
-        }.then { realtimeRouter, channelName in
+        }.then { arg in
+            let (realtimeRouter, channelName) = arg
             return Promise<Void> { fulfill, reject in
                 realtimeRouter.publish(channel: channelName, message: message.toJSON()) {
                     switch $0 {
                     case .success:
-                        fulfill()
+                        fulfill(())
                     case .failure(let error):
                         if retry, let error = error as? Kinvey.Error {
                             switch error {
@@ -128,7 +130,7 @@ public class LiveStream<Type: BaseMappable> {
                                 self.send(userId: userId, message: message, retry: false) {
                                     switch $0 {
                                     case .success:
-                                        fulfill()
+                                        fulfill(())
                                     case .failure(let error):
                                         reject(error)
                                     }
@@ -142,8 +144,8 @@ public class LiveStream<Type: BaseMappable> {
                     }
                 }
             }
-        }.then {
-            completionHandler?(.success())
+        }.then { void in
+            completionHandler?(.success(void))
         }.catch { error in
             completionHandler?(.failure(error))
         }
@@ -155,7 +157,8 @@ public class LiveStream<Type: BaseMappable> {
         onStatus: @escaping (RealtimeStatus) -> Void,
         onError: @escaping (Swift.Error) -> Void
     ) {
-        realtimeRouterPromise.then { activeUser, realtimeRouter in
+        realtimeRouterPromise.then { arg -> Void in
+            let (activeUser, _) = arg
             self.follow(userId: activeUser.userId, following: listening, onNext: onNext, onStatus: onStatus, onError: onError)
         }.catch { error in
             onError(error)
@@ -163,7 +166,8 @@ public class LiveStream<Type: BaseMappable> {
     }
     
     public func stopListening(completionHandler: ((Result<Void, Swift.Error>) -> Void)? = nil) {
-        realtimeRouterPromise.then { activeUser, _ in
+        realtimeRouterPromise.then { arg -> Void in
+            let (activeUser, _) = arg
             self.unfollow(userId: activeUser.userId, completionHandler: completionHandler)
         }.catch { error in
             completionHandler?(.failure(error))
@@ -171,7 +175,8 @@ public class LiveStream<Type: BaseMappable> {
     }
     
     public func post(message: Type, completionHandler: ((Result<Void, Swift.Error>) -> Void)? = nil) {
-        realtimeRouterPromise.then { activeUser, _ in
+        realtimeRouterPromise.then { arg -> Void in
+            let (activeUser, _) = arg
             self.send(userId: activeUser.userId, message: message, completionHandler: completionHandler)
         }.catch { error in
             completionHandler?(.failure(error))
@@ -185,10 +190,11 @@ public class LiveStream<Type: BaseMappable> {
         onStatus: @escaping (RealtimeStatus) -> Void,
         onError: @escaping (Swift.Error) -> Void
     ) {
-        realtimeRouterPromise.then { activeUser, realtimeRouter in
+        realtimeRouterPromise.then { arg -> Promise<(RealtimeRouter, String)> in
+            let (activeUser, realtimeRouter) = arg
             return Promise<(RealtimeRouter, String)> { fulfill, reject in
                 if let channelName = self.substreamChannelNameMap[userId] {
-                    fulfill(realtimeRouter, channelName)
+                    fulfill((realtimeRouter, channelName))
                 } else {
                     let request = self.client.networkRequestFactory.buildLiveStreamSubscribe(streamName: self.name, userId: userId, deviceId: deviceId)
                     request.execute() { (data, response, error) in
@@ -200,14 +206,15 @@ public class LiveStream<Type: BaseMappable> {
                             let substreamChannelName = jsonDict["substreamChannelName"]
                         {
                             self.substreamChannelNameMap[userId] = substreamChannelName
-                            fulfill(realtimeRouter, substreamChannelName)
+                            fulfill((realtimeRouter, substreamChannelName))
                         } else {
                             reject(buildError(data, response, error, self.client))
                         }
                     }
                 }
             }
-        }.then { (realtimeRouter, channelName) -> Void in
+        }.then { arg -> Void in
+            let (realtimeRouter, channelName) = arg
             realtimeRouter.subscribe(
                 channel: channelName,
                 context: self,
@@ -219,7 +226,7 @@ public class LiveStream<Type: BaseMappable> {
                 onStatus: onStatus,
                 onError: onError
             )
-        }.then {
+        }.then { void in
             following()
         }.catch { error in
             onError(error)
@@ -227,7 +234,8 @@ public class LiveStream<Type: BaseMappable> {
     }
     
     public func unfollow(userId: String, completionHandler: ((Result<Void, Swift.Error>) -> Void)? = nil) {
-        realtimeRouterPromise.then { activeUser, realtimeRouter in
+        realtimeRouterPromise.then { arg -> Promise<RealtimeRouter> in
+            let (activeUser, realtimeRouter) = arg
             return Promise<RealtimeRouter> { fulfill, reject in
                 let request = self.client.networkRequestFactory.buildLiveStreamUnsubscribe(streamName: self.name, userId: userId, deviceId: deviceId)
                 request.execute() { (data, response, error) in
@@ -242,8 +250,8 @@ public class LiveStream<Type: BaseMappable> {
             if let channel = self.substreamChannelNameMap[userId] {
                 realtimeRouter.unsubscribe(channel: channel, context: self)
             }
-        }.then {
-            completionHandler?(.success())
+        }.then { void in
+            completionHandler?(.success(void))
         }.catch { error in
             completionHandler?(.failure(error))
         }

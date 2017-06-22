@@ -1071,7 +1071,7 @@ class DeltaSetCacheTestCase: KinveyTestCase {
         guard !useMockData else {
             return
         }
-        measureMetrics(type(of: self).defaultPerformanceMetrics(), automaticallyStartMeasuring: false) { () -> Void in
+        measureMetrics(type(of: self).defaultPerformanceMetrics, automaticallyStartMeasuring: false) { () -> Void in
             self.perform(countBackend: 1, countLocal: 9)
         }
     }
@@ -1080,7 +1080,7 @@ class DeltaSetCacheTestCase: KinveyTestCase {
         guard !useMockData else {
             return
         }
-        measureMetrics(type(of: self).defaultPerformanceMetrics(), automaticallyStartMeasuring: false) { () -> Void in
+        measureMetrics(type(of: self).defaultPerformanceMetrics, automaticallyStartMeasuring: false) { () -> Void in
             self.perform(countBackend: 9, countLocal: 1)
         }
     }

@@ -393,8 +393,8 @@ class FontDescriptorTransformType: TransformType {
     struct Attribute {
         
         #if !os(macOS)
-            static let name = UIFontDescriptorNameAttribute
-            static let size = UIFontDescriptorSizeAttribute
+            static let name = UIFontDescriptor.AttributeName.name
+            static let size = UIFontDescriptor.AttributeName.size
         #else
             static let name = NSFontNameAttribute
             static let size = NSFontSizeAttribute
@@ -404,8 +404,8 @@ class FontDescriptorTransformType: TransformType {
     
     func transformFromJSON(_ value: Any?) -> Object? {
         if let value = value as? JsonDictionary,
-            let fontName = value[Attribute.name] as? String,
-            let fontSize = value[Attribute.size] as? CGFloat
+            let fontName = value[Attribute.name.rawValue] as? String,
+            let fontSize = value[Attribute.size.rawValue] as? CGFloat
         {
             return FontDescriptor(name: fontName, size: fontSize)
         }
@@ -415,8 +415,8 @@ class FontDescriptorTransformType: TransformType {
     func transformToJSON(_ value: Object?) -> JSON? {
         if let value = value {
             return [
-                Attribute.name : value.fontAttributes[Attribute.name]!,
-                Attribute.size : value.fontAttributes[Attribute.size]!
+                Attribute.name.rawValue : value.fontAttributes[Attribute.name]!,
+                Attribute.size.rawValue : value.fontAttributes[Attribute.size]!
             ]
         }
         return nil

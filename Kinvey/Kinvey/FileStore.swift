@@ -255,10 +255,10 @@ open class FileStore<FileType: File> {
         if file.size.value == nil {
             switch source {
             case let .data(data):
-                file.size.value = IntMax(data.count)
+                file.size.value = Int64(data.count)
             case let .url(url):
                 if let attrs = try? FileManager.default.attributesOfItem(atPath: url.path),
-                    let fileSize = attrs[.size] as? IntMax
+                    let fileSize = attrs[.size] as? Int64
                 {
                     file.size.value = fileSize
                 }
@@ -299,7 +299,7 @@ open class FileStore<FileType: File> {
                     request.setValue("bytes */\(data.count)", forHTTPHeaderField: "Content-Range")
                 case let .url(url):
                     if let attrs = try? FileManager.default.attributesOfItem(atPath: (url.path as NSString).expandingTildeInPath),
-                        let fileSize = attrs[FileAttributeKey.size] as? UIntMax
+                        let fileSize = attrs[FileAttributeKey.size] as? UInt64
                     {
                         request.setValue("bytes */\(fileSize)", forHTTPHeaderField: "Content-Range")
                     }
@@ -331,7 +331,7 @@ open class FileStore<FileType: File> {
                         textCheckingResult.numberOfRanges == 3
                     {
                         let rangeNSString = rangeString as NSString
-                        let endRangeString = rangeNSString.substring(with: textCheckingResult.rangeAt(2))
+                        let endRangeString = rangeNSString.substring(with: textCheckingResult.range(at: 2))
                         if let endRange = Int(endRangeString) {
                             fulfill((file: file, skip: endRange))
                         } else {
@@ -346,7 +346,8 @@ open class FileStore<FileType: File> {
             } else {
                 createUpdateFileEntry()
             }
-        }.then { file, skip in //uploading data
+        }.then { arg -> Promise<FileType> in //uploading data
+            let (file, skip) = arg
             return Promise<FileType> { fulfill, reject in
                 var request = URLRequest(url: file.uploadURL!)
                 request.httpMethod = "PUT"
@@ -531,7 +532,8 @@ open class FileStore<FileType: File> {
     @discardableResult
     fileprivate func downloadFileData(_ file: FileType, downloadURL: URL) -> (request: URLSessionTaskRequest, promise: Promise<Data>) {
         let downloadTaskRequest = URLSessionTaskRequest(client: client, url: downloadURL)
-        let promise = downloadTaskRequest.downloadTaskWithURL(file).then { data, response -> Promise<Data> in
+        let promise = downloadTaskRequest.downloadTaskWithURL(file).then { arg -> Promise<Data> in
+            let (data, _) = arg
             return Promise<Data> { fulfill, reject in
                 fulfill(data)
             }
@@ -586,7 +588,7 @@ open class FileStore<FileType: File> {
             let pathURL = file.pathURL
         {
             DispatchQueue.main.async {
-                completionHandler?(.success(cachedFile, pathURL))
+                completionHandler?(.success((cachedFile, pathURL)))
             }
         }
         
@@ -608,7 +610,8 @@ open class FileStore<FileType: File> {
                         reject(error)
                     }
                 }
-            }.then { (file, downloadURL) -> Promise<(FileType, URL)> in
+            }.then { arg -> Promise<(FileType, URL)> in
+                let (file, downloadURL) = arg
                 let (request, promise) = self.downloadFileURL(file, storeType: storeType, downloadURL: downloadURL)
                 multiRequest += (request, true)
                 return promise.then { localUrl in
@@ -616,8 +619,9 @@ open class FileStore<FileType: File> {
                         fulfill((file, localUrl))
                     }
                 }
-            }.then { file, localUrl -> Void in
-                completionHandler?(.success(file, localUrl))
+            }.then { arg -> Void in
+                let (file, localUrl) = arg
+                completionHandler?(.success((file, localUrl)))
             }.catch { error in
                 completionHandler?(.failure(error))
             }
@@ -677,7 +681,8 @@ open class FileStore<FileType: File> {
                     reject(error)
                 }
             }
-        }.then { (file, downloadStage) -> Promise<Data> in
+        }.then { arg -> Promise<Data> in
+            let (file, downloadStage) = arg
             switch downloadStage {
             case .downloadURL(let downloadURL):
                 let (request, promise) = self.downloadFileData(file, downloadURL: downloadURL)
@@ -689,7 +694,7 @@ open class FileStore<FileType: File> {
                 }
             }
         }.then { data in
-            completionHandler?(.success(file, data))
+            completionHandler?(.success((file, data)))
         }.catch { error in
             completionHandler?(.failure(error))
         }

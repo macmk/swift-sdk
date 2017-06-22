@@ -107,13 +107,13 @@ open class User: NSObject, Credential, Mappable {
                     if let activeUser = client.activeUser, activeUser.userId == userId {
                         client.activeUser = nil
                     }
-                    fulfill()
+                    fulfill(())
                 } else {
                     reject(buildError(data, response, error, client))
                 }
             }
-        }.then { _ in
-            completionHandler?(.success())
+        }.then { void in
+            completionHandler?(.success(void))
         }.catch { error in
             completionHandler?(.failure(error))
         }
@@ -261,13 +261,13 @@ open class User: NSObject, Credential, Mappable {
         Promise<Void> { fulfill, reject in
             request.execute() { (data, response, error) in
                 if let response = response, response.isOK {
-                    fulfill()
+                    fulfill(())
                 } else {
                     reject(buildError(data, response, error, client))
                 }
             }
-        }.then {
-            completionHandler?(.success())
+        }.then { void in
+            completionHandler?(.success(void))
         }.catch { error in
             completionHandler?(.failure(error))
         }
@@ -317,13 +317,13 @@ open class User: NSObject, Credential, Mappable {
         Promise<Void> { fulfill, reject in
             request.execute() { (data, response, error) in
                 if let response = response, response.isOK {
-                    fulfill()
+                    fulfill(())
                 } else {
                     reject(buildError(data, response, error, client))
                 }
             }
-        }.then {
-            completionHandler?(.success())
+        }.then { void in
+            completionHandler?(.success(void))
         }.catch { error in
             completionHandler?(.failure(error))
         }
@@ -402,13 +402,13 @@ open class User: NSObject, Credential, Mappable {
         Promise<Void> { fulfill, reject in
             request.execute() { (data, response, error) in
                 if let response = response, response.isOK {
-                    fulfill()
+                    fulfill(())
                 } else {
                     reject(buildError(data, response, error, client))
                 }
             }
-        }.then {
-            completionHandler?(.success())
+        }.then { void in
+            completionHandler?(.success(void))
         }.catch { error in
             completionHandler?(.failure(error))
         }
@@ -519,13 +519,13 @@ open class User: NSObject, Credential, Mappable {
                     if self == self.client.activeUser {
                         self.client.activeUser = self
                     }
-                    fulfill()
+                    fulfill(())
                 } else {
                     reject(buildError(data, response, error, self.client))
                 }
             }
-        }.then { user in
-            completionHandler?(.success())
+        }.then { void in
+            completionHandler?(.success(void))
         }.catch { error in
             completionHandler?(.failure(error))
         }
@@ -662,13 +662,13 @@ open class User: NSObject, Credential, Mappable {
                     let userChannelGroup = json["userChannelGroup"] as? String
                 {
                     self.realtimeRouter = PubNubRealtimeRouter(user: self, subscribeKey: subscribeKey, publishKey: publishKey, userChannelGroup: userChannelGroup)
-                    fulfill()
+                    fulfill(())
                 } else {
                     reject(buildError(data, response, error, self.client))
                 }
             }
-        }.then { users in
-            completionHandler?(.success())
+        }.then { void in
+            completionHandler?(.success(void))
         }.catch { error in
             completionHandler?(.failure(error))
         }
@@ -682,13 +682,13 @@ open class User: NSObject, Credential, Mappable {
             request.execute() { (data, response, error) in
                 if let response = response, response.isOK {
                     self.realtimeRouter = nil
-                    fulfill()
+                    fulfill(())
                 } else {
                     reject(buildError(data, response, error, self.client))
                 }
             }
-        }.then { users in
-            completionHandler?(.success())
+        }.then { void in
+            completionHandler?(.success(void))
         }.catch { error in
             completionHandler?(.failure(error))
         }
