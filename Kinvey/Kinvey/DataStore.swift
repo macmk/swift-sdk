@@ -1884,7 +1884,7 @@ open class DataStore<T: Persistable> where T: NSObject {
             
             switch result {
             case .success(let count, let results):
-                completionHandler(.success(count, Array(results)))
+                completionHandler(.success((count, Array<T>(results))))
             case .failure(let error):
                 completionHandler(.failure(error))
             }
@@ -1915,7 +1915,7 @@ open class DataStore<T: Persistable> where T: NSObject {
                         ) { (result: Result<AnyRandomAccessCollection<T>, Swift.Error>) in
                             switch result {
                             case .success(let array):
-                                fulfill(count, array)
+                                fulfill((count, array))
                             case .failure(let error):
                                 reject(error)
                             }
@@ -1927,8 +1927,9 @@ open class DataStore<T: Persistable> where T: NSObject {
                 }
                 requests += request
             }
-        }.then { count, array in
-            completionHandler?(.success(count, array))
+        }.then { (arg) -> Void in
+            let (count, array) = arg
+            completionHandler?(.success((count, array)))
         }.catch { error in
             if let error = error as? MultipleErrors {
                 completionHandler?(.failure(error.errors))
@@ -2105,8 +2106,8 @@ open class DataStore<T: Persistable> where T: NSObject {
             request: request
         ).then { realtimeRouter in
             realtimeRouter.unsubscribe(channel: self.channelName, context: self)
-        }.then {
-            completionHandler(.success())
+        }.then { _ in
+            completionHandler(.success(()))
         }.catch { error in
             completionHandler(.failure(error))
         }

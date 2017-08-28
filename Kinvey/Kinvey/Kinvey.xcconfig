@@ -11,6 +11,7 @@ SUPPORTED_PLATFORMS = macosx iphoneos iphonesimulator appletvos appletvsimulator
 VALID_ARCHS[sdk=iphoneos*] = arm64 armv7 armv7s
 VALID_ARCHS[sdk=appletvos*] = arm64
 VALID_ARCHS[sdk=watchos*] = armv7k
+VALID_ARCHS[sdk=macosx*] = i386 x86_64
 
 OTHER_LDFLAGS = $(inherited) -framework PubNub
 OTHER_LDFLAGS[sdk=macosx*] = $(inherited) -framework SafariServices

@@ -110,17 +110,27 @@ open class Push {
             let applicationDidFailToRegisterForRemoteNotificationsWithErrorImplementation = imp_implementationWithBlock(unsafeBitCast(originalApplicationDidFailToRegisterForRemoteNotificationsWithErrorBlock, to: AnyObject.self))
             
             if originalApplicationDidRegisterForRemoteNotificationsWithDeviceTokenMethod == nil {
-                let result = class_addMethod(appDelegateType, applicationDidRegisterForRemoteNotificationsWithDeviceTokenSelector, applicationDidRegisterForRemoteNotificationsWithDeviceTokenImplementation, method_getTypeEncoding(originalApplicationDidRegisterForRemoteNotificationsWithDeviceTokenMethod))
+                let result = class_addMethod(
+                    appDelegateType,
+                    applicationDidRegisterForRemoteNotificationsWithDeviceTokenSelector,
+                    applicationDidRegisterForRemoteNotificationsWithDeviceTokenImplementation,
+                    nil
+                )
                 assert(result)
             } else {
-                self.originalApplicationDidRegisterForRemoteNotificationsWithDeviceTokenImplementation = method_setImplementation(originalApplicationDidRegisterForRemoteNotificationsWithDeviceTokenMethod, applicationDidRegisterForRemoteNotificationsWithDeviceTokenImplementation)
+                self.originalApplicationDidRegisterForRemoteNotificationsWithDeviceTokenImplementation = method_setImplementation(originalApplicationDidRegisterForRemoteNotificationsWithDeviceTokenMethod!, applicationDidRegisterForRemoteNotificationsWithDeviceTokenImplementation)
             }
             
             if originalApplicationDidFailToRegisterForRemoteNotificationsWithErrorMethod == nil {
-                let result = class_addMethod(appDelegateType, applicationDidFailToRegisterForRemoteNotificationsWithErrorSelector, applicationDidFailToRegisterForRemoteNotificationsWithErrorImplementation, method_getTypeEncoding(originalApplicationDidFailToRegisterForRemoteNotificationsWithErrorMethod))
+                let result = class_addMethod(
+                    appDelegateType,
+                    applicationDidFailToRegisterForRemoteNotificationsWithErrorSelector,
+                    applicationDidFailToRegisterForRemoteNotificationsWithErrorImplementation,
+                    nil
+                )
                 assert(result)
             } else {
-                self.originalApplicationDidFailToRegisterForRemoteNotificationsWithErrorImplementation = method_setImplementation(originalApplicationDidFailToRegisterForRemoteNotificationsWithErrorMethod, applicationDidFailToRegisterForRemoteNotificationsWithErrorImplementation)
+                self.originalApplicationDidFailToRegisterForRemoteNotificationsWithErrorImplementation = method_setImplementation(originalApplicationDidFailToRegisterForRemoteNotificationsWithErrorMethod!, applicationDidFailToRegisterForRemoteNotificationsWithErrorImplementation)
             }
         }
         
@@ -253,7 +263,9 @@ open class Push {
                     options: options,
                     completionHandler: completionHandler
                 )
-                UIApplication.shared.registerForRemoteNotifications()
+                DispatchQueue.main.sync {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
             } else {
                 if let error = error {
                     completionHandler?(.failure(error))
@@ -315,13 +327,13 @@ open class Push {
                     response.isOK
                 {
                     self.deviceToken = nil
-                    fulfill()
+                    fulfill(())
                 } else {
                     reject(buildError(data, response, error, self.client))
                 }
             }
         }.then { success in
-            completionHandler?(.success())
+            completionHandler?(.success(()))
         }.catch { error in
             completionHandler?(.failure(error))
         }

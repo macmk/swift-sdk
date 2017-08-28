@@ -12,8 +12,8 @@ import ObjectMapper
 
 class RefProject: Entity {
     
-    dynamic var uniqueId: String?
-    dynamic var name: String?
+    @objc dynamic var uniqueId: String?
+    @objc dynamic var name: String?
     
     override class func collectionName() -> String {
         return "HelixProjectProjects"

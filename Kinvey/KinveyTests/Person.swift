@@ -32,11 +32,11 @@ enum PersonObjCEnum: Int {
 
 class Person: Entity {
     
-    dynamic var personId: String?
-    dynamic var name: String?
-    dynamic var age: Int = 0
-    dynamic var geolocation: GeoPoint?
-    dynamic var address: Address?
+    @objc dynamic var personId: String?
+    @objc dynamic var name: String?
+    @objc dynamic var age: Int = 0
+    @objc dynamic var geolocation: GeoPoint?
+    @objc dynamic var address: Address?
     
     //testing properties that must be ignored
     var personDelegate: PersonDelegate?
@@ -107,6 +107,6 @@ class AddressTransform: TransformType {
 
 class Address: Entity {
     
-    dynamic var city: String?
+    @objc dynamic var city: String?
     
 }

@@ -14,23 +14,23 @@ import PromiseKit
 class Product: Entity {
     
     let materialNumber = RealmOptional<Int>()
-    dynamic var productDescription: String?
-    dynamic var vertical: String?
-    dynamic var subVertical: String?
-    dynamic var classification: String?
-    dynamic var materialGroup: String?
+    @objc dynamic var productDescription: String?
+    @objc dynamic var vertical: String?
+    @objc dynamic var subVertical: String?
+    @objc dynamic var classification: String?
+    @objc dynamic var materialGroup: String?
     let materialFreightGroup = RealmOptional<Int>()
-    dynamic var materialType: String?
-    dynamic var baseUOM: String?
+    @objc dynamic var materialType: String?
+    @objc dynamic var baseUOM: String?
     let packageQuantity = RealmOptional<Int>()
-    dynamic var gsaFlag: String?
-    dynamic var discontinuedIndicator: String?
-    dynamic var deactivateDate: String?
-    dynamic var taaFlag: String?
+    @objc dynamic var gsaFlag: String?
+    @objc dynamic var discontinuedIndicator: String?
+    @objc dynamic var deactivateDate: String?
+    @objc dynamic var taaFlag: String?
     let minOrderQuantity = RealmOptional<Int>()
     let active = RealmOptional<Bool>()
-    dynamic var created: String?
-    dynamic var modified: String?
+    @objc dynamic var created: String?
+    @objc dynamic var modified: String?
     
     override static func collectionName() -> String {
         return "Product"
@@ -269,7 +269,7 @@ class PerformanceProductTestCase: KinveyTestCase {
                         XCTAssertNotNil(product)
                         XCTAssertNil(error)
                         
-                        fulfill()
+                        fulfill(())
                     }
                 }
                 promises.append(promise)

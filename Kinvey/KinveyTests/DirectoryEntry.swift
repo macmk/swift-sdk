@@ -12,12 +12,12 @@ import ObjectMapper
 
 class DirectoryEntry: Entity {
     
-    dynamic var uniqueId: String?
-    dynamic var nameFirst: String?
-    dynamic var nameLast: String?
-    dynamic var email: String?
+    @objc dynamic var uniqueId: String?
+    @objc dynamic var nameFirst: String?
+    @objc dynamic var nameLast: String?
+    @objc dynamic var email: String?
     
-    dynamic var refProject: RefProject?
+    @objc dynamic var refProject: RefProject?
     
     override class func collectionName() -> String {
         return "HelixProjectDirectory"

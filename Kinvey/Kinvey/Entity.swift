@@ -71,13 +71,13 @@ open class Entity: Object, Persistable {
     }
     
     /// The `_id` property mapped in the Kinvey backend.
-    public dynamic var entityId: String?
+    @objc public dynamic var entityId: String?
     
     /// The `_kmd` property mapped in the Kinvey backend.
-    public dynamic var metadata: Metadata?
+    @objc public dynamic var metadata: Metadata?
     
     /// The `_acl` property mapped in the Kinvey backend.
-    public dynamic var acl: Acl?
+    @objc public dynamic var acl: Acl?
     
     /// Default Constructor.
     public required init() {
@@ -168,7 +168,7 @@ open class Entity: Object, Persistable {
 open class StringValue: Object, ExpressibleByStringLiteral {
     
     /// String value for the wrapper
-    public dynamic var value = ""
+    @objc public dynamic var value = ""
     
     /// Constructor for the `ExpressibleByUnicodeScalarLiteral` protocol
     public convenience required init(unicodeScalarLiteral value: String) {
@@ -202,7 +202,7 @@ open class StringValue: Object, ExpressibleByStringLiteral {
 open class IntValue: Object, ExpressibleByIntegerLiteral {
     
     /// Integer value for the wrapper
-    public dynamic var value = 0
+    @objc public dynamic var value = 0
     
     /// Constructor for the `ExpressibleByIntegerLiteral` protocol
     public convenience required init(integerLiteral value: Int) {
@@ -224,7 +224,7 @@ open class IntValue: Object, ExpressibleByIntegerLiteral {
 open class FloatValue: Object, ExpressibleByFloatLiteral {
     
     /// Float value for the wrapper
-    public dynamic var value = Float(0)
+    @objc public dynamic var value = Float(0)
     
     /// Constructor for the `ExpressibleByFloatLiteral` protocol
     public convenience required init(floatLiteral value: Float) {
@@ -246,7 +246,7 @@ open class FloatValue: Object, ExpressibleByFloatLiteral {
 open class DoubleValue: Object, ExpressibleByFloatLiteral {
     
     /// Double value for the wrapper
-    public dynamic var value = 0.0
+    @objc public dynamic var value = 0.0
     
     /// Constructor for the `ExpressibleByFloatLiteral` protocol
     public convenience required init(floatLiteral value: Double) {
@@ -268,7 +268,7 @@ open class DoubleValue: Object, ExpressibleByFloatLiteral {
 open class BoolValue: Object, ExpressibleByBooleanLiteral {
     
     /// Boolean value for the wrapper
-    public dynamic var value = false
+    @objc public dynamic var value = false
     
     /// Constructor for the `ExpressibleByBooleanLiteral` protocol
     public convenience required init(booleanLiteral value: Bool) {

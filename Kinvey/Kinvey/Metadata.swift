@@ -43,9 +43,9 @@ public class Metadata: Object, Mappable {
     
     }
     
-    internal dynamic var lmt: String?
-    internal dynamic var ect: String?
-    internal dynamic var lrt: Date = Date()
+    @objc internal dynamic var lmt: String?
+    @objc internal dynamic var ect: String?
+    @objc internal dynamic var lrt: Date = Date()
     
     /// Last Read Time
     open var lastReadTime: Date {
@@ -75,7 +75,7 @@ public class Metadata: Object, Mappable {
     }
     
     /// Authentication Token.
-    open internal(set) dynamic var authtoken: String?
+    @objc open internal(set) dynamic var authtoken: String?
     
     /// Default Constructor.
     public required init() {
@@ -128,12 +128,15 @@ public class Metadata: Object, Mappable {
 public final class UserMetadata: Metadata {
     
     /// Status of the email verification process
+    @objc
     open internal(set) var emailVerification: EmailVerification?
     
     /// Status of the password reset process
+    @objc
     open internal(set) var passwordReset: PasswordReset?
     
     /// Status of the activation process
+    @objc
     open internal(set) var userStatus: UserStatus?
     
     public override func mapping(map: Map) {
@@ -150,15 +153,19 @@ public final class UserMetadata: Metadata {
 public final class EmailVerification: Object {
     
     /// Current Status
+    @objc
     open internal(set) var status: String?
     
     /// Date of the last Status change
+    @objc
     open internal(set) var lastStateChangeAt: Date?
     
     /// Date of the last email confirmation
+    @objc
     open internal(set) var lastConfirmedAt: Date?
     
     /// Email Address
+    @objc
     open internal(set) var emailAddress: String?
     
 }
@@ -185,9 +192,11 @@ extension EmailVerification: Mappable {
 public final class PasswordReset: Object {
     
     /// Current Status
+    @objc
     open internal(set) var status: String?
     
     /// Date of the last Status change
+    @objc
     open internal(set) var lastStateChangeAt: Date?
     
 }
@@ -212,9 +221,11 @@ extension PasswordReset: Mappable {
 public final class UserStatus: Object {
     
     /// Current Status
+    @objc
     open internal(set) var value: String?
     
     /// Date of the last Status change
+    @objc
     open internal(set) var lastChange: Date?
     
 }
