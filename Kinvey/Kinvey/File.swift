@@ -15,25 +15,25 @@ import ObjectMapper
 open class File: Object, Mappable {
     
     /// `_id` property of the file.
-    open dynamic var fileId: String?
+    @objc open dynamic var fileId: String?
     
     /// `_filename` property of the file.
-    open dynamic var fileName: String?
+    @objc open dynamic var fileName: String?
     
     /// `size` property of the file.
     open let size = RealmOptional<Int64>()
     
     /// `mimeType` property of the file.
-    open dynamic var mimeType: String?
+    @objc open dynamic var mimeType: String?
     
     /// `_public` property of the file, which represents if the file is accessible without need of credentials.
-    open dynamic var publicAccessible = false
+    @objc open dynamic var publicAccessible = false
     
     /// Temporary download URL String of the file.
-    open dynamic var download: String?
+    @objc open dynamic var download: String?
     
     /// Temporary download URL of the file.
-    open dynamic var downloadURL: URL? {
+    @objc open dynamic var downloadURL: URL? {
         get {
             if let download = download {
                 return URL(string: download)
@@ -46,10 +46,10 @@ open class File: Object, Mappable {
     }
     
     /// Temporary upload URL String of the file.
-    open dynamic var upload: String?
+    @objc open dynamic var upload: String?
     
     /// Temporary upload URL of the file.
-    open dynamic var uploadURL: URL? {
+    @objc open dynamic var uploadURL: URL? {
         get {
             if let upload = upload {
                 return URL(string: upload)
@@ -64,13 +64,13 @@ open class File: Object, Mappable {
 
     
     /// Expiration data of the `downloadURL`.
-    open dynamic var expiresAt: Date?
+    @objc open dynamic var expiresAt: Date?
     
     /// ETag header used for validate the local cache
-    open internal(set) dynamic var etag: String?
+    @objc open internal(set) dynamic var etag: String?
     
     /// Local path URL String for the cached file
-    open internal(set) dynamic var path: String? {
+    @objc open internal(set) dynamic var path: String? {
         didSet {
             if let path = path,
                 let documentURL = FileManager.default.urls(for: FileManager.SearchPathDirectory.documentDirectory, in: FileManager.SearchPathDomainMask.userDomainMask).first
@@ -85,7 +85,7 @@ open class File: Object, Mappable {
     }
     
     /// Local path URL for the cached file
-    open internal(set) dynamic var pathURL: URL? {
+    @objc open internal(set) dynamic var pathURL: URL? {
         get {
             if let path = path {
                 return URL(fileURLWithPath: (path as NSString).expandingTildeInPath)
@@ -98,10 +98,10 @@ open class File: Object, Mappable {
     }
     
     /// The `_kmd` property mapped in the Kinvey backend.
-    public dynamic var metadata: Metadata?
+    @objc public dynamic var metadata: Metadata?
     
     /// The `_acl` property mapped in the Kinvey backend.
-    public dynamic var acl: Acl?
+    @objc public dynamic var acl: Acl?
     
     /// Headers needed to submit the request to the `uploadURL`.
     var uploadHeaders: [String : String]?

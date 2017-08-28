@@ -14,7 +14,7 @@ import ObjectMapper
 
 class Person: Entity {
     
-    dynamic var fullName: String?
+    @objc dynamic var fullName: String?
     
     override class func collectionName() -> String {
         return "CacheMigrationTestCase_Person"

@@ -11,16 +11,16 @@ import ObjectMapper
 
 class MedData: Entity {
     
-    dynamic var seq: Int = 0
-    dynamic var first: String?
-    dynamic var last: String?
-    dynamic var age: Int = 0
-    dynamic var street: String?
-    dynamic var city: String?
-    dynamic var state: String?
-    dynamic var zip: Int = 0
-    dynamic var dollar: String?
-    dynamic var pick: String?
+    @objc dynamic var seq: Int = 0
+    @objc dynamic var first: String?
+    @objc dynamic var last: String?
+    @objc dynamic var age: Int = 0
+    @objc dynamic var street: String?
+    @objc dynamic var city: String?
+    @objc dynamic var state: String?
+    @objc dynamic var zip: Int = 0
+    @objc dynamic var dollar: String?
+    @objc dynamic var pick: String?
     
     override class func collectionName() -> String {
         return "meddata"

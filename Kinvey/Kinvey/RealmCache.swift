@@ -620,16 +620,16 @@ extension AnyRandomAccessCollection where Element: NSObject, Element: Persistabl
 
 internal class RealmPendingOperation: Object, PendingOperationType {
     
-    dynamic var requestId: String = ""
-    dynamic var date: Date = Date()
+    @objc dynamic var requestId: String = ""
+    @objc dynamic var date: Date = Date()
     
-    dynamic var collectionName: String = ""
-    dynamic var objectId: String?
+    @objc dynamic var collectionName: String = ""
+    @objc dynamic var objectId: String?
     
-    dynamic var method: String = ""
-    dynamic var url: String = ""
-    dynamic var headers: Data = Data()
-    dynamic var body: Data?
+    @objc dynamic var method: String = ""
+    @objc dynamic var url: String = ""
+    @objc dynamic var headers: Data = Data()
+    @objc dynamic var body: Data?
     
     convenience init(request: URLRequest, collectionName: String, objectId: String?) {
         self.init()

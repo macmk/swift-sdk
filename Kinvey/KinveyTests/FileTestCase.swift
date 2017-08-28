@@ -18,7 +18,7 @@ import Nimble
 
 class MyFile: File {
     
-    dynamic var label: String?
+    @objc dynamic var label: String?
     
     public convenience required init?(map: Map) {
         self.init()
