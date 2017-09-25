@@ -83,6 +83,8 @@ internal class ObjCRuntime: NSObject {
                 } else {
                     cls = class_getSuperclass(cls)
                 }
+            } else {
+                cls = nil
             }
         }
         return results
