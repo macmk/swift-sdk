@@ -84,7 +84,7 @@ internal class ObjCRuntime: NSObject {
                     cls = class_getSuperclass(cls)
                 }
             } else {
-                cls = nil
+                cls = class_getSuperclass(cls)
             }
         }
         return results
