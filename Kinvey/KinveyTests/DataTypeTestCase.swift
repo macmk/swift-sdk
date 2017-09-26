@@ -296,7 +296,11 @@ class ColorTransformType : TransformType {
             let alpha = value["alpha"] as? CGFloat
         {
             #if os(macOS)
-                return Color(calibratedRed: red, green: green, blue: blue, alpha: alpha).usingColorSpaceName(NSCalibratedRGBColorSpace)
+                if #available(OSX 10.13, *) {
+                    return Color(srgbRed: red, green: green, blue: blue, alpha: alpha)
+                } else {
+                    return Color(calibratedRed: red, green: green, blue: blue, alpha: alpha).usingColorSpaceName(NSCalibratedRGBColorSpace)
+                }
             #else
                 return Color(red: red, green: green, blue: blue, alpha: alpha)
             #endif
